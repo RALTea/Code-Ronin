@@ -15,7 +15,7 @@
 </div>
 
 
-<style>
+<style lang="postcss">
   .course :global(h1),
   .course :global(h2),
   .course :global(h3),
