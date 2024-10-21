@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Apprentice {
+  id        String   @id @default(uuid())
+  username  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  role           String @default("USER")
+  profilePicture String
+
+  attempts  Attempt[]
+  campaigns Campaign[]
+}
+
+model Campaign {
+  id   String @id @default(uuid())
+  name String
+
+  forceOpen Boolean?
+  openAt    DateTime?
+  closeAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  apprentices Apprentice[]
+  quests      Quest[]
+}
+
+model Quest {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  name   String
+  resume String
+
+  forceOpen Boolean?
+  openAt    DateTime?
+  closeAt   DateTime?
+
+  nextQuestId   String? @unique
+  nextQuest     Quest?  @relation("QuestOrder", fields: [nextQuestId], references: [id])
+  previousQuest Quest?  @relation("QuestOrder")
+
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  campaignId String
+
+  tasks Task[]
+}
+
+model Task {
+  id          String @id @default(uuid())
+  name        String
+  instruction String
+  order       Int
+  gainedPoint Int?
+  answerType  String
+
+  nextTaskId   String? @unique
+  nextTask     Task?   @relation("TaskOrder", fields: [nextTaskId], references: [id])
+  previousTask Task?   @relation("TaskOrder")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  quest   Quest  @relation(fields: [questId], references: [id])
+  questId String
+
+  attempts Attempt[]
+}
+
+model Attempt {
+  id           String   @id @default(uuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+  userSolution String
+  isSuccess    Boolean
+
+  apprenticeId String
+  apprentice   Apprentice @relation(fields: [apprenticeId], references: [id], onDelete: Cascade)
+
+  fileId String
+  file   Task   @relation(fields: [fileId], references: [id], onDelete: Cascade)
+}
