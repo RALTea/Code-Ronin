@@ -1,5 +1,5 @@
 import type { Actions, PageServerLoad } from './$types';
-import { env } from '$env/dynamic/private';
+import { ADMIN_GITEA_TOKEN, GITEA_URL } from '$env/static/private';
 import { base64ToCode } from '$lib/utils/b64.utils';
 
 export const load: PageServerLoad = ({ locals }) => {
@@ -10,13 +10,12 @@ export const load: PageServerLoad = ({ locals }) => {
 
 export const actions: Actions = {
 	default: async ({ locals, request }) => {
-		const { ADMIN_GITEA_TOKEN } = env;
 		const form = await request.formData();
 
 		const filename = form.get('filename') as string;
 		const username = locals.user.username;
 
-		const url = `http://34.163.181.139:2377/api/v1/repos/${username}/challenge-js/contents/${filename}`;
+		const url = `${GITEA_URL}/api/v1/repos/${username}/challenge-js/contents/${filename}`;
 		const response = await fetch(url, {
 			headers: { Authorization: `token ${ADMIN_GITEA_TOKEN}` }
 		});
@@ -25,7 +24,7 @@ export const actions: Actions = {
 
 		const code = base64ToCode(data.content);
 
-		const res = await fetch(`http://localhost:3000`, {
+		const res = await fetch(`/api/run-code`, {
 			method: 'POST',
 			body: JSON.stringify({ code })
 		});

@@ -9,3 +9,18 @@ export type UseCaseResponse<T> = {
 	status: StatusCode;
 	message: string;
 }
+
+export type InputFactory<TData, TDeps> = {
+	data: TData;
+	dependencies: TDeps;
+}
+
+export type OutputFactory<T> = T;
+
+export type UseCase<Input, Output> = (input: Input) => {
+	execute(): Promise<Output>;
+}
+
+export type UseCaseSync<Input, Output> = (input: Input) => {
+	execute(): Output;
+}
