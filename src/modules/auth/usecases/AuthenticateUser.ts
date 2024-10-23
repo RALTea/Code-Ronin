@@ -47,7 +47,8 @@ export const LoginUseCase: UseCase<Input, Output> = ({ dependencies, data }: Inp
 				const createdUser = await userRepository.createUser({
 					giteaUserId: giteaUser.id,
 					username: giteaUser.login,
-					profilePicture: giteaUser.avatar_url
+					profilePicture: giteaUser.avatar_url,
+					role: "USER"
 				});
 
 				const token = tokenProvider.generateToken(createdUser);
@@ -60,7 +61,7 @@ export const LoginUseCase: UseCase<Input, Output> = ({ dependencies, data }: Inp
 				console.log('Error :', error);
 				return {
 					isSuccess: false,
-					status: 200,
+					status: 400,
 					message: "Quelque chose c'est mal passé veuillez réessayer plus tard."
 				};
 			}

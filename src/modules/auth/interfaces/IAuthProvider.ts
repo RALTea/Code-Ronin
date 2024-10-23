@@ -15,4 +15,11 @@ export type IAuthProvider = {
 			authenticateWith?: 'http_basic_auth' | 'request_body';
 		}
 	) => Promise<TokenResponseBody>;
+
+	createAuthorizationURL: (options?: {
+		state?: string;
+		codeVerifier?: string;
+		codeChallengeMethod?: "S256" | "plain";
+		scopes?: string[];
+	}) => Promise<URL>;
 };

@@ -3,7 +3,7 @@ export type Apprentice = {
 	username: string;
 	createdAt?: Date;
 	updatedAt?: Date;
-	role?: string;
+	role: string
 	giteaUserId: number;
 	profilePicture: string;
 }

@@ -1,4 +1,4 @@
-import { json, redirect, type RequestHandler } from '@sveltejs/kit';
+import { error, json, redirect, type RequestHandler } from '@sveltejs/kit';
 import { COOKEYS } from '$lib/utils/cookies.utils';
 import { CheckBodyMiddleware } from '$lib/services/ZodBodyParser';
 import { type LoginDto, loginDto } from '$auth/dto/LoginDto';
@@ -10,6 +10,11 @@ import { SQLiteUserRepository } from '$auth/repositories/SQLiteUserRepository';
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
 	const queryParams = new URLSearchParams(url.search);
+	if (queryParams.has('error')) {
+		throw error(401, {
+			message: 'You need to grant permission to code-ronin to access your gite account.',
+		});	}
+
 	const params = Object.fromEntries([...queryParams.entries()]);
 
 	const checkBodyMiddleware = await CheckBodyMiddleware<LoginDto>(params, loginDto);
@@ -28,8 +33,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		data: checkBodyMiddleware.data,
 		dependencies: {
 			userRepository: {
-				createUser: SQLiteUserRepository().createUser,
-				getApprenticeByGiteaId: SQLiteUserRepository().getApprenticeByGiteaId,
+				...SQLiteUserRepository(),
 				getGiteaUserWithAccessToken: GiteaUserRepository().getGiteaUserWithAccessToken
 			},
 			tokenProvider: JWTAuthTokenProvider(),

@@ -1,11 +1,11 @@
 import type { Actions, PageServerLoad } from './$types';
-import { ADMIN_GITEA_TOKEN, GITEA_URL } from '$env/static/private';
+import { ADMIN_GITEA_TOKEN } from '$env/static/private';
 import { base64ToCode } from '$lib/utils/b64.utils';
 import OAuth2CreateAuthorizationURLService from '$auth/services/OAuth2CreateAuthorizationURL';
+import { PUBLIC_GITEA_URL } from '$env/static/public';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const giteaAuthorizationURL = OAuth2CreateAuthorizationURLService.createGiteaAuthorizationURL();
-
+	const giteaAuthorizationURL = await OAuth2CreateAuthorizationURLService.createGiteaAuthorizationURL();
 	return {
 		url: giteaAuthorizationURL.toString(),
 		user: locals.user
@@ -19,7 +19,7 @@ export const actions: Actions = {
 		const filename = form.get('filename') as string;
 		const username = locals.user.username;
 
-		const url = `${GITEA_URL}/api/v1/repos/${username}/challenge-js/contents/${filename}`;
+		const url = `${PUBLIC_GITEA_URL}/api/v1/repos/${username}/challenge-js/contents/${filename}`;
 		const response = await fetch(url, {
 			headers: { Authorization: `token ${ADMIN_GITEA_TOKEN}` }
 		});
