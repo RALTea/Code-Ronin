@@ -13,7 +13,7 @@
 	let task: Task | undefined = $state();
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
-	let inputCode: string = $state('');
+	let inputCode: string = $state('console.log("hello")');
 	$inspect(inputCode);
 
 	onMount(async () => {
@@ -25,7 +25,7 @@
 		runningCode = true;
 		const judgeRepository = JudgeEvaluationRepository();
 		runExercise({
-			data: { apprenticeId: '1', language: 'javascript' },
+			data: { apprenticeId: '1', language: 'typescript5' },
 			deps: {
 				evaluateSolution: judgeRepository.evaluateSolution,
 				fetchApprenticeSolution: async () => inputCode
@@ -49,7 +49,7 @@
 		</aside>
 		<main class="flex-1 space-y-4 max-h-full">
 			<Input bind:value={inputCode} {runCode} />
-			<Output stdout={runningCode ? 'Loading...' : result?.stdout} stderr={result?.stderr} />
+			<Output message={runningCode ? 'Loading...' : result?.message} />
 		</main>
 	</div>
 {:else}
