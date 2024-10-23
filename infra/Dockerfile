@@ -31,5 +31,7 @@ COPY ./scripts/run-typescript.sh /usr/local/bin/run-typescript.sh
 # Add TypeScript configuration
 COPY ./scripts/tsconfig.json /usr/local/bin/ts-5.6.3/typescript/tsconfig.json
 
+COPY ./scripts/example.ts /api/example.ts
+
 # Clean up
 # RUN apt-get clean && rm -rf /var/lib/apt/lists/*
