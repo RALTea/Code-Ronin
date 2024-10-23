@@ -1,14 +1,18 @@
 import type { Apprentice } from '$auth/entities/Apprentice';
 import type {
 	IUserRepositoryCreateUser,
+	IUserRepositoryGetByEmail,
 	IUserRepositoryGetById
 } from '$auth/interfaces/IUserRepository';
 import prisma from '$lib/server/db';
 
-type _SQLiteUserRepository = IUserRepositoryCreateUser & IUserRepositoryGetById;
+type _SQLiteUserRepository = IUserRepositoryCreateUser & IUserRepositoryGetById & IUserRepositoryGetByEmail;
 
 export const SQLiteUserRepository = (): _SQLiteUserRepository => {
 	return {
+		getApprenticeByGiteaEmail(email: string): Promise<Apprentice | null> {
+			return prisma.apprentice.findFirst({ where: { email } });
+		},
 		getApprenticeByGiteaId(id): Promise<Apprentice | null> {
 			return prisma.apprentice.findFirst({ where: { giteaUserId: id } });
 		},

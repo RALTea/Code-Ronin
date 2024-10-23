@@ -17,6 +17,7 @@ model Apprentice {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
+  email          String
   role           String @default("USER")
   profilePicture String
 

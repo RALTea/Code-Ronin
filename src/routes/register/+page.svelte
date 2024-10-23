@@ -21,4 +21,5 @@
 		<input name="password" class="text-black" value="securepassword123" />
 
 		<button type="submit">Submit</button>
+		<span class="text-red-600">{form?.message ?? ""}</span>
 	</form>

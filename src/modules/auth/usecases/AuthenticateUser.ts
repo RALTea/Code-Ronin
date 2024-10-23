@@ -47,6 +47,7 @@ export const LoginUseCase: UseCase<Input, Output> = ({ dependencies, data }: Inp
 				const createdUser = await userRepository.createUser({
 					giteaUserId: giteaUser.id,
 					username: giteaUser.login,
+					email: giteaUser.email,
 					profilePicture: giteaUser.avatar_url,
 					role: "USER"
 				});

@@ -4,6 +4,7 @@ export type Apprentice = {
 	createdAt?: Date;
 	updatedAt?: Date;
 	role: string
+	email: string
 	giteaUserId: number;
 	profilePicture: string;
 }

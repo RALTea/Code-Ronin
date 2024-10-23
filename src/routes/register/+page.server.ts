@@ -1,6 +1,7 @@
 import type { Actions } from './$types';
 import { trpc } from '$lib/clients/trpc';
 import { redirect } from '@sveltejs/kit';
+import { TRPCClientError } from '@trpc/client';
 
 export const actions: Actions = {
 	default: async (event) => {
@@ -11,7 +12,15 @@ export const actions: Actions = {
 			username: string;
 		};
 
-		const url = await trpc(event).authRouter.register.query(data);
-		throw redirect(303, url);
+		try {
+			const url = await trpc(event).authRouter.register.query(data);
+			return redirect(303, url);
+		} catch (e) {
+			console.log(e);
+			if (e instanceof TRPCClientError) {
+				return { message: e.message };
+			}
+			return { message: 'An error occured' };
+		}
 	}
 };
