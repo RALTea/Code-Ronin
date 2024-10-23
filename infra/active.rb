@@ -362,6 +362,6 @@
     name: "TypeScript (5.6.3)",
     is_archived: false,
     source_file: "script.ts",
-    run_cmd: "/usr/local/bin/judge0-typescript5-runner script.ts"
+    run_cmd: "/opt/typescript/node_modules/.bin/tsx --tsconfig /opt/typescript/tsconfig.json script.ts"
   }
 ]
