@@ -26,9 +26,7 @@ RUN mkdir -p /usr/local/bin/ts-5.6.3/typescript && \
     npm install typescript@5.6.3 tsx
 
 # Set up the new language
-# COPY ./scripts/judge0-typescript5-runner /usr/local/bin/run-typescript.sh
 COPY ./scripts/run-typescript.sh /usr/local/bin/run-typescript.sh
-# RUN chmod +x /usr/local/bin/judge0-typescript5-runner
 
 # Add TypeScript configuration
 COPY ./scripts/tsconfig.json /usr/local/bin/ts-5.6.3/typescript/tsconfig.json
