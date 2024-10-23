@@ -362,6 +362,7 @@
     name: "TypeScript (5.6.3)",
     is_archived: false,
     source_file: "script.ts",
-    run_cmd: "/opt/typescript/node_modules/.bin/tsx --tsconfig /opt/typescript/tsconfig.json script.ts"
+    # run_cmd: "/usr/local/bin/ts-5.6.3/typescript/node_modules/.bin/tsx --tsconfig /usr/local/bin/ts-5.6.3/typescript/tsconfig.json script.ts"
+    run_cmd: "/usr/local/bin/run-typescript.sh script.ts"
   }
 ]

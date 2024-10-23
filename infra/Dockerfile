@@ -1,5 +1,5 @@
 FROM judge0/judge0:1.13.1 as base
-WORKDIR /opt/typescript
+WORKDIR /usr/local/bin/ts-5.6.3
 WORKDIR /api/.nvm
 WORKDIR /api
 
@@ -19,17 +19,19 @@ ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 # Install latest TypeScript and tsx in a specific directory
-RUN mkdir -p /opt/typescript && \
-    cd /opt/typescript && \
+# CHANGE THIS TO /usr/local/bin/ts-5.6.3
+RUN mkdir -p /usr/local/bin/ts-5.6.3/typescript && \
+    cd /usr/local/bin/ts-5.6.3/typescript && \
     npm init -y && \
     npm install typescript@5.6.3 tsx
 
 # Set up the new language
-COPY ./scripts/judge0-typescript5-runner /usr/local/bin/judge0-typescript5-runner
+# COPY ./scripts/judge0-typescript5-runner /usr/local/bin/run-typescript.sh
+COPY ./scripts/run-typescript.sh /usr/local/bin/run-typescript.sh
 # RUN chmod +x /usr/local/bin/judge0-typescript5-runner
 
 # Add TypeScript configuration
-COPY ./scripts/tsconfig.json /opt/typescript/tsconfig.json
+COPY ./scripts/tsconfig.json /usr/local/bin/ts-5.6.3/typescript/tsconfig.json
 
 # Clean up
 # RUN apt-get clean && rm -rf /var/lib/apt/lists/*
