@@ -38,6 +38,7 @@ services:
     command: ["./scripts/workers"]
     volumes:
       - ./judge0.conf:/judge0.conf:ro
+      - ./active.rb:/api/db/languages/active.rb:ro
     privileged: true
     <<: *default-logging
     restart: always
