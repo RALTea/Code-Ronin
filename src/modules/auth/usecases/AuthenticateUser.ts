@@ -1,48 +1,69 @@
 import type { LoginDto } from '$auth/dto/LoginDto';
 import type { IUserRepository } from '$auth/interfaces/IUserRepository';
-import { JWTAuthTokenProvider } from '$auth/services/JWTAuthTokenProvider';
 import { GITEA_CLIENT_SECRET } from '$env/static/private';
-import type { InputFactory, UseCase, UseCaseResponse } from '$lib/interfaces/UseCase';
+import type {
+	InputFactory,
+	OutputFactory,
+	UseCase,
+	UseCaseResponse
+} from '$lib/interfaces/UseCase';
 import type { IAuthProvider } from '$auth/interfaces/IAuthProvider';
+import type { IAuthTokenProvider } from '$auth/interfaces/IAuthTokenProvider';
 
 type Input = InputFactory<
 	LoginDto,
 	{
 		authProvider: IAuthProvider;
-		// TODO: Check this changes
+		tokenProvider: IAuthTokenProvider;
 		userRepository: IUserRepository;
 	}
 >;
-// TODO: en utilisant la output factory, on se retrouve avec Promise<Promise<Result>>
-type Output = UseCaseResponse<string>;
+
+type Output = OutputFactory<UseCaseResponse<string>>;
 
 export const LoginUseCase: UseCase<Input, Output> = ({ dependencies, data }: Input) => {
-	const { authProvider, userRepository } = dependencies;
-
+	const { authProvider, userRepository, tokenProvider } = dependencies;
 	return {
 		execute: async () => {
-			const { access_token } = await authProvider.validateAuthorizationCode(data, {
-				credentials: GITEA_CLIENT_SECRET,
-				authenticateWith: 'request_body'
-			});
+			try {
+				const { access_token } = await authProvider.validateAuthorizationCode(data.code, {
+					credentials: GITEA_CLIENT_SECRET,
+					authenticateWith: 'request_body',
+				});
 
-			const user = await userRepository.getUserById(access_token);
-			if (!user) {
+				const giteaUser = await userRepository.getGiteaUserWithAccessToken(access_token);
+
+				const apprentice = await userRepository.getApprenticeByGiteaId(giteaUser.id);
+
+				if (apprentice) {
+					const token = tokenProvider.generateToken(apprentice);
+					return {
+						isSuccess: true,
+						status: 200,
+						data: token
+					};
+				}
+
+				const createdUser = await userRepository.createUser({
+					giteaUserId: giteaUser.id,
+					username: giteaUser.login,
+					profilePicture: giteaUser.avatar_url
+				});
+
+				const token = tokenProvider.generateToken(createdUser);
+				return {
+					isSuccess: true,
+					status: 200,
+					data: token
+				};
+			} catch (error) {
+				console.log('Error :', error);
 				return {
 					isSuccess: false,
-					status: 401,
-					message: 'User not found'
+					status: 200,
+					message: "Quelque chose c'est mal passé veuillez réessayer plus tard."
 				};
 			}
-			await userRepository.createUser(user);
-			// TODO: Inject as dependency
-			const token = JWTAuthTokenProvider().generateToken(user);
-
-			return {
-				isSuccess: true,
-				status: 200,
-				data: token
-			};
 		}
 	};
 };

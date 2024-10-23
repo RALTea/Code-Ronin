@@ -1,8 +1,10 @@
 import type { RequestEvent } from '@sveltejs/kit';
+import prisma from '$lib/server/db';
 
 export async function createContext(event: RequestEvent) {
-  return {
-    event // 👈 `event` is now available in your context
+  return { // 👈 now available in your context
+    event,
+    prisma
   };
 }
 

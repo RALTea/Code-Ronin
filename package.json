@@ -44,6 +44,7 @@
 		"@tailwindcss/typography": "^0.5.15",
 		"@trpc/client": "^10.45.2",
 		"@trpc/server": "^10.45.2",
+		"axios": "^1.7.7",
 		"jsonwebtoken": "^9.0.2",
 		"oslo": "^1.2.1",
 		"svelte-markdown": "^0.4.1",

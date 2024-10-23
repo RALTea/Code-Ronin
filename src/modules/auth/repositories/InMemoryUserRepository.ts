@@ -1,14 +1,16 @@
-import type { User } from '$auth/entities/User';
+import type { Apprentice } from '$auth/entities/Apprentice';
 import type { IUserRepositoryCreateUser } from '$auth/interfaces/IUserRepository';
 
 type _InMemoryUserRepository = IUserRepositoryCreateUser;
 
-const users: User[] = [];
+const users: Apprentice[] = [];
 
 export const InMemoryUserRepository = (): _InMemoryUserRepository => {
 	return {
 		async createUser(user) {
-			users.push({ id: crypto.randomUUID(), username: user.username });
+			const newUser = { id: crypto.randomUUID(), ...user };
+			users.push(newUser);
+			return newUser
 		}
 	};
 };

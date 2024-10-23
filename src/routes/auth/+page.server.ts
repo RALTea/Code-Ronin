@@ -1,9 +1,13 @@
 import type { Actions, PageServerLoad } from './$types';
 import { ADMIN_GITEA_TOKEN, GITEA_URL } from '$env/static/private';
 import { base64ToCode } from '$lib/utils/b64.utils';
+import OAuth2CreateAuthorizationURLService from '$auth/services/OAuth2CreateAuthorizationURL';
 
-export const load: PageServerLoad = ({ locals }) => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const giteaAuthorizationURL = OAuth2CreateAuthorizationURLService.createGiteaAuthorizationURL();
+
 	return {
+		url: giteaAuthorizationURL.toString(),
 		user: locals.user
 	};
 };
