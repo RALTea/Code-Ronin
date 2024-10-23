@@ -1,17 +1,3 @@
-WARN[0000] /home/dockeruser/judge0/docker-compose.yml: `version` is obsolete
-judge0@79b438858462:/api$ ls
-app  config     cron  docker-entrypoint.sh  environment  Gemfile.lock  LICENSE  public    scripts  tmp
-bin  config.ru  db    docs                  Gemfile      lib           log      Rakefile  spec     vendor
-judge0@79b438858462:/api$ cd db/
-languages/ migrate/   schema.rb  seeds.rb
-judge0@79b438858462:/api$ cd db/languages/a
-active.rb    archived.rb
-judge0@79b438858462:/api$ cd db/languages/active.rb
-bash: cd: db/languages/active.rb: Not a directory
-judge0@79b438858462:/api$ cd db/languages/
-judge0@79b438858462:/api/db/languages$ cat active.rb
-@languages ||= []
-@languages +=
 [
   {
     id: 43,
