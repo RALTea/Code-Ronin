@@ -16,7 +16,6 @@ export const actions: Actions = {
 			const url = await trpc(event).authRouter.register.query(data);
 			return redirect(303, url);
 		} catch (e) {
-			console.log(e);
 			if (e instanceof TRPCClientError) {
 				return { message: e.message };
 			}
