@@ -1,16 +1,25 @@
 import type { Apprentice } from '$auth/entities/Apprentice';
-import type { IUserRepositoryCreateUser } from '$auth/interfaces/IUserRepository';
+import type { IUserRepository } from '$auth/interfaces/IUserRepository';
+import * as crypto from 'node:crypto';
 
-type _InMemoryUserRepository = IUserRepositoryCreateUser;
+type _InMemoryUserRepository = Omit<IUserRepository, 'getGiteaUserWithAccessToken'>;
 
-const users: Apprentice[] = [];
+const apprentices: Apprentice[] = [];
 
 export const InMemoryUserRepository = (): _InMemoryUserRepository => {
 	return {
+		getApprenticeByGiteaEmail(email: string): Promise<Apprentice | null> {
+			const apprentice = apprentices.find((apprentice) => apprentice.email === email) ?? null;
+			return Promise.resolve(apprentice);
+		},
+		getApprenticeByGiteaId(id: number): Promise<Apprentice | null> {
+			const apprentice = apprentices.find((apprentice) => apprentice.giteaUserId === id) ?? null;
+			return Promise.resolve(apprentice);
+		},
 		async createUser(user) {
-			const newUser = { id: crypto.randomUUID(), ...user };
-			users.push(newUser);
-			return newUser
+			const newApprentice = { id: crypto.randomUUID(), ...user };
+			apprentices.push(newApprentice);
+			return newApprentice;
 		}
 	};
 };

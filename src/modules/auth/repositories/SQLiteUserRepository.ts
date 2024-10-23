@@ -1,12 +1,10 @@
 import type { Apprentice } from '$auth/entities/Apprentice';
 import type {
-	IUserRepositoryCreateUser,
-	IUserRepositoryGetByEmail,
-	IUserRepositoryGetById
+	IUserRepository,
 } from '$auth/interfaces/IUserRepository';
 import prisma from '$lib/server/db';
 
-type _SQLiteUserRepository = IUserRepositoryCreateUser & IUserRepositoryGetById & IUserRepositoryGetByEmail;
+type _SQLiteUserRepository = Omit<IUserRepository, "getGiteaUserWithAccessToken">;
 
 export const SQLiteUserRepository = (): _SQLiteUserRepository => {
 	return {
