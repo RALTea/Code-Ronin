@@ -52,9 +52,8 @@ model Quest {
   openAt    DateTime?
   closeAt   DateTime?
 
-  nextQuestId   String? @unique
-  nextQuest     Quest?  @relation("QuestOrder", fields: [nextQuestId], references: [id])
-  previousQuest Quest?  @relation("QuestOrder")
+  nextQuests     Quest[] @relation("Quests")
+  previousQuests Quest[] @relation("Quests")
 
   campaign   Campaign @relation(fields: [campaignId], references: [id])
   campaignId String
@@ -70,9 +69,8 @@ model Task {
   gainedPoint Int?
   answerType  String
 
-  nextTaskId   String? @unique
-  nextTask     Task?   @relation("TaskOrder", fields: [nextTaskId], references: [id])
-  previousTask Task?   @relation("TaskOrder")
+  nextTasks     Task[] @relation("Tasks")
+  previousTasks Task[] @relation("Tasks")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
