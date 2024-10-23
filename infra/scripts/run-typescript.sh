@@ -2,7 +2,7 @@
 
 # Set up NVM and Node environment
 export NVM_DIR="/api/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+source "$NVM_DIR/nvm.sh"
 
 # Use the correct Node version
 nvm use 20.10.0
