@@ -19,7 +19,6 @@ ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 # Install latest TypeScript and tsx in a specific directory
-# CHANGE THIS TO /usr/local/bin/ts-5.6.3
 RUN mkdir -p /usr/local/bin/ts-5.6.3/typescript && \
     cd /usr/local/bin/ts-5.6.3/typescript && \
     npm init -y && \
@@ -32,6 +31,3 @@ COPY ./scripts/run-typescript.sh /usr/local/bin/run-typescript.sh
 COPY ./scripts/tsconfig.json /usr/local/bin/ts-5.6.3/typescript/tsconfig.json
 
 COPY ./scripts/example.ts /api/example.ts
-
-# Clean up
-# RUN apt-get clean && rm -rf /var/lib/apt/lists/*
