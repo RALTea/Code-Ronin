@@ -1,12 +1,12 @@
 FROM judge0/judge0:1.13.1 as base
 WORKDIR /usr/local/bin/ts-5.6.3
-WORKDIR /api/.nvm
+WORKDIR /usr/local/.nvm
 WORKDIR /api
 
 RUN mkdir -p /api/.nvm && chmod -R 755 /api/.nvm
 
 # Install nvm
-ENV NVM_DIR /api/.nvm
+ENV NVM_DIR /usr/local/.nvm
 ENV NODE_VERSION 20.10.0
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
     && . $NVM_DIR/nvm.sh \
