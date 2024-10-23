@@ -3,7 +3,7 @@ WORKDIR /usr/local/bin/ts-5.6.3
 WORKDIR /usr/local/.nvm
 WORKDIR /api
 
-RUN mkdir -p /api/.nvm && chmod -R 755 /api/.nvm
+RUN mkdir -p /usr/local/.nvm && chmod -R 755 /usr/local/.nvm
 
 # Install nvm
 ENV NVM_DIR /usr/local/.nvm

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set up NVM and Node environment
-export NVM_DIR="/api/.nvm"
+export NVM_DIR="/usr/local/.nvm"
 source "$NVM_DIR/nvm.sh"
 
 # Use the correct Node version
