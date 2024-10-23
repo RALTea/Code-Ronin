@@ -1,0 +1,2 @@
+#!/bin/bash
+/opt/typescript/node_modules/.bin/tsx --tsconfig /opt/typescript/tsconfig.json "$1"

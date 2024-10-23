@@ -1,0 +1,35 @@
+FROM judge0/judge0:1.13.1 as base
+WORKDIR /opt/typescript
+WORKDIR /api/.nvm
+WORKDIR /api
+
+RUN mkdir -p /api/.nvm && chmod -R 755 /api/.nvm
+
+# Install nvm
+ENV NVM_DIR /api/.nvm
+ENV NODE_VERSION 20.10.0
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install $NODE_VERSION \
+    && nvm alias default $NODE_VERSION \
+    && nvm use default
+
+# Add node and npm to path so the commands are available
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+# Install latest TypeScript and tsx in a specific directory
+RUN mkdir -p /opt/typescript && \
+    cd /opt/typescript && \
+    npm init -y && \
+    npm install typescript@5.6.3 tsx
+
+# Set up the new language
+COPY ./scripts/judge0-typescript5-runner /usr/local/bin/judge0-typescript5-runner
+# RUN chmod +x /usr/local/bin/judge0-typescript5-runner
+
+# Add TypeScript configuration
+COPY ./scripts/tsconfig.json /opt/typescript/tsconfig.json
+
+# Clean up
+# RUN apt-get clean && rm -rf /var/lib/apt/lists/*
