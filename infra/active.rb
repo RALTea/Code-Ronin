@@ -1,3 +1,5 @@
+@languages ||= []
+@languages += 
 [
   {
     id: 43,
