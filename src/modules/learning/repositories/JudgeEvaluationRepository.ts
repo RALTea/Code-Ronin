@@ -26,8 +26,14 @@ type JudgeResult = z.infer<typeof JudgeResultSchema>;
 
 const mapLanguageToJudgeLanguageId = (language: Language): number => {
 	switch (language) {
+		case 'bash':
+			return 46;
 		case 'javascript':
 			return 63;
+		case 'typescript3':
+			return 74;
+		case 'typescript5':
+			return 90;
 		case 'python':
 			return 71;
 		default:
@@ -56,9 +62,7 @@ export const JudgeEvaluationRepository = (): IEvaluationRepository => {
 				id: decoded.token,
 				time: parseFloat(decoded.time),
 				success: decoded.status.id === 3,
-				message: decoded.message ?? undefined,
-				stderr: decoded.stderr ?? undefined,
-				stdout: decoded.stdout ?? undefined,
+				message: decoded.stdout ?? decoded.stderr ?? decoded.compile_output ?? decoded.message ?? 'Unknown error', 
 			};
 		}
 	};

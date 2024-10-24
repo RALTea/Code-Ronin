@@ -4,7 +4,7 @@
 	import { InMemoryTaskRepository } from '$learning/repositories/InMemoryTaskRepository';
 	import { JudgeEvaluationRepository } from '$learning/repositories/JudgeEvaluationRepository';
 	import { runExercise } from '$learning/usecases/runExercise';
-	import PrimaryButton from '$lib/components/buttons/PrimaryButton.svelte';
+	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import { onMount } from 'svelte';
 	import Input from './Input.svelte';
 	import Instructions from './Instructions.svelte';
@@ -14,8 +14,8 @@
 	let task: Task | undefined = $state();
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
-	let inputCode: string = $state('');
-	$inspect(inputCode)
+	let inputCode: string = $state('console.log("hello")');
+	$inspect(inputCode);
 
 	onMount(async () => {
 		task = await taskRepository.getTaskById('1');
@@ -26,34 +26,36 @@
 		runningCode = true;
 		const judgeRepository = JudgeEvaluationRepository();
 		runExercise({
-			data: { apprenticeId: '1', language: 'javascript' },
+			data: { apprenticeId: '1', language: 'typescript5' },
 			deps: {
 				evaluateSolution: judgeRepository.evaluateSolution,
-				fetchApprenticeSolution: async () => inputCode,
+				fetchApprenticeSolution: async () => inputCode
 			}
 		})
 			.execute()
 			.then((res) => {
 				console.debug('Result:', res);
 				result = res;
-			}).finally(() => {
+			})
+			.finally(() => {
 				runningCode = false;
 			});
 	};
 </script>
 
-<h1 class="text-red-500">Hello Code Ronin</h1>
-{#if task}
-	<div class="flex p-8 gap-8">
-		<aside class="prose prose-invert text-white flex-1 p-4">
-			<Instructions {...task}></Instructions>
-		</aside>
-		<main class="flex-1 p-4 space-y-8">
-			<Input bind:value={inputCode}/>
-			<Output stdout={runningCode ? 'Loading...' : result?.stdout} stderr={result?.stderr}/>
-			<PrimaryButton className="px-8 py-2 mt-4" onclick={runCode}>Run code</PrimaryButton>
-		</main>
-	</div>
-{:else}
-	<p>Task not loaded</p>
-{/if}
+<div class="h-screen max-h-screen grid grid-rows-[auto_1fr]">
+	<Navbar class="row-auto" />
+	{#if task}
+		<div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 pt-0 p-4 gap-4 h-full min-h-fit">
+			<aside class="prose prose-invert text-white h-full max-w-full row-span-2">
+				<Instructions {...task}></Instructions>
+			</aside>
+			<main class="flex-1 space-y-4 max-h-full">
+				<Input bind:value={inputCode} {runCode} />
+				<Output message={runningCode ? 'Loading...' : result?.message} />
+			</main>
+		</div>
+	{:else}
+		<p>Task not loaded</p>
+	{/if}
+</div>

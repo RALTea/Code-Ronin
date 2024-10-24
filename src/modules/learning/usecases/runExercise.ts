@@ -3,6 +3,7 @@ import type { Language } from '$learning/domain/Language';
 import { FetchApprenticeSolutionError } from '$learning/errors/FetchApprenticeSolutionError';
 import type { IEvaluationRepository } from '$learning/repositories/IEvaluationReposiotry';
 import { extractError } from '$lib/utils/error.utils';
+import * as IApprenticeRepository from '$learning/repositories/IApprenticeRepository';
 
 type Input = {
 	data: {
@@ -10,7 +11,7 @@ type Input = {
 		language: Language;
 	};
 	deps: {
-		fetchApprenticeSolution: (id: string) => Promise<string>;
+		fetchApprenticeSolution: IApprenticeRepository.FetchApprenticeSolution;
 		evaluateSolution: IEvaluationRepository['evaluateSolution'];
 	};
 };

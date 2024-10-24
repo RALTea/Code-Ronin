@@ -1,1 +1,1 @@
-export type Language = 'bash' | 'javascript' | 'python' | 'typescript';
+export type Language = 'bash' | 'javascript' | 'python' | 'typescript3' | 'typescript5';

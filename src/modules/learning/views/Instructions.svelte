@@ -8,8 +8,8 @@
   let { instructions }: InstructionsProps = $props();
 </script>
 
-<div class="course">
-  <Card class={"p-4"}>
+<div class="course h-full">
+  <Card class={"p-4 h-full overflow-auto"}>
     <SvelteMarkdown source={instructions} />
   </Card>
 </div>

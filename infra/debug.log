@@ -1,0 +1,455 @@
+workers-1  | declare -x ALLOWED_LANGUAGES_FOR_COMPILER_OPTIONS=""
+workers-1  | declare -x ALLOW_ENABLE_NETWORK=""
+workers-1  | declare -x ALLOW_ENABLE_PER_PROCESS_AND_THREAD_MEMORY_LIMIT=""
+workers-1  | declare -x ALLOW_ENABLE_PER_PROCESS_AND_THREAD_TIME_LIMIT=""
+workers-1  | declare -x ALLOW_IP=""
+workers-1  | declare -x ALLOW_ORIGIN=""
+workers-1  | declare -x AUTHN_HEADER="X-Auth-Token"
+workers-1  | declare -x AUTHN_TOKEN=""
+workers-1  | declare -x AUTHZ_HEADER="X-Auth-User"
+workers-1  | declare -x AUTHZ_TOKEN=""
+workers-1  | declare -x BASH_VERSIONS="5.0"
+workers-1  | declare -x BOX_ROOT="/var/local/lib/isolate"
+workers-1  | declare -x CALLBACKS_MAX_TRIES=""
+workers-1  | declare -x CALLBACKS_TIMEOUT=""
+workers-1  | declare -x CLOJURE_VERSION="1.10.1"
+workers-1  | declare -x COBOL_VERSIONS="2.2"
+workers-1  | declare -x COUNT="8"
+workers-1  | declare -x CPU_EXTRA_TIME=""
+workers-1  | declare -x CPU_TIME_LIMIT=""
+workers-1  | declare -x DISABLE_DATABASE_ENVIRONMENT_CHECK="1"
+workers-1  | declare -x DISALLOW_IP=""
+workers-1  | declare -x DISALLOW_ORIGIN=""
+workers-1  | declare -x D_VERSIONS="2.089.1"
+workers-1  | declare -x ELIXIR_VERSIONS="1.9.4"
+workers-1  | declare -x ENABLE_ADDITIONAL_FILES=""
+workers-1  | declare -x ENABLE_BATCHED_SUBMISSIONS=""
+workers-1  | declare -x ENABLE_CALLBACKS=""
+workers-1  | declare -x ENABLE_COMMAND_LINE_ARGUMENTS=""
+workers-1  | declare -x ENABLE_COMPILER_OPTIONS=""
+workers-1  | declare -x ENABLE_NETWORK=""
+workers-1  | declare -x ENABLE_PER_PROCESS_AND_THREAD_MEMORY_LIMIT=""
+workers-1  | declare -x ENABLE_PER_PROCESS_AND_THREAD_TIME_LIMIT=""
+workers-1  | declare -x ENABLE_SUBMISSION_DELETE=""
+workers-1  | declare -x ENABLE_WAIT_RESULT=""
+workers-1  | declare -x ERLANG_VERSIONS="22.2"
+workers-1  | declare -x FBC_VERSIONS="1.07.1"
+workers-1  | declare -x FPC_VERSIONS="3.0.4"
+workers-1  | declare -x GCC_VERSIONS="7.4.0       8.3.0       9.2.0"
+workers-1  | declare -x GEM_HOME="/opt/.gem/"
+workers-1  | declare -x GO_VERSIONS="1.13.5"
+workers-1  | declare -x GPROLOG_VERSIONS="1.4.5"
+workers-1  | declare -x HASKELL_VERSIONS="8.8.1"
+workers-1  | declare -x HOME="/home/judge0"
+workers-1  | declare -x HOSTNAME="2ebcf86f7d28"
+workers-1  | declare -x INTERVAL="0.1"
+workers-1  | declare -x JUDGE0_HOMEPAGE="https://judge0.com"
+workers-1  | declare -x JUDGE0_MAINTAINER="Herman Zvonimir Došilović <hermanz.dosilovic@gmail.com>"
+workers-1  | declare -x JUDGE0_SOURCE_CODE="https://github.com/judge0/judge0"
+workers-1  | declare -x JUDGE0_TELEMETRY_ENABLE=""
+workers-1  | declare -x JUDGE0_VERSION="1.13.1"
+workers-1  | declare -x KOTLIN_VERSIONS="1.3.70"
+workers-1  | declare -x LANG="en_US.UTF-8"
+workers-1  | declare -x LANGUAGE="en_US:en"
+workers-1  | declare -x LC_ALL="en_US.UTF-8"
+workers-1  | declare -x LUA_VERSIONS="5.3.5"
+workers-1  | declare -x MAINTENANCE_MESSAGE="Judge0 is currently in maintenance."
+workers-1  | declare -x MAINTENANCE_MODE=""
+workers-1  | declare -x MAX_CPU_EXTRA_TIME=""
+workers-1  | declare -x MAX_CPU_TIME_LIMIT=""
+workers-1  | declare -x MAX_EXTRACT_SIZE=""
+workers-1  | declare -x MAX_FILE_SIZE=""
+workers-1  | declare -x MAX_MAX_FILE_SIZE=""
+workers-1  | declare -x MAX_MAX_PROCESSES_AND_OR_THREADS=""
+workers-1  | declare -x MAX_MEMORY_LIMIT=""
+workers-1  | declare -x MAX_NUMBER_OF_RUNS=""
+workers-1  | declare -x MAX_PROCESSES_AND_OR_THREADS=""
+workers-1  | declare -x MAX_QUEUE_SIZE=""
+workers-1  | declare -x MAX_STACK_LIMIT=""
+workers-1  | declare -x MAX_SUBMISSION_BATCH_SIZE=""
+workers-1  | declare -x MAX_WALL_TIME_LIMIT=""
+workers-1  | declare -x MEMORY_LIMIT=""
+redis-1    | 1:C 13 Oct 2024 12:53:24.750 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+redis-1    | 1:C 13 Oct 2024 12:53:24.751 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+redis-1    | 1:C 13 Oct 2024 12:53:24.751 * Redis version=7.2.4, bits=64, commit=00000000, modified=0, pid=1, just started
+redis-1    | 1:C 13 Oct 2024 12:53:24.751 * Configuration loaded
+redis-1    | 1:M 13 Oct 2024 12:53:24.752 * monotonic clock: POSIX clock_gettime
+redis-1    | 1:M 13 Oct 2024 12:53:24.752 * Running mode=standalone, port=6379.
+redis-1    | 1:M 13 Oct 2024 12:53:24.753 * Server initialized
+redis-1    | 1:M 13 Oct 2024 12:53:24.753 * Ready to accept connections tcp
+redis-1    | 1:M 13 Oct 2024 12:58:25.070 * 100 changes in 300 seconds. Saving...
+redis-1    | 1:M 13 Oct 2024 12:58:25.071 * Background saving started by pid 22
+db-1       |
+db-1       | PostgreSQL Database directory appears to contain a database; Skipping initialization
+db-1       |
+db-1       | 2024-10-13 12:53:24.790 UTC [1] LOG:  starting PostgreSQL 16.2 (Debian 16.2-1.pgdg120+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+db-1       | 2024-10-13 12:53:24.791 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+db-1       | 2024-10-13 12:53:24.791 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+db-1       | 2024-10-13 12:53:24.794 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1       | 2024-10-13 12:53:24.801 UTC [28] LOG:  database system was shut down at 2024-10-13 12:53:13 UTC
+db-1       | 2024-10-13 12:53:24.809 UTC [1] LOG:  database system is ready to accept connections
+db-1       | 2024-10-13 12:53:26.987 UTC [32] ERROR:  database "judge0" already exists
+db-1       | 2024-10-13 12:53:26.987 UTC [32] STATEMENT:  CREATE DATABASE "judge0" ENCODING = 'unicode'
+db-1       | 2024-10-13 12:58:24.898 UTC [26] LOG:  checkpoint starting: time
+db-1       | 2024-10-13 12:58:27.019 UTC [26] LOG:  checkpoint complete: wrote 24 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.109 s, sync=0.005 s, total=2.122 s; sync files=15, longest=0.002 s, average=0.001 s; distance=70 kB, estimate=70 kB; lsn=0/19C70D8, redo lsn=0/19C70A0
+server-1   | declare -x ALLOWED_LANGUAGES_FOR_COMPILER_OPTIONS=""
+server-1   | declare -x ALLOW_ENABLE_NETWORK=""
+server-1   | declare -x ALLOW_ENABLE_PER_PROCESS_AND_THREAD_MEMORY_LIMIT=""
+server-1   | declare -x ALLOW_ENABLE_PER_PROCESS_AND_THREAD_TIME_LIMIT=""
+server-1   | declare -x ALLOW_IP=""
+server-1   | declare -x ALLOW_ORIGIN=""
+workers-1  | declare -x MONO_VERSION="6.6.0.161"
+workers-1  | declare -x MONO_VERSIONS="6.6.0.161"
+workers-1  | declare -x NASM_VERSIONS="2.14.02"
+workers-1  | declare -x NODE_PATH="/api/.nvm/v20.10.0/lib/node_modules"
+workers-1  | declare -x NODE_VERSION="20.10.0"
+workers-1  | declare -x NODE_VERSIONS="12.14.0"
+redis-1    | 22:C 13 Oct 2024 12:58:25.075 * DB saved on disk
+redis-1    | 22:C 13 Oct 2024 12:58:25.075 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+redis-1    | 1:M 13 Oct 2024 12:58:25.172 * Background saving terminated with success
+workers-1  | declare -x NUMBER_OF_RUNS=""
+workers-1  | declare -x NVM_DIR="/api/.nvm"
+workers-1  | declare -x OCAML_VERSIONS="4.09.0"
+workers-1  | declare -x OCTAVE_VERSIONS="5.1.0"
+workers-1  | declare -x OLDPWD
+workers-1  | declare -x PATH="/api/.nvm/versions/node/v20.10.0/bin:/usr/local/ruby-2.7.0/bin:/opt/.gem/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+workers-1  | declare -x PHP_VERSIONS="7.4.1"
+workers-1  | declare -x PORT="2358"
+workers-1  | declare -x POSTGRES_DB="judge0"
+workers-1  | declare -x POSTGRES_HOST="db"
+workers-1  | declare -x POSTGRES_PASSWORD="rSDTbNz7tDqd64j4bRxJygj68SdcpQ35"
+workers-1  | declare -x POSTGRES_PORT="5432"
+workers-1  | declare -x POSTGRES_USER="judge0"
+workers-1  | declare -x PWD="/api"
+redis-1    | 1:M 13 Oct 2024 13:03:26.037 * 100 changes in 300 seconds. Saving...
+redis-1    | 1:M 13 Oct 2024 13:03:26.038 * Background saving started by pid 23
+redis-1    | 23:C 13 Oct 2024 13:03:26.045 * DB saved on disk
+redis-1    | 23:C 13 Oct 2024 13:03:26.046 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+redis-1    | 1:M 13 Oct 2024 13:03:26.139 * Background saving terminated with success
+server-1   | declare -x AUTHN_HEADER="X-Auth-Token"
+server-1   | declare -x AUTHN_TOKEN=""
+server-1   | declare -x AUTHZ_HEADER="X-Auth-User"
+server-1   | declare -x AUTHZ_TOKEN=""
+server-1   | declare -x BASH_VERSIONS="5.0"
+workers-1  | declare -x PYTHON_VERSIONS="3.8.1       2.7.17"
+workers-1  | declare -x QUEUE="1.13.1"
+workers-1  | declare -x RAILS_ENV="production"
+workers-1  | declare -x RAILS_LOG_TO_STDOUT="true"
+workers-1  | declare -x RAILS_MAX_THREADS="4"
+workers-1  | declare -x RAILS_SERVER_PROCESSES="2"
+workers-1  | declare -x REDIRECT_STDERR_TO_STDOUT=""
+workers-1  | declare -x REDIS_HOST="redis"
+workers-1  | declare -x REDIS_PASSWORD="nbHYx2R2w8W5jFYXudCWHSCCDRf3Hm2Z"
+workers-1  | declare -x REDIS_PORT="6379"
+workers-1  | declare -x RESTART_MAX_TRIES="10"
+workers-1  | declare -x RUBYOPT="-W:no-deprecated"
+workers-1  | declare -x RUBY_VERSIONS="2.7.0"
+workers-1  | declare -x RUST_VERSIONS="1.40.0"
+workers-1  | declare -x R_VERSIONS="4.0.0"
+workers-1  | declare -x SBCL_VERSIONS="2.0.0"
+workers-1  | declare -x SCALA_VERSIONS="2.13.2"
+workers-1  | declare -x SECRET_KEY_BASE="yzOn8mLZXdAWiYRJfgdDIN99CgV8td4yhYuK8odZ3yKIyn0zmPZYy9yTNUhR3aWarBMVmbOqJYUILSbbzwJR2owq2Z7KwnnFj9mVPdM2W69ORE5HAseWstvStRIt3Fhi"
+workers-1  | declare -x SHLVL="1"
+workers-1  | declare -x STACK_LIMIT=""
+workers-1  | declare -x SUBMISSION_CACHE_DURATION=""
+workers-1  | declare -x SWIFT_VERSIONS="5.2.3"
+workers-1  | declare -x TYPESCRIPT_VERSIONS="3.7.4"
+workers-1  | declare -x USE_DOCS_AS_HOMEPAGE=""
+workers-1  | declare -x WALL_TIME_LIMIT=""
+workers-1  | [2024-10-13-12-53-24] Starting scheduler.
+workers-1  | [2024-10-13-12-53-24] Starting workers.
+workers-1  | resque-scheduler: [INFO] 2024-10-13T12:53:26+00:00: Starting
+workers-1  | resque-scheduler: [INFO] 2024-10-13T12:53:26+00:00: Master scheduler
+workers-1  | resque-scheduler: [INFO] 2024-10-13T12:53:26+00:00: Reloading Schedule
+workers-1  | resque-scheduler: [INFO] 2024-10-13T12:53:26+00:00: Loading Schedule
+workers-1  | resque-scheduler: [INFO] 2024-10-13T12:53:26+00:00: Schedule empty! Set Resque.schedule
+workers-1  | resque-scheduler: [INFO] 2024-10-13T12:53:26+00:00: Schedules Loaded
+server-1   | declare -x BOX_ROOT="/var/local/lib/isolate"
+server-1   | declare -x CALLBACKS_MAX_TRIES=""
+server-1   | declare -x CALLBACKS_TIMEOUT=""
+server-1   | declare -x CLOJURE_VERSION="1.10.1"
+server-1   | declare -x COBOL_VERSIONS="2.2"
+server-1   | declare -x COUNT="8"
+server-1   | declare -x CPU_EXTRA_TIME=""
+server-1   | declare -x CPU_TIME_LIMIT=""
+server-1   | declare -x DISABLE_DATABASE_ENVIRONMENT_CHECK="1"
+server-1   | declare -x DISALLOW_IP=""
+server-1   | declare -x DISALLOW_ORIGIN=""
+server-1   | declare -x D_VERSIONS="2.089.1"
+server-1   | declare -x ELIXIR_VERSIONS="1.9.4"
+server-1   | declare -x ENABLE_ADDITIONAL_FILES=""
+server-1   | declare -x ENABLE_BATCHED_SUBMISSIONS=""
+server-1   | declare -x ENABLE_CALLBACKS=""
+server-1   | declare -x ENABLE_COMMAND_LINE_ARGUMENTS=""
+server-1   | declare -x ENABLE_COMPILER_OPTIONS=""
+server-1   | declare -x ENABLE_NETWORK=""
+server-1   | declare -x ENABLE_PER_PROCESS_AND_THREAD_MEMORY_LIMIT=""
+server-1   | declare -x ENABLE_PER_PROCESS_AND_THREAD_TIME_LIMIT=""
+server-1   | declare -x ENABLE_SUBMISSION_DELETE=""
+server-1   | declare -x ENABLE_WAIT_RESULT=""
+server-1   | declare -x ERLANG_VERSIONS="22.2"
+server-1   | declare -x FBC_VERSIONS="1.07.1"
+server-1   | declare -x FPC_VERSIONS="3.0.4"
+server-1   | declare -x GCC_VERSIONS="7.4.0       8.3.0       9.2.0"
+server-1   | declare -x GEM_HOME="/opt/.gem/"
+server-1   | declare -x GO_VERSIONS="1.13.5"
+server-1   | declare -x GPROLOG_VERSIONS="1.4.5"
+server-1   | declare -x HASKELL_VERSIONS="8.8.1"
+server-1   | declare -x HOME="/home/judge0"
+server-1   | declare -x HOSTNAME="ec2f184abf92"
+server-1   | declare -x INTERVAL="0.1"
+server-1   | declare -x JUDGE0_HOMEPAGE="https://judge0.com"
+server-1   | declare -x JUDGE0_MAINTAINER="Herman Zvonimir Došilović <hermanz.dosilovic@gmail.com>"
+server-1   | declare -x JUDGE0_SOURCE_CODE="https://github.com/judge0/judge0"
+server-1   | declare -x JUDGE0_TELEMETRY_ENABLE=""
+server-1   | declare -x JUDGE0_VERSION="1.13.1"
+server-1   | declare -x KOTLIN_VERSIONS="1.3.70"
+server-1   | declare -x LANG="en_US.UTF-8"
+server-1   | declare -x LANGUAGE="en_US:en"
+server-1   | declare -x LC_ALL="en_US.UTF-8"
+server-1   | declare -x LUA_VERSIONS="5.3.5"
+server-1   | declare -x MAINTENANCE_MESSAGE="Judge0 is currently in maintenance."
+server-1   | declare -x MAINTENANCE_MODE=""
+server-1   | declare -x MAX_CPU_EXTRA_TIME=""
+server-1   | declare -x MAX_CPU_TIME_LIMIT=""
+server-1   | declare -x MAX_EXTRACT_SIZE=""
+server-1   | declare -x MAX_FILE_SIZE=""
+server-1   | declare -x MAX_MAX_FILE_SIZE=""
+server-1   | declare -x MAX_MAX_PROCESSES_AND_OR_THREADS=""
+server-1   | declare -x MAX_MEMORY_LIMIT=""
+server-1   | declare -x MAX_NUMBER_OF_RUNS=""
+server-1   | declare -x MAX_PROCESSES_AND_OR_THREADS=""
+server-1   | declare -x MAX_QUEUE_SIZE=""
+server-1   | declare -x MAX_STACK_LIMIT=""
+server-1   | declare -x MAX_SUBMISSION_BATCH_SIZE=""
+server-1   | declare -x MAX_WALL_TIME_LIMIT=""
+server-1   | declare -x MEMORY_LIMIT=""
+server-1   | declare -x MONO_VERSION="6.6.0.161"
+server-1   | declare -x MONO_VERSIONS="6.6.0.161"
+server-1   | declare -x NASM_VERSIONS="2.14.02"
+server-1   | declare -x NODE_VERSIONS="12.14.0"
+server-1   | declare -x NUMBER_OF_RUNS=""
+server-1   | declare -x OCAML_VERSIONS="4.09.0"
+server-1   | declare -x OCTAVE_VERSIONS="5.1.0"
+server-1   | declare -x OLDPWD
+server-1   | declare -x PATH="/usr/local/ruby-2.7.0/bin:/opt/.gem/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+server-1   | declare -x PHP_VERSIONS="7.4.1"
+server-1   | declare -x PORT="2358"
+server-1   | declare -x POSTGRES_DB="judge0"
+server-1   | declare -x POSTGRES_HOST="db"
+server-1   | declare -x POSTGRES_PASSWORD="rSDTbNz7tDqd64j4bRxJygj68SdcpQ35"
+server-1   | declare -x POSTGRES_PORT="5432"
+server-1   | declare -x POSTGRES_USER="judge0"
+server-1   | declare -x PWD="/api"
+server-1   | declare -x PYTHON_VERSIONS="3.8.1       2.7.17"
+server-1   | declare -x QUEUE="1.13.1"
+server-1   | declare -x RAILS_ENV="production"
+server-1   | declare -x RAILS_LOG_TO_STDOUT="true"
+server-1   | declare -x RAILS_MAX_THREADS="4"
+server-1   | declare -x RAILS_SERVER_PROCESSES="2"
+server-1   | declare -x REDIRECT_STDERR_TO_STDOUT=""
+server-1   | declare -x REDIS_HOST="redis"
+server-1   | declare -x REDIS_PASSWORD="nbHYx2R2w8W5jFYXudCWHSCCDRf3Hm2Z"
+server-1   | declare -x REDIS_PORT="6379"
+server-1   | declare -x RESTART_MAX_TRIES="10"
+server-1   | declare -x RUBYOPT="-W:no-deprecated"
+server-1   | declare -x RUBY_VERSIONS="2.7.0"
+server-1   | declare -x RUST_VERSIONS="1.40.0"
+server-1   | declare -x R_VERSIONS="4.0.0"
+server-1   | declare -x SBCL_VERSIONS="2.0.0"
+server-1   | declare -x SCALA_VERSIONS="2.13.2"
+server-1   | declare -x SECRET_KEY_BASE="cf5O4kAOJek3Q5rOB1qsx34wafVx5oLypaipx1AjDxmMvgKEcxo4S5wcAHKlgAUFOAo9Olj9eGItYZ6VwuJpoX8eRI8r86tLE0c4VT3Zt67qsAMyz9LE5sslGCsB8418"
+server-1   | declare -x SHLVL="1"
+server-1   | declare -x STACK_LIMIT=""
+server-1   | declare -x SUBMISSION_CACHE_DURATION=""
+server-1   | declare -x SWIFT_VERSIONS="5.2.3"
+server-1   | declare -x TYPESCRIPT_VERSIONS="3.7.4"
+server-1   | declare -x USE_DOCS_AS_HOMEPAGE=""
+server-1   | declare -x WALL_TIME_LIMIT=""
+server-1   | D, [2024-10-13T12:53:26.989103 #21] DEBUG -- :    (1.2ms)  CREATE DATABASE "judge0" ENCODING = 'unicode'
+server-1   | Database 'judge0' already exists
+server-1   | D, [2024-10-13T12:53:27.033028 #21] DEBUG -- :    (0.2ms)  SELECT pg_try_advisory_lock(8201710451366353635)
+server-1   | D, [2024-10-13T12:53:27.048026 #21] DEBUG -- :    (0.6ms)  SELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC
+server-1   | D, [2024-10-13T12:53:27.066617 #21] DEBUG -- :   ActiveRecord::InternalMetadata Load (2.1ms)  SELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2  [["key", "environment"], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:53:27.076948 #21] DEBUG -- :    (0.4ms)  BEGIN
+server-1   | D, [2024-10-13T12:53:27.080172 #21] DEBUG -- :    (0.2ms)  COMMIT
+server-1   | D, [2024-10-13T12:53:27.080859 #21] DEBUG -- :    (0.2ms)  SELECT pg_advisory_unlock(8201710451366353635)
+server-1   | D, [2024-10-13T12:53:27.083695 #21] DEBUG -- :    (0.2ms)  SELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC
+server-1   | D, [2024-10-13T12:53:27.086159 #21] DEBUG -- :    (0.1ms)  BEGIN
+server-1   | D, [2024-10-13T12:53:27.089064 #21] DEBUG -- :   Language Destroy (0.9ms)  DELETE FROM "languages"
+server-1   | D, [2024-10-13T12:53:27.101529 #21] DEBUG -- :   Language Create (3.3ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 1], ["name", "Bash (4.4)"], ["run_cmd", "/usr/local/bash-4.4/bin/bash script.sh"], ["source_file", "script.sh"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.103802 #21] DEBUG -- :   Language Create (0.3ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 2], ["name", "Bash (4.0)"], ["run_cmd", "/usr/local/bash-4.0/bin/bash script.sh"], ["source_file", "script.sh"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.105576 #21] DEBUG -- :   Language Create (0.7ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 3], ["name", "Basic (fbc 1.05.0)"], ["compile_cmd", "/usr/local/fbc-1.05.0/bin/fbc %s main.bas"], ["run_cmd", "./main"], ["source_file", "main.bas"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.106845 #21] DEBUG -- :   Language Create (0.3ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 4], ["name", "C (gcc 7.2.0)"], ["compile_cmd", "/usr/local/gcc-7.2.0/bin/gcc %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.107947 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 5], ["name", "C (gcc 6.4.0)"], ["compile_cmd", "/usr/local/gcc-6.4.0/bin/gcc %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.109096 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 6], ["name", "C (gcc 6.3.0)"], ["compile_cmd", "/usr/local/gcc-6.3.0/bin/gcc %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.110199 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 7], ["name", "C (gcc 5.4.0)"], ["compile_cmd", "/usr/local/gcc-5.4.0/bin/gcc %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.111188 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 8], ["name", "C (gcc 4.9.4)"], ["compile_cmd", "/usr/local/gcc-4.9.4/bin/gcc %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.112155 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 9], ["name", "C (gcc 4.8.5)"], ["compile_cmd", "/usr/local/gcc-4.8.5/bin/gcc %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.112944 #21] DEBUG -- :   Language Create (0.1ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 10], ["name", "C++ (g++ 7.2.0)"], ["compile_cmd", "/usr/local/gcc-7.2.0/bin/g++ %s main.cpp"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-7.2.0/lib64 ./a.out"], ["source_file", "main.cpp"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.113779 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 11], ["name", "C++ (g++ 6.4.0)"], ["compile_cmd", "/usr/local/gcc-6.4.0/bin/g++ %s main.cpp"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-6.4.0/lib64 ./a.out"], ["source_file", "main.cpp"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.115462 #21] DEBUG -- :   Language Create (0.8ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 12], ["name", "C++ (g++ 6.3.0)"], ["compile_cmd", "/usr/local/gcc-6.3.0/bin/g++ %s main.cpp"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-6.3.0/lib64 ./a.out"], ["source_file", "main.cpp"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.116497 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 13], ["name", "C++ (g++ 5.4.0)"], ["compile_cmd", "/usr/local/gcc-5.4.0/bin/g++ %s main.cpp"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-5.4.0/lib64 ./a.out"], ["source_file", "main.cpp"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.117435 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 14], ["name", "C++ (g++ 4.9.4)"], ["compile_cmd", "/usr/local/gcc-4.9.4/bin/g++ %s main.cpp"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-4.9.4/lib64 ./a.out"], ["source_file", "main.cpp"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.120462 #21] DEBUG -- :   Language Create (2.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 15], ["name", "C++ (g++ 4.8.5)"], ["compile_cmd", "/usr/local/gcc-4.8.5/bin/g++ %s main.cpp"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-4.8.5/lib64 ./a.out"], ["source_file", "main.cpp"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.122032 #21] DEBUG -- :   Language Create (0.3ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 16], ["name", "C# (mono 5.4.0.167)"], ["compile_cmd", "/usr/local/mono-5.4.0.167/bin/mcs %s Main.cs"], ["run_cmd", "/usr/local/mono-5.4.0.167/bin/mono Main.exe"], ["source_file", "Main.cs"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.123159 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 17], ["name", "C# (mono 5.2.0.224)"], ["compile_cmd", "/usr/local/mono-5.2.0.224/bin/mcs %s Main.cs"], ["run_cmd", "/usr/local/mono-5.2.0.224/bin/mono Main.exe"], ["source_file", "Main.cs"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.124230 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 18], ["name", "Clojure (1.8.0)"], ["run_cmd", "/usr/bin/java -cp /usr/local/clojure-1.8.0/clojure-1.8.0.jar clojure.main main.clj"], ["source_file", "main.clj"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.125323 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 19], ["name", "Crystal (0.23.1)"], ["compile_cmd", "/usr/local/crystal-0.23.1-3/bin/crystal build %s main.cr"], ["run_cmd", "./main"], ["source_file", "main.cr"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.126349 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 20], ["name", "Elixir (1.5.1)"], ["run_cmd", "/usr/local/elixir-1.5.1/bin/elixir main.exs"], ["source_file", "main.exs"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.127359 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 21], ["name", "Erlang (OTP 20.0)"], ["run_cmd", "/bin/sed -i \"s/^/\\n/\" main.erl && /usr/local/erlang-20.0/bin/escript main.erl"], ["source_file", "main.erl"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.128200 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 22], ["name", "Go (1.9)"], ["compile_cmd", "/usr/local/go-1.9/bin/go build %s main.go"], ["run_cmd", "./main"], ["source_file", "main.go"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.129381 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 23], ["name", "Haskell (ghc 8.2.1)"], ["compile_cmd", "/usr/local/ghc-8.2.1/bin/ghc %s main.hs"], ["run_cmd", "./main"], ["source_file", "main.hs"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.130287 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 24], ["name", "Haskell (ghc 8.0.2)"], ["compile_cmd", "/usr/local/ghc-8.0.2/bin/ghc %s main.hs"], ["run_cmd", "./main"], ["source_file", "main.hs"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.134456 #21] DEBUG -- :   Language Create (3.4ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 25], ["name", "Insect (5.0.0)"], ["run_cmd", "/usr/local/insect-5.0.0/insect main.ins"], ["source_file", "main.ins"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.135948 #21] DEBUG -- :   Language Create (0.6ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 26], ["name", "Java (OpenJDK 9 with Eclipse OpenJ9)"], ["compile_cmd", "/usr/local/openjdk9-openj9/bin/javac %s Main.java"], ["run_cmd", "/usr/local/openjdk9-openj9/bin/java Main"], ["source_file", "Main.java"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.137119 #21] DEBUG -- :   Language Create (0.3ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 27], ["name", "Java (OpenJDK 8)"], ["compile_cmd", "/usr/lib/jvm/java-8-openjdk-amd64/bin/javac %s Main.java"], ["run_cmd", "/usr/lib/jvm/java-8-openjdk-amd64/bin/java Main"], ["source_file", "Main.java"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.138166 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 28], ["name", "Java (OpenJDK 7)"], ["compile_cmd", "/usr/lib/jvm/java-7-openjdk-amd64/bin/javac %s Main.java"], ["run_cmd", "/usr/lib/jvm/java-7-openjdk-amd64/bin/java Main"], ["source_file", "Main.java"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.139180 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 29], ["name", "JavaScript (nodejs 8.5.0)"], ["run_cmd", "/usr/local/node-8.5.0/bin/node main.js"], ["source_file", "main.js"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.140185 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 30], ["name", "JavaScript (nodejs 7.10.1)"], ["run_cmd", "/usr/local/node-7.10.1/bin/node main.js"], ["source_file", "main.js"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.141106 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 31], ["name", "OCaml (4.05.0)"], ["compile_cmd", "/usr/local/ocaml-4.05.0/bin/ocamlc %s main.ml"], ["run_cmd", "./a.out"], ["source_file", "main.ml"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.142122 #21] DEBUG -- :   Language Create (0.3ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 32], ["name", "Octave (4.2.0)"], ["run_cmd", "/usr/local/octave-4.2.0/bin/octave-cli -q --no-gui --no-history file.m"], ["source_file", "file.m"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.143123 #21] DEBUG -- :   Language Create (0.4ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 33], ["name", "Pascal (fpc 3.0.0)"], ["compile_cmd", "/usr/local/fpc-3.0.0/bin/fpc %s main.pas"], ["run_cmd", "./main"], ["source_file", "main.pas"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.144006 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 34], ["name", "Python (3.6.0)"], ["run_cmd", "/usr/local/python-3.6.0/bin/python3 main.py"], ["source_file", "main.py"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.144851 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 35], ["name", "Python (3.5.3)"], ["run_cmd", "/usr/local/python-3.5.3/bin/python3 main.py"], ["source_file", "main.py"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.145740 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 36], ["name", "Python (2.7.9)"], ["run_cmd", "/usr/local/python-2.7.9/bin/python main.py"], ["source_file", "main.py"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.146570 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 37], ["name", "Python (2.6.9)"], ["run_cmd", "/usr/local/python-2.6.9/bin/python main.py"], ["source_file", "main.py"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.147528 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 38], ["name", "Ruby (2.4.0)"], ["run_cmd", "/usr/local/ruby-2.4.0/bin/ruby main.rb"], ["source_file", "main.rb"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.148426 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 39], ["name", "Ruby (2.3.3)"], ["run_cmd", "/usr/local/ruby-2.3.3/bin/ruby main.rb"], ["source_file", "main.rb"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.149168 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 40], ["name", "Ruby (2.2.6)"], ["run_cmd", "/usr/local/ruby-2.2.6/bin/ruby main.rb"], ["source_file", "main.rb"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.150120 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 41], ["name", "Ruby (2.1.9)"], ["run_cmd", "/usr/local/ruby-2.1.9/bin/ruby main.rb"], ["source_file", "main.rb"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.153132 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file", "is_archived") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["id", 42], ["name", "Rust (1.20.0)"], ["compile_cmd", "/usr/local/rust-1.20.0/bin/rustc %s main.rs"], ["run_cmd", "./main"], ["source_file", "main.rs"], ["is_archived", true]]
+server-1   | D, [2024-10-13T12:53:27.154055 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 43], ["name", "Plain Text"], ["run_cmd", "/bin/cat text.txt"], ["source_file", "text.txt"]]
+server-1   | D, [2024-10-13T12:53:27.154948 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 44], ["name", "Executable"], ["run_cmd", "/bin/chmod +x a.out && ./a.out"], ["source_file", "a.out"]]
+server-1   | D, [2024-10-13T12:53:27.155943 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 45], ["name", "Assembly (NASM 2.14.02)"], ["compile_cmd", "/usr/local/nasm-2.14.02/bin/nasmld -f elf64 %s main.asm"], ["run_cmd", "./a.out"], ["source_file", "main.asm"]]
+server-1   | D, [2024-10-13T12:53:27.156692 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 46], ["name", "Bash (5.0.0)"], ["run_cmd", "/usr/local/bash-5.0/bin/bash script.sh"], ["source_file", "script.sh"]]
+server-1   | D, [2024-10-13T12:53:27.157684 #21] DEBUG -- :   Language Create (0.4ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 47], ["name", "Basic (FBC 1.07.1)"], ["compile_cmd", "/usr/local/fbc-1.07.1/bin/fbc %s main.bas"], ["run_cmd", "./main"], ["source_file", "main.bas"]]
+server-1   | D, [2024-10-13T12:53:27.158536 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 48], ["name", "C (GCC 7.4.0)"], ["compile_cmd", "/usr/local/gcc-7.4.0/bin/gcc %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"]]
+server-1   | D, [2024-10-13T12:53:27.159473 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 49], ["name", "C (GCC 8.3.0)"], ["compile_cmd", "/usr/local/gcc-8.3.0/bin/gcc %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"]]
+server-1   | D, [2024-10-13T12:53:27.160354 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 50], ["name", "C (GCC 9.2.0)"], ["compile_cmd", "/usr/local/gcc-9.2.0/bin/gcc %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"]]
+server-1   | D, [2024-10-13T12:53:27.161232 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 51], ["name", "C# (Mono 6.6.0.161)"], ["compile_cmd", "/usr/local/mono-6.6.0.161/bin/mcs %s Main.cs"], ["run_cmd", "/usr/local/mono-6.6.0.161/bin/mono Main.exe"], ["source_file", "Main.cs"]]
+server-1   | D, [2024-10-13T12:53:27.162124 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 52], ["name", "C++ (GCC 7.4.0)"], ["compile_cmd", "/usr/local/gcc-7.4.0/bin/g++ %s main.cpp"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-7.4.0/lib64 ./a.out"], ["source_file", "main.cpp"]]
+server-1   | D, [2024-10-13T12:53:27.162970 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 53], ["name", "C++ (GCC 8.3.0)"], ["compile_cmd", "/usr/local/gcc-8.3.0/bin/g++ %s main.cpp"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-8.3.0/lib64 ./a.out"], ["source_file", "main.cpp"]]
+server-1   | D, [2024-10-13T12:53:27.163770 #21] DEBUG -- :   Language Create (0.1ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 54], ["name", "C++ (GCC 9.2.0)"], ["compile_cmd", "/usr/local/gcc-9.2.0/bin/g++ %s main.cpp"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-9.2.0/lib64 ./a.out"], ["source_file", "main.cpp"]]
+server-1   | D, [2024-10-13T12:53:27.164803 #21] DEBUG -- :   Language Create (0.3ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 55], ["name", "Common Lisp (SBCL 2.0.0)"], ["run_cmd", "SBCL_HOME=/usr/local/sbcl-2.0.0/lib/sbcl /usr/local/sbcl-2.0.0/bin/sbcl --script script.lisp"], ["source_file", "script.lisp"]]
+server-1   | D, [2024-10-13T12:53:27.165803 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 56], ["name", "D (DMD 2.089.1)"], ["compile_cmd", "/usr/local/d-2.089.1/linux/bin64/dmd %s main.d"], ["run_cmd", "./main"], ["source_file", "main.d"]]
+server-1   | D, [2024-10-13T12:53:27.166889 #21] DEBUG -- :   Language Create (0.3ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 57], ["name", "Elixir (1.9.4)"], ["run_cmd", "/usr/local/elixir-1.9.4/bin/elixir script.exs"], ["source_file", "script.exs"]]
+server-1   | D, [2024-10-13T12:53:27.167935 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 58], ["name", "Erlang (OTP 22.2)"], ["run_cmd", "/bin/sed -i '1s/^/\\n/' main.erl && /usr/local/erlang-22.2/bin/escript main.erl"], ["source_file", "main.erl"]]
+server-1   | D, [2024-10-13T12:53:27.168937 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 59], ["name", "Fortran (GFortran 9.2.0)"], ["compile_cmd", "/usr/local/gcc-9.2.0/bin/gfortran %s main.f90"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gcc-9.2.0/lib64 ./a.out"], ["source_file", "main.f90"]]
+server-1   | D, [2024-10-13T12:53:27.170557 #21] DEBUG -- :   Language Create (1.0ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 60], ["name", "Go (1.13.5)"], ["compile_cmd", "GOCACHE=/tmp/.cache/go-build /usr/local/go-1.13.5/bin/go build %s main.go"], ["run_cmd", "./main"], ["source_file", "main.go"]]
+server-1   | D, [2024-10-13T12:53:27.171332 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 61], ["name", "Haskell (GHC 8.8.1)"], ["compile_cmd", "/usr/local/ghc-8.8.1/bin/ghc %s main.hs"], ["run_cmd", "./main"], ["source_file", "main.hs"]]
+server-1   | D, [2024-10-13T12:53:27.172185 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 62], ["name", "Java (OpenJDK 13.0.1)"], ["compile_cmd", "/usr/local/openjdk13/bin/javac %s Main.java"], ["run_cmd", "/usr/local/openjdk13/bin/java Main"], ["source_file", "Main.java"]]
+server-1   | D, [2024-10-13T12:53:27.173095 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 63], ["name", "JavaScript (Node.js 12.14.0)"], ["run_cmd", "/usr/local/node-12.14.0/bin/node script.js"], ["source_file", "script.js"]]
+server-1   | D, [2024-10-13T12:53:27.174119 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 64], ["name", "Lua (5.3.5)"], ["compile_cmd", "/usr/local/lua-5.3.5/luac53 %s script.lua"], ["run_cmd", "/usr/local/lua-5.3.5/lua53 ./luac.out"], ["source_file", "script.lua"]]
+server-1   | D, [2024-10-13T12:53:27.175091 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 65], ["name", "OCaml (4.09.0)"], ["compile_cmd", "/usr/local/ocaml-4.09.0/bin/ocamlc %s main.ml"], ["run_cmd", "./a.out"], ["source_file", "main.ml"]]
+server-1   | D, [2024-10-13T12:53:27.175957 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 66], ["name", "Octave (5.1.0)"], ["run_cmd", "/usr/local/octave-5.1.0/bin/octave-cli -q --no-gui --no-history script.m"], ["source_file", "script.m"]]
+server-1   | D, [2024-10-13T12:53:27.177638 #21] DEBUG -- :   Language Create (0.9ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 67], ["name", "Pascal (FPC 3.0.4)"], ["compile_cmd", "/usr/local/fpc-3.0.4/bin/fpc %s main.pas"], ["run_cmd", "./main"], ["source_file", "main.pas"]]
+server-1   | D, [2024-10-13T12:53:27.178620 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 68], ["name", "PHP (7.4.1)"], ["run_cmd", "/usr/local/php-7.4.1/bin/php script.php"], ["source_file", "script.php"]]
+server-1   | D, [2024-10-13T12:53:27.179528 #21] DEBUG -- :   Language Create (0.4ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 69], ["name", "Prolog (GNU Prolog 1.4.5)"], ["compile_cmd", "PATH=\"/usr/local/gprolog-1.4.5/gprolog-1.4.5/bin:$PATH\" /usr/local/gprolog-1.4.5/gprolog-1.4.5/bin/gplc --no-top-level %s main.pro"], ["run_cmd", "./main"], ["source_file", "main.pro"]]
+server-1   | D, [2024-10-13T12:53:27.180373 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 70], ["name", "Python (2.7.17)"], ["run_cmd", "/usr/local/python-2.7.17/bin/python2 script.py"], ["source_file", "script.py"]]
+server-1   | D, [2024-10-13T12:53:27.181223 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 71], ["name", "Python (3.8.1)"], ["run_cmd", "/usr/local/python-3.8.1/bin/python3 script.py"], ["source_file", "script.py"]]
+server-1   | D, [2024-10-13T12:53:27.182182 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 72], ["name", "Ruby (2.7.0)"], ["run_cmd", "/usr/local/ruby-2.7.0/bin/ruby script.rb"], ["source_file", "script.rb"]]
+server-1   | D, [2024-10-13T12:53:27.183034 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 73], ["name", "Rust (1.40.0)"], ["compile_cmd", "/usr/local/rust-1.40.0/bin/rustc %s main.rs"], ["run_cmd", "./main"], ["source_file", "main.rs"]]
+server-1   | D, [2024-10-13T12:53:27.183953 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 74], ["name", "TypeScript (3.7.4)"], ["compile_cmd", "/usr/bin/tsc %s script.ts"], ["run_cmd", "/usr/local/node-12.14.0/bin/node script.js"], ["source_file", "script.ts"]]
+server-1   | D, [2024-10-13T12:53:27.187503 #21] DEBUG -- :   Language Create (2.8ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 75], ["name", "C (Clang 7.0.1)"], ["compile_cmd", "/usr/bin/clang-7 %s main.c"], ["run_cmd", "./a.out"], ["source_file", "main.c"]]
+server-1   | D, [2024-10-13T12:53:27.189399 #21] DEBUG -- :   Language Create (0.5ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 76], ["name", "C++ (Clang 7.0.1)"], ["compile_cmd", "/usr/bin/clang++-7 %s main.cpp"], ["run_cmd", "./a.out"], ["source_file", "main.cpp"]]
+server-1   | D, [2024-10-13T12:53:27.190680 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 77], ["name", "COBOL (GnuCOBOL 2.2)"], ["compile_cmd", "/usr/local/gnucobol-2.2/bin/cobc -free -x %s main.cob"], ["run_cmd", "LD_LIBRARY_PATH=/usr/local/gnucobol-2.2/lib ./main"], ["source_file", "main.cob"]]
+server-1   | D, [2024-10-13T12:53:27.191730 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 78], ["name", "Kotlin (1.3.70)"], ["compile_cmd", "/usr/local/kotlin-1.3.70/bin/kotlinc %s Main.kt"], ["run_cmd", "/usr/local/kotlin-1.3.70/bin/kotlin MainKt"], ["source_file", "Main.kt"]]
+server-1   | D, [2024-10-13T12:53:27.192752 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 79], ["name", "Objective-C (Clang 7.0.1)"], ["compile_cmd", "/usr/bin/clang-7 `gnustep-config --objc-flags | sed 's/-W[^ ]* //g'` `gnustep-config --base-libs | sed 's/-shared-libgcc//'` -I/usr/lib/gcc/x86_64-linux-gnu/8/include main.m %s"], ["run_cmd", "./a.out"], ["source_file", "main.m"]]
+server-1   | D, [2024-10-13T12:53:27.193776 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 80], ["name", "R (4.0.0)"], ["run_cmd", "/usr/local/r-4.0.0/bin/Rscript script.r"], ["source_file", "script.r"]]
+server-1   | D, [2024-10-13T12:53:27.194659 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 81], ["name", "Scala (2.13.2)"], ["compile_cmd", "/usr/local/scala-2.13.2/bin/scalac %s Main.scala"], ["run_cmd", "/usr/local/scala-2.13.2/bin/scala Main"], ["source_file", "Main.scala"]]
+server-1   | D, [2024-10-13T12:53:27.195678 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 82], ["name", "SQL (SQLite 3.27.2)"], ["run_cmd", "/bin/cat script.sql | /usr/bin/sqlite3 db.sqlite"], ["source_file", "script.sql"]]
+server-1   | D, [2024-10-13T12:53:27.196725 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 83], ["name", "Swift (5.2.3)"], ["compile_cmd", "/usr/local/swift-5.2.3/bin/swiftc %s Main.swift"], ["run_cmd", "./Main"], ["source_file", "Main.swift"]]
+server-1   | D, [2024-10-13T12:53:27.197618 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 84], ["name", "Visual Basic.Net (vbnc 0.0.0.5943)"], ["compile_cmd", "/usr/bin/vbnc %s Main.vb"], ["run_cmd", "/usr/bin/mono Main.exe"], ["source_file", "Main.vb"]]
+server-1   | D, [2024-10-13T12:53:27.198522 #21] DEBUG -- :   Language Create (0.3ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 85], ["name", "Perl (5.28.1)"], ["run_cmd", "/usr/bin/perl script.pl"], ["source_file", "script.pl"]]
+server-1   | D, [2024-10-13T12:53:27.199505 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 86], ["name", "Clojure (1.10.1)"], ["run_cmd", "/usr/local/bin/java -jar /usr/local/clojure-1.10.1/clojure.jar main.clj"], ["source_file", "main.clj"]]
+server-1   | D, [2024-10-13T12:53:27.200439 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 87], ["name", "F# (.NET Core SDK 3.1.202)"], ["run_cmd", "mkdir -p ~/.dotnet && touch ~/.dotnet/3.1.202.dotnetFirstUseSentinel && /usr/local/dotnet-sdk/dotnet fsi script.fsx"], ["source_file", "script.fsx"]]
+server-1   | D, [2024-10-13T12:53:27.201376 #21] DEBUG -- :   Language Create (0.4ms)  INSERT INTO "languages" ("id", "name", "compile_cmd", "run_cmd", "source_file") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["id", 88], ["name", "Groovy (3.0.3)"], ["compile_cmd", "/usr/local/groovy-3.0.3/bin/groovyc %s script.groovy"], ["run_cmd", "/usr/local/bin/java -cp \".:/usr/local/groovy-3.0.3/lib/*\" script"], ["source_file", "script.groovy"]]
+server-1   | D, [2024-10-13T12:53:27.202241 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name") VALUES ($1, $2) RETURNING "id"  [["id", 89], ["name", "Multi-file program"]]
+server-1   | D, [2024-10-13T12:53:27.203258 #21] DEBUG -- :   Language Create (0.2ms)  INSERT INTO "languages" ("id", "name", "run_cmd", "source_file") VALUES ($1, $2, $3, $4) RETURNING "id"  [["id", 90], ["name", "TypeScript (5.6.3)"], ["run_cmd", "/usr/local/bin/run-typescript.sh script.ts"], ["source_file", "script.ts"]]
+server-1   | D, [2024-10-13T12:53:27.204748 #21] DEBUG -- :    (1.3ms)  COMMIT
+server-1   | => Booting Puma
+server-1   | => Rails 5.2.4.3 application starting in production
+server-1   | => Run `rails server -h` for more startup options
+server-1   | [32] Puma starting in cluster mode...
+server-1   | [32] * Version 4.3.5 (ruby 2.7.0-p0), codename: Mysterious Traveller
+server-1   | [32] * Min threads: 4, max threads: 4
+server-1   | [32] * Environment: production
+server-1   | [32] * Process workers: 2
+server-1   | [32] * Phased restart available
+server-1   | [32] * Listening on tcp://0.0.0.0:2358
+server-1   | [32] Use Ctrl-C to stop
+server-1   | [32] - Worker 0 (pid: 43) booted, phase: 0
+server-1   | [32] - Worker 1 (pid: 54) booted, phase: 0
+server-1   | I, [2024-10-13T12:54:58.958627 #43]  INFO -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] Started POST "/submissions?wait=true" for 90.55.91.19 at 2024-10-13 12:54:58 +0000
+server-1   | I, [2024-10-13T12:54:58.984606 #43]  INFO -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] Processing by SubmissionsController#create as */*
+server-1   | I, [2024-10-13T12:54:58.984818 #43]  INFO -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557]   Parameters: {"source_code"=>"ls /usr/local/bin", "language_id"=>46, "wait"=>"true", "submission"=>{"source_code"=>"ls /usr/local/bin", "language_id"=>46}}
+server-1   | D, [2024-10-13T12:54:59.040905 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557]    (0.5ms)  BEGIN
+server-1   | D, [2024-10-13T12:54:59.050052 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557]   Language Load (0.6ms)  SELECT  "languages".* FROM "languages" WHERE "languages"."id" = $1 LIMIT $2  [["id", 46], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:54:59.058289 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557]   Submission Exists (1.0ms)  SELECT  1 AS one FROM "submissions" WHERE "submissions"."token" = $1 LIMIT $2  [["token", "15f93d4b-e55f-4a23-9a18-47a901143ba0"], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:54:59.061957 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557]   Submission Create (0.7ms)  INSERT INTO "submissions" ("source_code", "language_id", "status_id", "created_at", "token", "number_of_runs", "cpu_time_limit", "cpu_extra_time", "wall_time_limit", "memory_limit", "stack_limit", "max_processes_and_or_threads", "enable_per_process_and_thread_time_limit", "enable_per_process_and_thread_memory_limit", "max_file_size", "redirect_stderr_to_stdout", "enable_network") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING "id"  [["source_code", "bHMgL3Vzci9sb2NhbC9iaW4=\n"], ["language_id", 46], ["status_id", 1], ["created_at", "2024-10-13 12:54:59.056128"], ["token", "15f93d4b-e55f-4a23-9a18-47a901143ba0"], ["number_of_runs", 1], ["cpu_time_limit", "5.0"], ["cpu_extra_time", "1.0"], ["wall_time_limit", "10.0"], ["memory_limit", 128000], ["stack_limit", 64000], ["max_processes_and_or_threads", 60], ["enable_per_process_and_thread_time_limit", false], ["enable_per_process_and_thread_memory_limit", false], ["max_file_size", 1024], ["redirect_stderr_to_stdout", false], ["enable_network", false]]
+server-1   | D, [2024-10-13T12:54:59.063358 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557]    (1.0ms)  COMMIT
+server-1   | I, [2024-10-13T12:54:59.063796 #43]  INFO -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e] Performing IsolateJob (Job ID: 46fa678b-8047-48bc-bef8-3194ce61fe9e) from Resque(1.13.1) with arguments: 1
+server-1   | D, [2024-10-13T12:54:59.066063 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e]   Submission Load (0.6ms)  SELECT  "submissions".* FROM "submissions" WHERE "submissions"."id" = $1 ORDER BY "submissions"."created_at" DESC LIMIT $2  [["id", 1], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:54:59.066951 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e]    (0.2ms)  BEGIN
+server-1   | D, [2024-10-13T12:54:59.068225 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e]   Language Load (0.4ms)  SELECT  "languages".* FROM "languages" WHERE "languages"."id" = $1 LIMIT $2  [["id", 46], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:54:59.070073 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e]   Submission Update (0.4ms)  UPDATE "submissions" SET "status_id" = $1 WHERE "submissions"."id" = $2  [["status_id", 2], ["id", 1]]
+server-1   | D, [2024-10-13T12:54:59.071792 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e]    (1.3ms)  COMMIT
+server-1   | [2024-10-13T12:54:59+00:00] Running submission 15f93d4b-e55f-4a23-9a18-47a901143ba0 (1):
+server-1   | isolate --cg -s -b 1 -M /var/local/lib/isolate/1/metadata.txt -t 5.0 -x 1.0 -w 10.0 -k 64000 -p60 --cg-timing --cg-mem=128000 -f 1024 -E HOME=/tmp -E PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" -E LANG -E LANGUAGE -E LC_ALL -E JUDGE0_HOMEPAGE -E JUDGE0_SOURCE_CODE -E JUDGE0_MAINTAINER -E JUDGE0_VERSION -d /etc:noexec --run -- /bin/bash run < /var/local/lib/isolate/1/stdin.txt > /var/local/lib/isolate/1/stdout.txt 2> /var/local/lib/isolate/1/stderr.txt
+server-1   |
+server-1   | D, [2024-10-13T12:54:59.235645 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e]    (0.5ms)  BEGIN
+server-1   | D, [2024-10-13T12:54:59.238057 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e]   Submission Update (0.6ms)  UPDATE "submissions" SET "status_id" = $1, "stdout" = $2, "finished_at" = $3, "time" = $4, "memory" = $5, "exit_code" = $6, "wall_time" = $7 WHERE "submissions"."id" = $8  [["status_id", 3], ["stdout", "ZXJsCmlzb2xhdGUKaXNvbGF0ZS1jaGVjay1lbnZpcm9ubWVudApqYXIKamF2\nYQpqYXZhYwo=\n"], ["finished_at", "2024-10-13 12:54:59.178151"], ["time", "0.009"], ["memory", 1556], ["exit_code", 0], ["wall_time", "0.017"], ["id", 1]]
+server-1   | D, [2024-10-13T12:54:59.239347 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e]    (0.9ms)  COMMIT
+server-1   | I, [2024-10-13T12:54:59.239491 #43]  INFO -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [ActiveJob] [IsolateJob] [46fa678b-8047-48bc-bef8-3194ce61fe9e] Performed IsolateJob (Job ID: 46fa678b-8047-48bc-bef8-3194ce61fe9e) from Resque(1.13.1) in 175.58ms
+server-1   | D, [2024-10-13T12:54:59.241437 #43] DEBUG -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557]   Submission Load (0.7ms)  SELECT  "submissions".* FROM "submissions" WHERE "submissions"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]
+server-1   | I, [2024-10-13T12:54:59.248440 #43]  INFO -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] [active_model_serializers] Rendered SubmissionSerializer with ActiveModelSerializers::Adapter::Attributes (4.61ms)
+server-1   | I, [2024-10-13T12:54:59.248764 #43]  INFO -- : [ceb1ea03-48a9-4066-b9ba-20794f91e557] Completed 201 Created in 264ms (Views: 6.5ms | ActiveRecord: 22.6ms)
+server-1   | I, [2024-10-13T12:55:25.263651 #54]  INFO -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] Started POST "/submissions?wait=true" for 90.55.91.19 at 2024-10-13 12:55:25 +0000
+server-1   | I, [2024-10-13T12:55:25.285682 #54]  INFO -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] Processing by SubmissionsController#create as */*
+server-1   | I, [2024-10-13T12:55:25.285771 #54]  INFO -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7]   Parameters: {"source_code"=>"hostname", "language_id"=>46, "wait"=>"true", "submission"=>{"source_code"=>"hostname", "language_id"=>46}}
+server-1   | D, [2024-10-13T12:55:25.329096 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7]    (0.3ms)  BEGIN
+server-1   | D, [2024-10-13T12:55:25.335822 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7]   Language Load (0.4ms)  SELECT  "languages".* FROM "languages" WHERE "languages"."id" = $1 LIMIT $2  [["id", 46], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:55:25.343546 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7]   Submission Exists (1.0ms)  SELECT  1 AS one FROM "submissions" WHERE "submissions"."token" = $1 LIMIT $2  [["token", "2adf5dc9-a84e-407a-a6b0-0110cd0f7379"], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:55:25.346460 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7]   Submission Create (0.5ms)  INSERT INTO "submissions" ("source_code", "language_id", "status_id", "created_at", "token", "number_of_runs", "cpu_time_limit", "cpu_extra_time", "wall_time_limit", "memory_limit", "stack_limit", "max_processes_and_or_threads", "enable_per_process_and_thread_time_limit", "enable_per_process_and_thread_memory_limit", "max_file_size", "redirect_stderr_to_stdout", "enable_network") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING "id"  [["source_code", "aG9zdG5hbWU=\n"], ["language_id", 46], ["status_id", 1], ["created_at", "2024-10-13 12:55:25.341080"], ["token", "2adf5dc9-a84e-407a-a6b0-0110cd0f7379"], ["number_of_runs", 1], ["cpu_time_limit", "5.0"], ["cpu_extra_time", "1.0"], ["wall_time_limit", "10.0"], ["memory_limit", 128000], ["stack_limit", 64000], ["max_processes_and_or_threads", 60], ["enable_per_process_and_thread_time_limit", false], ["enable_per_process_and_thread_memory_limit", false], ["max_file_size", 1024], ["redirect_stderr_to_stdout", false], ["enable_network", false]]
+server-1   | D, [2024-10-13T12:55:25.347480 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7]    (0.7ms)  COMMIT
+server-1   | I, [2024-10-13T12:55:25.347777 #54]  INFO -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887] Performing IsolateJob (Job ID: ee93a193-0005-481e-ac19-8f5e76454887) from Resque(1.13.1) with arguments: 2
+server-1   | D, [2024-10-13T12:55:25.349158 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887]   Submission Load (0.3ms)  SELECT  "submissions".* FROM "submissions" WHERE "submissions"."id" = $1 ORDER BY "submissions"."created_at" DESC LIMIT $2  [["id", 2], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:55:25.349712 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887]    (0.1ms)  BEGIN
+server-1   | D, [2024-10-13T12:55:25.350449 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887]   Language Load (0.3ms)  SELECT  "languages".* FROM "languages" WHERE "languages"."id" = $1 LIMIT $2  [["id", 46], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:55:25.351836 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887]   Submission Update (0.3ms)  UPDATE "submissions" SET "status_id" = $1 WHERE "submissions"."id" = $2  [["status_id", 2], ["id", 2]]
+server-1   | D, [2024-10-13T12:55:25.353054 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887]    (0.9ms)  COMMIT
+server-1   | [2024-10-13T12:55:25+00:00] Running submission 2adf5dc9-a84e-407a-a6b0-0110cd0f7379 (2):
+server-1   | isolate --cg -s -b 2 -M /var/local/lib/isolate/2/metadata.txt -t 5.0 -x 1.0 -w 10.0 -k 64000 -p60 --cg-timing --cg-mem=128000 -f 1024 -E HOME=/tmp -E PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" -E LANG -E LANGUAGE -E LC_ALL -E JUDGE0_HOMEPAGE -E JUDGE0_SOURCE_CODE -E JUDGE0_MAINTAINER -E JUDGE0_VERSION -d /etc:noexec --run -- /bin/bash run < /var/local/lib/isolate/2/stdin.txt > /var/local/lib/isolate/2/stdout.txt 2> /var/local/lib/isolate/2/stderr.txt
+server-1   |
+server-1   | D, [2024-10-13T12:55:25.505190 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887]    (0.3ms)  BEGIN
+server-1   | D, [2024-10-13T12:55:25.507166 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887]   Submission Update (0.4ms)  UPDATE "submissions" SET "status_id" = $1, "stdout" = $2, "finished_at" = $3, "time" = $4, "memory" = $5, "exit_code" = $6, "wall_time" = $7 WHERE "submissions"."id" = $8  [["status_id", 3], ["stdout", "ZWMyZjE4NGFiZjkyCg==\n"], ["finished_at", "2024-10-13 12:55:25.452703"], ["time", "0.006"], ["memory", 1532], ["exit_code", 0], ["wall_time", "0.014"], ["id", 2]]
+server-1   | D, [2024-10-13T12:55:25.508402 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887]    (1.0ms)  COMMIT
+server-1   | I, [2024-10-13T12:55:25.508530 #54]  INFO -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [ActiveJob] [IsolateJob] [ee93a193-0005-481e-ac19-8f5e76454887] Performed IsolateJob (Job ID: ee93a193-0005-481e-ac19-8f5e76454887) from Resque(1.13.1) in 160.67ms
+server-1   | D, [2024-10-13T12:55:25.509684 #54] DEBUG -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7]   Submission Load (0.3ms)  SELECT  "submissions".* FROM "submissions" WHERE "submissions"."id" = $1 LIMIT $2  [["id", 2], ["LIMIT", 1]]
+server-1   | I, [2024-10-13T12:55:25.515275 #54]  INFO -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] [active_model_serializers] Rendered SubmissionSerializer with ActiveModelSerializers::Adapter::Attributes (3.65ms)
+server-1   | I, [2024-10-13T12:55:25.515543 #54]  INFO -- : [0190c204-8e22-4b0c-8aee-bea165d81cd7] Completed 201 Created in 230ms (Views: 5.3ms | ActiveRecord: 16.2ms)
+server-1   | I, [2024-10-13T12:56:13.755426 #54]  INFO -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] Started POST "/submissions?wait=true" for 90.55.91.19 at 2024-10-13 12:56:13 +0000
+server-1   | I, [2024-10-13T12:56:13.756290 #54]  INFO -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] Processing by SubmissionsController#create as */*
+server-1   | I, [2024-10-13T12:56:13.756362 #54]  INFO -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76]   Parameters: {"source_code"=>"hostname", "language_id"=>46, "wait"=>"true", "submission"=>{"source_code"=>"hostname", "language_id"=>46}}
+server-1   | D, [2024-10-13T12:56:13.758607 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76]    (0.2ms)  BEGIN
+server-1   | D, [2024-10-13T12:56:13.759833 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76]   Language Load (0.4ms)  SELECT  "languages".* FROM "languages" WHERE "languages"."id" = $1 LIMIT $2  [["id", 46], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:56:13.761430 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76]   Submission Exists (0.4ms)  SELECT  1 AS one FROM "submissions" WHERE "submissions"."token" = $1 LIMIT $2  [["token", "931fe589-34be-4213-9703-b9f9a84c0c1b"], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:56:13.762685 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76]   Submission Create (0.4ms)  INSERT INTO "submissions" ("source_code", "language_id", "status_id", "created_at", "token", "number_of_runs", "cpu_time_limit", "cpu_extra_time", "wall_time_limit", "memory_limit", "stack_limit", "max_processes_and_or_threads", "enable_per_process_and_thread_time_limit", "enable_per_process_and_thread_memory_limit", "max_file_size", "redirect_stderr_to_stdout", "enable_network") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING "id"  [["source_code", "aG9zdG5hbWU=\n"], ["language_id", 46], ["status_id", 1], ["created_at", "2024-10-13 12:56:13.760607"], ["token", "931fe589-34be-4213-9703-b9f9a84c0c1b"], ["number_of_runs", 1], ["cpu_time_limit", "5.0"], ["cpu_extra_time", "1.0"], ["wall_time_limit", "10.0"], ["memory_limit", 128000], ["stack_limit", 64000], ["max_processes_and_or_threads", 60], ["enable_per_process_and_thread_time_limit", false], ["enable_per_process_and_thread_memory_limit", false], ["max_file_size", 1024], ["redirect_stderr_to_stdout", false], ["enable_network", false]]
+server-1   | D, [2024-10-13T12:56:13.763665 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76]    (0.8ms)  COMMIT
+server-1   | I, [2024-10-13T12:56:13.763867 #54]  INFO -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c] Performing IsolateJob (Job ID: 72a93798-6bb8-4e99-8b54-4b95d9989c8c) from Resque(1.13.1) with arguments: 3
+server-1   | D, [2024-10-13T12:56:13.764672 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c]   Submission Load (0.3ms)  SELECT  "submissions".* FROM "submissions" WHERE "submissions"."id" = $1 ORDER BY "submissions"."created_at" DESC LIMIT $2  [["id", 3], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:56:13.765164 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c]    (0.2ms)  BEGIN
+server-1   | D, [2024-10-13T12:56:13.765884 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c]   Language Load (0.2ms)  SELECT  "languages".* FROM "languages" WHERE "languages"."id" = $1 LIMIT $2  [["id", 46], ["LIMIT", 1]]
+server-1   | D, [2024-10-13T12:56:13.767091 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c]   Submission Update (0.3ms)  UPDATE "submissions" SET "status_id" = $1 WHERE "submissions"."id" = $2  [["status_id", 2], ["id", 3]]
+server-1   | D, [2024-10-13T12:56:13.768163 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c]    (0.8ms)  COMMIT
+server-1   | [2024-10-13T12:56:13+00:00] Running submission 931fe589-34be-4213-9703-b9f9a84c0c1b (3):
+server-1   | isolate --cg -s -b 3 -M /var/local/lib/isolate/3/metadata.txt -t 5.0 -x 1.0 -w 10.0 -k 64000 -p60 --cg-timing --cg-mem=128000 -f 1024 -E HOME=/tmp -E PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" -E LANG -E LANGUAGE -E LC_ALL -E JUDGE0_HOMEPAGE -E JUDGE0_SOURCE_CODE -E JUDGE0_MAINTAINER -E JUDGE0_VERSION -d /etc:noexec --run -- /bin/bash run < /var/local/lib/isolate/3/stdin.txt > /var/local/lib/isolate/3/stdout.txt 2> /var/local/lib/isolate/3/stderr.txt
+server-1   |
+server-1   | D, [2024-10-13T12:56:13.923498 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c]    (0.4ms)  BEGIN
+server-1   | D, [2024-10-13T12:56:13.925498 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c]   Submission Update (0.5ms)  UPDATE "submissions" SET "status_id" = $1, "stdout" = $2, "finished_at" = $3, "time" = $4, "memory" = $5, "exit_code" = $6, "wall_time" = $7 WHERE "submissions"."id" = $8  [["status_id", 3], ["stdout", "ZWMyZjE4NGFiZjkyCg==\n"], ["finished_at", "2024-10-13 12:56:13.870679"], ["time", "0.007"], ["memory", 1552], ["exit_code", 0], ["wall_time", "0.015"], ["id", 3]]
+server-1   | D, [2024-10-13T12:56:13.926859 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c]    (1.1ms)  COMMIT
+server-1   | I, [2024-10-13T12:56:13.927403 #54]  INFO -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [ActiveJob] [IsolateJob] [72a93798-6bb8-4e99-8b54-4b95d9989c8c] Performed IsolateJob (Job ID: 72a93798-6bb8-4e99-8b54-4b95d9989c8c) from Resque(1.13.1) in 163.41ms
+server-1   | D, [2024-10-13T12:56:13.928627 #54] DEBUG -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76]   Submission Load (0.6ms)  SELECT  "submissions".* FROM "submissions" WHERE "submissions"."id" = $1 LIMIT $2  [["id", 3], ["LIMIT", 1]]
+server-1   | I, [2024-10-13T12:56:13.930264 #54]  INFO -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] [active_model_serializers] Rendered SubmissionSerializer with ActiveModelSerializers::Adapter::Attributes (0.57ms)
+server-1   | I, [2024-10-13T12:56:13.930460 #54]  INFO -- : [5a3d6746-15ef-4740-92c9-c0bfb9078d76] Completed 201 Created in 174ms (Views: 1.3ms | ActiveRecord: 6.4ms)
