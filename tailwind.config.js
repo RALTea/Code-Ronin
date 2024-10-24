@@ -8,6 +8,7 @@ export default {
 				'bg-medium': '#2d2d2d',
 				'bg-light': '#4d4d4d',
 				'light': '#d9d9d9',
+				'lightless': '#bfbfbf',
 				// 'bg-light': '#ededed',
 				'primary-dark': '#DDA323',
 				'primary-medium': '#ebb844',

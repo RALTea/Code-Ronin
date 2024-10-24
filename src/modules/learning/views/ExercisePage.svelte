@@ -4,6 +4,7 @@
 	import { InMemoryTaskRepository } from '$learning/repositories/InMemoryTaskRepository';
 	import { JudgeEvaluationRepository } from '$learning/repositories/JudgeEvaluationRepository';
 	import { runExercise } from '$learning/usecases/runExercise';
+	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import { onMount } from 'svelte';
 	import Input from './Input.svelte';
 	import Instructions from './Instructions.svelte';
@@ -42,16 +43,19 @@
 	};
 </script>
 
-{#if task}
-	<div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 p-4 gap-4 max-h-screen">
-		<aside class="prose prose-invert text-white h-full max-w-full row-span-2">
-			<Instructions {...task}></Instructions>
-		</aside>
-		<main class="flex-1 space-y-4 max-h-full">
-			<Input bind:value={inputCode} {runCode} />
-			<Output message={runningCode ? 'Loading...' : result?.message} />
-		</main>
-	</div>
-{:else}
-	<p>Task not loaded</p>
-{/if}
+<div class="h-screen max-h-screen grid grid-rows-[auto_1fr]">
+	<Navbar class="row-auto" />
+	{#if task}
+		<div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 pt-0 p-4 gap-4 h-full min-h-fit">
+			<aside class="prose prose-invert text-white h-full max-w-full row-span-2">
+				<Instructions {...task}></Instructions>
+			</aside>
+			<main class="flex-1 space-y-4 max-h-full">
+				<Input bind:value={inputCode} {runCode} />
+				<Output message={runningCode ? 'Loading...' : result?.message} />
+			</main>
+		</div>
+	{:else}
+		<p>Task not loaded</p>
+	{/if}
+</div>
