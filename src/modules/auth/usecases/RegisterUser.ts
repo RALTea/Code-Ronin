@@ -3,7 +3,6 @@ import type {
 	InputFactory,
 	OutputFactory,
 	UseCase,
-	UseCaseResponse
 } from '$lib/interfaces/UseCase';
 import type { IAuthProvider } from '$auth/interfaces/IAuthProvider';
 import { PUBLIC_GITEA_URL } from '$env/static/public';
@@ -18,12 +17,12 @@ type Input = InputFactory<
 	}
 >;
 
-type Output = OutputFactory<UseCaseResponse<URL>>;
+type Output = OutputFactory<URL>;
 
-export const RegisterUseCase: UseCase<Input, Output> = ({ dependencies, data }: Input) => {
+export const RegisterUseCase: UseCase<Input, Output> = (dependencies) => {
 	const { authProvider, userRepository } = dependencies;
 	return {
-		execute: async () => {
+		execute: async (data) => {
 			try {
 				const user = await userRepository.getApprenticeByGiteaEmail(data.email);
 				if (user) {

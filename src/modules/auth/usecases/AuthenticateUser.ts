@@ -1,42 +1,32 @@
-import type { LoginDto } from '$auth/dto/LoginDto';
-import type { IUserRepository } from '$auth/interfaces/IUserRepository';
-import { GITEA_CLIENT_SECRET } from '$env/static/private';
 import type {
-	InputFactory,
-	OutputFactory,
-	UseCase,
-	UseCaseResponse
-} from '$lib/interfaces/UseCase';
-import type { IAuthProvider } from '$auth/interfaces/IAuthProvider';
+	IUserRepositoryCreateUser,
+	IUserRepositoryGetByEmail, IUserRepositoryGetUser
+} from '$auth/interfaces/IUserRepository';
+import type { InputFactory, OutputFactory, UseCase } from '$lib/interfaces/UseCase';
 import type { IAuthTokenProvider } from '$auth/interfaces/IAuthTokenProvider';
+import type { LoginDto } from '$auth/dto/LoginDto';
 
 type Input = InputFactory<
 	LoginDto,
 	{
-		authProvider: IAuthProvider;
 		tokenProvider: IAuthTokenProvider;
-		userRepository: IUserRepository;
+		userRepository: IUserRepositoryCreateUser & IUserRepositoryGetByEmail;
+		getUser: IUserRepositoryGetUser["getUser"];
 	}
 >;
 
-type Output = OutputFactory<UseCaseResponse<string>>;
+type Output = OutputFactory<string>;
 
-export const LoginUseCase: UseCase<Input, Output> = ({ dependencies, data }: Input) => {
-	const { authProvider, userRepository, tokenProvider } = dependencies;
+export const LoginUseCase: UseCase<Input, Output> = (dependencies) => {
+	const { userRepository, tokenProvider, getUser } = dependencies;
 	return {
-		execute: async () => {
+		execute: async (data) => {
 			try {
-				const { access_token } = await authProvider.validateAuthorizationCode(data.code, {
-					credentials: GITEA_CLIENT_SECRET,
-					authenticateWith: 'request_body',
-				});
+				const user = await getUser(data.code);
+				const userInDb = await userRepository.getApprenticeByGiteaEmail(user.email);
 
-				const giteaUser = await userRepository.getGiteaUserWithAccessToken(access_token);
-
-				const apprentice = await userRepository.getApprenticeByGiteaId(giteaUser.id);
-
-				if (apprentice) {
-					const token = tokenProvider.generateToken(apprentice);
+				if (userInDb) {
+					const token = tokenProvider.generateToken(userInDb);
 					return {
 						isSuccess: true,
 						status: 200,
@@ -44,15 +34,9 @@ export const LoginUseCase: UseCase<Input, Output> = ({ dependencies, data }: Inp
 					};
 				}
 
-				const createdUser = await userRepository.createUser({
-					giteaUserId: giteaUser.id,
-					username: giteaUser.login,
-					email: giteaUser.email,
-					profilePicture: giteaUser.avatar_url,
-					role: "USER"
-				});
-
+				const createdUser = await userRepository.createUser(user);
 				const token = tokenProvider.generateToken(createdUser);
+
 				return {
 					isSuccess: true,
 					status: 200,

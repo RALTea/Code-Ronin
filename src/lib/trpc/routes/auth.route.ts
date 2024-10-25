@@ -10,12 +10,9 @@ export const authRouter = createTRPCRouter({
 	me: authProcedure.query(async ({ ctx }) => ctx.user),
 	register: publicProcedure.input(registerDto).query(async ({ input }) => {
 		const registerUseCase = await RegisterUseCase({
-			data: input,
-			dependencies: {
-				authProvider: giteaOauthClient,
-				userRepository: SQLiteUserRepository()
-			}
-		}).execute();
+			authProvider: giteaOauthClient,
+			userRepository: SQLiteUserRepository()
+		}).execute(input);
 
 		if (!registerUseCase.isSuccess) {
 			throw new TRPCError({ message: registerUseCase.message, code: 'BAD_REQUEST' });

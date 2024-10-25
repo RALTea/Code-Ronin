@@ -11,7 +11,8 @@ export const JWTAuthTokenProvider = (): IAuthTokenProvider => {
 				{
 					id: payload.id,
 					username: payload.username,
-					profilePicture: payload.profilePicture
+					profilePicture: payload.profilePicture,
+					role: payload.role,
 				},
 				JWT_SECRET ?? 'NoSecret',
 				{ expiresIn: '1d' }

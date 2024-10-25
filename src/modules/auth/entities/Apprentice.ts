@@ -8,3 +8,5 @@ export type Apprentice = {
 	giteaUserId: number;
 	profilePicture: string;
 }
+
+export type ApprenticeWhitoutId = Omit<Apprentice, 'id'>
