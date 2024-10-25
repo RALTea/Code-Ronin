@@ -15,8 +15,8 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		const useCaseError = UseCaseResponseBuilder.error(
 			401,
 			'You need to grant permission to code-ronin to access your gite account.'
-		)
-		return ApiResponse.send(useCaseError)
+		);
+		return ApiResponse.send(useCaseError);
 	}
 
 	const params = Object.fromEntries([...queryParams.entries()]);

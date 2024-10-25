@@ -1,9 +1,5 @@
 import { ADMIN_GITEA_TOKEN } from '$env/static/private';
-import type {
-	InputFactory,
-	OutputFactory,
-	UseCase,
-} from '$lib/interfaces/UseCase';
+import type { InputFactory, OutputFactory, UseCase } from '$lib/interfaces/UseCase';
 import type { IAuthProvider } from '$auth/interfaces/IAuthProvider';
 import { PUBLIC_GITEA_URL } from '$env/static/public';
 import type { RegisterDto } from '$auth/dto/RegisterDto';
@@ -29,10 +25,10 @@ export const RegisterUseCase: UseCase<Input, Output> = (dependencies) => {
 					return {
 						isSuccess: false,
 						status: 400,
-						message: "You cannot login with this email."
+						message: 'You cannot login with this email.'
 					};
 				}
-				
+
 				await fetch(`${PUBLIC_GITEA_URL}/api/v1/admin/users`, {
 					method: 'POST',
 					headers: {

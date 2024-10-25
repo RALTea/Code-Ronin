@@ -3,10 +3,10 @@ export type Apprentice = {
 	username: string;
 	createdAt?: Date;
 	updatedAt?: Date;
-	role: string
-	email: string
+	role: string;
+	email: string;
 	giteaUserId: number;
 	profilePicture: string;
-}
+};
 
-export type ApprenticeWhitoutId = Omit<Apprentice, 'id'>
+export type ApprenticeWhitoutId = Omit<Apprentice, 'id'>;

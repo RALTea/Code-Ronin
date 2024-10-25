@@ -3,12 +3,13 @@
 	import type { InputConstraint } from 'sveltekit-superforms';
 
 	type InputFieldProps = {
-		title: string
-		value: string
-		name: string,
-		type: 'date' | 'text' | 'password' | 'radio' | 'checkbox',
-		placeholder: string,
-	} & AddCss & InputConstraint
+		title: string;
+		value: string;
+		name: string;
+		type: 'date' | 'text' | 'password' | 'radio' | 'checkbox';
+		placeholder: string;
+	} & AddCss &
+		InputConstraint;
 
 	let {
 		title,
@@ -23,7 +24,6 @@
 	const typeAction = (node: HTMLInputElement) => {
 		node.type = type;
 	};
-
 </script>
 
 <fieldset class="flex gap-1 flex-col">

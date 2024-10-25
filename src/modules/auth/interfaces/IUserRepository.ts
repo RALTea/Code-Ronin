@@ -12,7 +12,6 @@ export type IUserRepositoryGetUser = {
 	getUser(identifier?: string): Promise<ApprenticeWhitoutId>;
 };
 
-
 export type IUserRepositoryGetById = {
 	getApprenticeByGiteaId(id: number): Promise<Apprentice | null>;
 };

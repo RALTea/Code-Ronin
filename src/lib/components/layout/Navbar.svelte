@@ -8,9 +8,9 @@
 </script>
 
 {#snippet divider()}
-  <div class="mx-6 py-2 h-full">
-    <div class="w-[.125rem] h-full bg-primary-light rounded-full"></div>
-  </div>
+	<div class="mx-6 py-2 h-full">
+		<div class="w-[.125rem] h-full bg-primary-light rounded-full"></div>
+	</div>
 {/snippet}
 
 <nav
@@ -23,12 +23,12 @@
 	</div>
 	{@render divider()}
 
-  <div class="ml-auto flex items-center justify-center h-full mr-2">
-    {@render divider()}
-    <button>
-      <IconWrapper size=8>
-        <IconPower />
-      </IconWrapper>
-    </button>
-  </div>
+	<div class="ml-auto flex items-center justify-center h-full mr-2">
+		{@render divider()}
+		<button>
+			<IconWrapper size="8">
+				<IconPower />
+			</IconWrapper>
+		</button>
+	</div>
 </nav>

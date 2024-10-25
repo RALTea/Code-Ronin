@@ -19,7 +19,7 @@ export type IAuthProvider = {
 	createAuthorizationURL: (options?: {
 		state?: string;
 		codeVerifier?: string;
-		codeChallengeMethod?: "S256" | "plain";
+		codeChallengeMethod?: 'S256' | 'plain';
 		scopes?: string[];
 	}) => Promise<URL>;
 };

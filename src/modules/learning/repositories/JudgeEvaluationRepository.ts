@@ -4,10 +4,10 @@ import type { Language } from '$learning/domain/Language';
 import { z } from 'zod';
 
 type JudgeSubmissionPayload = {
-		source_code: string,
-		language_id: number,
-		expected_output?: string,
-}
+	source_code: string;
+	language_id: number;
+	expected_output?: string;
+};
 
 const JudgeResultSchema = z.object({
 	stdout: z.nullable(z.string()),
@@ -19,8 +19,8 @@ const JudgeResultSchema = z.object({
 	message: z.nullable(z.string()),
 	status: z.object({
 		id: z.number(),
-		description: z.string(),
-	}),
+		description: z.string()
+	})
 });
 type JudgeResult = z.infer<typeof JudgeResultSchema>;
 
@@ -39,7 +39,7 @@ const mapLanguageToJudgeLanguageId = (language: Language): number => {
 		default:
 			throw new Error(`Unsupported language: ${language}`);
 	}
-}
+};
 
 export const JudgeEvaluationRepository = (): IEvaluationRepository => {
 	return {
@@ -47,14 +47,14 @@ export const JudgeEvaluationRepository = (): IEvaluationRepository => {
 			const url = `${env.PUBLIC_JUDGE_API}/submissions?wait=true`;
 			const payload: JudgeSubmissionPayload = {
 				source_code: solution,
-				language_id: mapLanguageToJudgeLanguageId(language),
-			}
+				language_id: mapLanguageToJudgeLanguageId(language)
+			};
 			const result = await fetch(url, {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(payload),
+				body: JSON.stringify(payload)
 			});
 			const decoded: JudgeResult = await result.json();
 			console.debug('JudgeEvaluationRepository', decoded);
@@ -62,7 +62,12 @@ export const JudgeEvaluationRepository = (): IEvaluationRepository => {
 				id: decoded.token,
 				time: parseFloat(decoded.time),
 				success: decoded.status.id === 3,
-				message: decoded.stdout ?? decoded.stderr ?? decoded.compile_output ?? decoded.message ?? 'Unknown error', 
+				message:
+					decoded.stdout ??
+					decoded.stderr ??
+					decoded.compile_output ??
+					decoded.message ??
+					'Unknown error'
 			};
 		}
 	};

@@ -21,7 +21,4 @@ export const handleCookies: Handle = ({ event, resolve }) => {
 	return resolve(event);
 };
 
-export const handle: Handle = sequence(
-	handleCookies,
-	createTRPCHandle({ router, createContext })
-);
+export const handle: Handle = sequence(handleCookies, createTRPCHandle({ router, createContext }));

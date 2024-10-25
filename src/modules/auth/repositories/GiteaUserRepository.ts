@@ -8,13 +8,10 @@ type _GiteaUserRepository = Pick<IUserRepository, 'getGiteaUserWithAccessToken' 
 export const GiteaUserRepository = (): _GiteaUserRepository => {
 	return {
 		getUser: async (identifier) => {
-			const { access_token } = await giteaOauthClient.validateAuthorizationCode(
-				identifier ?? '',
-				{
-					credentials: GITEA_CLIENT_SECRET,
-					authenticateWith: 'request_body'
-				}
-			);
+			const { access_token } = await giteaOauthClient.validateAuthorizationCode(identifier ?? '', {
+				credentials: GITEA_CLIENT_SECRET,
+				authenticateWith: 'request_body'
+			});
 			const giteaUserRepository = GiteaUserRepository();
 
 			return giteaUserRepository.getGiteaUserWithAccessToken(access_token);

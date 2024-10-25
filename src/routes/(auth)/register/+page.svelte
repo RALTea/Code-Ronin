@@ -13,7 +13,7 @@
 <InputField
 	placeholder="example"
 	title="Name"
-	name={"username"}
+	name={'username'}
 	type="text"
 	bind:value={$form.username}
 	{...$constraints.username}
@@ -28,10 +28,9 @@
 	placeholder="example@exemple.com"
 	title="Email"
 	type="text"
-	name={"email"}
+	name={'email'}
 	bind:value={$form.email}
 	{...$constraints.email}
-
 />
 {#if $errors.email}
 	<ErrorText>
@@ -43,7 +42,7 @@
 	placeholder="123456"
 	title="Password"
 	type="text"
-	name={"password"}
+	name={'password'}
 	bind:value={$form.password}
 	{...$constraints.password}
 />
@@ -57,7 +56,7 @@
 	placeholder="123456"
 	type="text"
 	title="Verify password"
-	name={"verifyPassword"}
+	name={'verifyPassword'}
 	bind:value={$form.verifyPassword}
 	{...$constraints.verifyPassword}
 />
@@ -69,15 +68,10 @@
 
 <ErrorText>
 	{#if $errors._errors || $page.form?.message}
-		<strong>{$errors._errors?.at(0) ?? $page.form?.message ?? ""}</strong>
+		<strong>{$errors._errors?.at(0) ?? $page.form?.message ?? ''}</strong>
 	{:else}
 		<strong>&nbsp;</strong>
 	{/if}
 </ErrorText>
 
-<PrimaryButton
-	type="submit"
-	className="w-[95%] mx-auto mt-2 font-bold"
->
-	Register
-</PrimaryButton>
+<PrimaryButton type="submit" className="w-[95%] mx-auto mt-2 font-bold">Register</PrimaryButton>

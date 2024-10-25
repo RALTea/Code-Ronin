@@ -1,6 +1,7 @@
 import type {
 	IUserRepositoryCreateUser,
-	IUserRepositoryGetByEmail, IUserRepositoryGetUser
+	IUserRepositoryGetByEmail,
+	IUserRepositoryGetUser
 } from '$auth/interfaces/IUserRepository';
 import type { InputFactory, OutputFactory, UseCase } from '$lib/interfaces/UseCase';
 import type { IAuthTokenProvider } from '$auth/interfaces/IAuthTokenProvider';
@@ -11,7 +12,7 @@ type Input = InputFactory<
 	{
 		tokenProvider: IAuthTokenProvider;
 		userRepository: IUserRepositoryCreateUser & IUserRepositoryGetByEmail;
-		getUser: IUserRepositoryGetUser["getUser"];
+		getUser: IUserRepositoryGetUser['getUser'];
 	}
 >;
 
