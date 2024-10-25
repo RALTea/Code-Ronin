@@ -9,6 +9,7 @@ type JudgeSubmissionPayload = {
 		expected_output?: string,
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const JudgeResultSchema = z.object({
 	stdout: z.nullable(z.string()),
 	time: z.string(),
@@ -62,7 +63,7 @@ export const JudgeEvaluationRepository = (): IEvaluationRepository => {
 				id: decoded.token,
 				time: parseFloat(decoded.time),
 				success: decoded.status.id === 3,
-				message: decoded.stdout ?? decoded.stderr ?? decoded.compile_output ?? decoded.message ?? 'Unknown error', 
+				message: decoded.stdout ?? decoded.stderr ?? decoded.compile_output ?? decoded.message ?? 'Your code returned no output', 
 			};
 		}
 	};

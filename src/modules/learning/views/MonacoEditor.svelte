@@ -15,7 +15,7 @@
 
   onMount(async () => {
     monaco = (await import('$lib/monaco')).default;
-		theme = await import('monaco-themes/themes/Monokai.json') as Monaco.editor.IStandaloneThemeData;
+		theme = await import('./raltech-theme.json') as Monaco.editor.IStandaloneThemeData;
     console.debug('Mounting Monaco');
     initEditor();
   })

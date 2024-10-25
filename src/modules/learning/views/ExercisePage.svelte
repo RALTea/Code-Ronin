@@ -14,7 +14,12 @@
 	let task: Task | undefined = $state();
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
-	let inputCode: string = $state('console.log("hello Code ronin")');
+	let inputCode: string = $state(`const time: number = 1000;
+const test = "hello"
+
+const sayHello = (thing?: string) => {
+    console.debug(thing ?? "Hello")
+}`)
 	$inspect(inputCode);
 
 	onMount(async () => {
