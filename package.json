@@ -45,6 +45,8 @@
 		"@trpc/client": "^10.45.2",
 		"@trpc/server": "^10.45.2",
 		"jsonwebtoken": "^9.0.2",
+		"monaco-editor": "^0.52.0",
+		"monaco-themes": "^0.4.4",
 		"oslo": "^1.2.1",
 		"svelte-markdown": "^0.4.1",
 		"trpc-sveltekit": "^3.6.2",
