@@ -10,3 +10,8 @@ html {
 input, textarea {
   @apply focus-visible:outline-primary-light focus-visible:outline-none
 }
+
+.shine {
+  filter: drop-shadow( 0 0 1rem rgba(255, 255, 255, .8));
+  -webkit-filter: drop-shadow( 0 0 1rem rgba(255, 255, 255, .8));
+}
