@@ -22,7 +22,7 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 RUN mkdir -p /usr/local/bin/ts-5.6.3/typescript && \
     cd /usr/local/bin/ts-5.6.3/typescript && \
     npm init -y && \
-    npm install typescript@5.6.3 tsx
+    npm install typescript@5.6.3 tsx vitest
 
 # Set up the new language
 COPY ./scripts/run-typescript.sh /usr/local/bin/run-typescript.sh
