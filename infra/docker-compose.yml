@@ -11,7 +11,7 @@ services:
     volumes:
       - ./judge0.conf:/judge0.conf:ro
       - ./active.rb:/api/db/languages/active.rb:ro
-      # - ./Code-Ronin/infra/judge-custom/base64_service.rb:/api/app/services/base64_service.rb:ro
+      - ./Code-Ronin/infra/judge-custom/base64_service.rb:/api/app/services/base64_service.rb:ro
     ports:
       - "2358:2358"
     privileged: true
