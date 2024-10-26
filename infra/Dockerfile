@@ -30,4 +30,6 @@ COPY ./scripts/*.sh /usr/local/bin/.
 # Add TypeScript configuration
 COPY ./scripts/tsconfig.json /usr/local/bin/ts-5.6.3/typescript/tsconfig.json
 
+COPY ./judge-custom/base64_service.rb /api/app/services/base64_service.rb
+
 COPY ./scripts/example.ts /api/example.ts
