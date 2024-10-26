@@ -365,7 +365,6 @@
     # run_cmd: "/usr/local/bin/ts-5.6.3/typescript/node_modules/.bin/tsx --tsconfig /usr/local/bin/ts-5.6.3/typescript/tsconfig.json script.ts"
     run_cmd: "/usr/local/bin/run-typescript.sh script.ts"
   },
-  ,
   {
     id: 91,
     name: "TypeScript-Vitest (5.6.3)",
