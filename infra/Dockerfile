@@ -25,7 +25,7 @@ RUN mkdir -p /usr/local/bin/ts-5.6.3/typescript && \
     npm install typescript@5.6.3 tsx vitest
 
 # Set up the new language
-COPY ./scripts/run-typescript.sh /usr/local/bin/run-typescript.sh
+COPY ./scripts/*.sh /usr/local/bin/.
 
 # Add TypeScript configuration
 COPY ./scripts/tsconfig.json /usr/local/bin/ts-5.6.3/typescript/tsconfig.json
