@@ -20,7 +20,6 @@ const test = "hello"
 const sayHello = (thing?: string) => {
     console.debug(thing ?? "Hello")
 }`)
-	$inspect(inputCode);
 
 	onMount(async () => {
 		task = await taskRepository.getTaskById('1');
