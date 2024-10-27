@@ -1,58 +1,16 @@
 <script lang="ts">
 	import Loading from '$lib/components/layout/Loading.svelte';
 	import type { TaskTreeItem } from '../aggregate/TaskTreeItem';
-	import { getProgressionUseCase } from '../getProgressionUseCase';
 
 	type Props = {
-		items: TaskTreeItem[];
+		items: Promise<TaskTreeItem[]>;
 	};
-	// let { items }: Props = $props();
-	let items = getProgressionUseCase({
-		getUnorderedTasks: async (): Promise<TaskTreeItem[]> => {
-			return [
-				{
-					id: '1',
-					name: 'Task 1',
-					exp: 1,
-					instructions: '#Do Something',
-					isMiniboss: true,
-					nextTaskId: '2',
-          isLocked: false,
-          isCompleted: true,
-				},
-				{
-					id: '2',
-					name: 'Task 2',
-					exp: 1,
-					instructions: '#Do Something',
-					isMiniboss: false,
-					nextTaskId: '3',
-          isLocked: true,
-          isCompleted: false,
-				},
-				{
-					id: '3',
-					name: 'Task 3',
-					exp: 1,
-					instructions: '#Do Something',
-					isMiniboss: false,
-					nextTaskId: undefined,
-          isLocked: true,
-          isCompleted: false,
-				}
-			];
-		}
-	})
-		.execute()
-		.then((res) => {
-			console.log(res);
-			return res as TaskTreeItem[];
-		});
+	let { items }: Props = $props();
 </script>
 
 {#snippet bullet(task: TaskTreeItem)}
 	<li class="">
-    <a class="flex items-center gap-2 relative cursor-pointer" href="/demo/{task.id}">
+    <a class="flex items-center gap-2 relative cursor-pointer" href="/campaigns/demo/{task.id}">
       <div class="absolute blur-md rounded-full z-20 {task.isCompleted ? 'bg-primary-light' : 'bg-light'} {task.isMiniboss ? 'h-7 w-7 mx-[.125rem]' : 'h-4 w-4 mx-2'}"></div>
       <div class="rounded-full z-10 shadow-black {task.isCompleted ? 'bg-primary-light' : 'bg-light'} {task.isMiniboss ? 'h-7 w-7 mx-[.125rem] shadow-[inset_0_0px_.5rem_0_rgb(0_0_0)]' : 'h-4 w-4 m-2 shadow-[inset_0_0px_.15rem_0_rgb(0_0_0)]'}"></div>
       <p class="font-space-mono">{task.name}</p>

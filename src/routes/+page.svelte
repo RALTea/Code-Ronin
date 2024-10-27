@@ -1,5 +1,1 @@
-<script lang="ts">
-	import ExercisePage from '$learning/views/ExercisePage.svelte';
-</script>
-
-<ExercisePage />
+<a class="underline p-8 block" href="/campaigns/demo/1">Go to demo</a>
