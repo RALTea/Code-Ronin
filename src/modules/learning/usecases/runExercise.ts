@@ -1,38 +1,62 @@
 import type { ExerciseAttemptResult } from '$learning/aggregates/ExerciseAttemptResult';
 import type { Language } from '$learning/domain/Language';
 import { FetchApprenticeSolutionError } from '$learning/errors/FetchApprenticeSolutionError';
-import type { IEvaluationRepository } from '$learning/repositories/IEvaluationReposiotry';
-import { extractError } from '$lib/utils/error.utils';
+import { FetchTestCasesError } from '$learning/errors/FetchTestCasesError';
 import * as IApprenticeRepository from '$learning/repositories/IApprenticeRepository';
+import type { IEvaluationRepository } from '$learning/repositories/IEvaluationReposiotry';
+import { CodeBuilder } from '$learning/services/CodeBuilder';
+import {
+	UseCaseResponseBuilder,
+	type InputFactory,
+	type OutputFactory,
+	type UseCase
+} from '$lib/interfaces/UseCase';
+import { extractError } from '$lib/utils/error.utils';
 
-type Input = {
-	data: {
+type Input = InputFactory<
+	{
 		apprenticeId: string;
+		taskId: string;
 		language: Language;
-	};
-	deps: {
-		fetchApprenticeSolution: IApprenticeRepository.FetchApprenticeSolution;
+	},
+	{
+		getApprenticeSolution: IApprenticeRepository.FetchApprenticeSolution;
+		getTestCases: IApprenticeRepository.FetchTestCases;
 		evaluateSolution: IEvaluationRepository['evaluateSolution'];
-	};
-};
-export const runExercise = ({ data, deps }: Input) => {
-	const { apprenticeId, language } = data;
-	const { fetchApprenticeSolution, evaluateSolution } = deps;
+	}
+>;
+
+type Output = OutputFactory<ExerciseAttemptResult>;
+
+export const runExercise: UseCase<Input, Output> = (deps) => {
+	const { getApprenticeSolution, evaluateSolution, getTestCases } = deps;
 	return {
-		execute: async () => {
+		execute: async (data) => {
+			const { apprenticeId, language, taskId } = data;
 			let apprenticeSolution;
 			try {
-				apprenticeSolution = await fetchApprenticeSolution(apprenticeId);
+				apprenticeSolution = await getApprenticeSolution(apprenticeId);
 			} catch (error) {
 				throw new FetchApprenticeSolutionError(extractError(error));
+			}
+			let testCases: string = '';
+			try {
+				testCases = await getTestCases(taskId);
+			} catch (error) {
+				throw new FetchTestCasesError(extractError(error));
 			}
 			let result: ExerciseAttemptResult;
 			try {
-				result = await evaluateSolution(apprenticeSolution, language);
+				const codeToBeEvaluated = CodeBuilder(testCases)
+					.replace('// (@@@*@@@)', apprenticeSolution)
+					.removeComments()
+					.build();
+				console.debug('codeToBeEvaluated', codeToBeEvaluated);
+				result = await evaluateSolution(codeToBeEvaluated, language);
 			} catch (error) {
 				throw new FetchApprenticeSolutionError(extractError(error));
 			}
-			return result;
+			return UseCaseResponseBuilder.success(200, result);
 		}
 	};
 };

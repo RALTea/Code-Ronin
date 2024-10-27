@@ -12,6 +12,6 @@
 	{#if message}
 		<pre class="flex-1 bg-bg-dark rounded-lg font-space-mono p-4 overflow-auto">{message}</pre>
 	{:else}
-		<p class="flex-1 bg-bg-dark rounded-lg font-space-mono p-4">Run your code and get the output here</p>
+		<p class="flex-1 bg-bg-dark rounded-lg font-jetbrains-mono p-4">Run your code and get the output here</p>
 	{/if}
 </Card>

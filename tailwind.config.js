@@ -16,7 +16,8 @@ export default {
 			},
 			fontFamily: {
 				'space-mono': ['Space Mono', 'monospace'],
-				'dm-sans': ['DM Sans', 'Helvetica', 'sans-serif']
+				'dm-sans': ['DM Sans', 'Helvetica', 'sans-serif'],
+				'jetbrains-mono': ['JetBrains Mono', 'monospace'],
 			}
 		}
 	},

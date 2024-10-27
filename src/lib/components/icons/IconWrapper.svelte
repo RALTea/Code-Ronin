@@ -14,7 +14,7 @@
 </div>
 
 <style>
-	.icon-wrapper > * {
+	.icon-wrapper > :global(*) {
 		width: var(--icon-size);
 		height: var(--icon-size);
 	}

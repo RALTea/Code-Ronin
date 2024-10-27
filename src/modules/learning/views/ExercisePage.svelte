@@ -14,11 +14,8 @@
 	let task: Task | undefined = $state();
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
-	let inputCode: string = $state(`const time: number = 1000;
-const test = "hello"
-
-const sayHello = (thing?: string) => {
-    console.debug(thing ?? "Hello")
+	let inputCode: string = $state(`const printalphabet = () => {
+    return "a"
 }`)
 
 	onMount(async () => {
@@ -30,16 +27,22 @@ const sayHello = (thing?: string) => {
 		runningCode = true;
 		const judgeRepository = JudgeEvaluationRepository();
 		runExercise({
-			data: { apprenticeId: '1', language: 'typescript5' },
-			deps: {
 				evaluateSolution: judgeRepository.evaluateSolution,
-				fetchApprenticeSolution: async () => inputCode
-			}
-		})
-			.execute()
+				getApprenticeSolution: async () => inputCode,
+				getTestCases: async () => {
+					const response = await fetch('/tests/Printalphabet.test.ts')
+					const testCases = await response.text()
+					return testCases
+				},
+			})
+			.execute({ apprenticeId: '1', language: 'typescript5-vitest', taskId: '1' })
 			.then((res) => {
 				console.debug('Result:', res);
-				result = res;
+				if (!res.isSuccess) return console.error('Error running code:', res.message);
+				result = res.data;
+			})
+			.catch((err) => {
+				console.error('Error running code:', err);
 			})
 			.finally(() => {
 				runningCode = false;

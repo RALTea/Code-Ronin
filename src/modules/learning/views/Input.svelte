@@ -34,6 +34,6 @@
   </header>
   <div id="input" class="flex-1 rounded-lg min-h-0">
     <!-- <textarea bind:value class="flex-1 bg-purple-400 rounded-lg font-space-mono p-4 w-full h-48"></textarea> -->
-    <MonacoEditor height={cardHeight} bind:value={value}/>
+    <MonacoEditor height={cardHeight} bind:value={value} />
   </div>
 </Card>

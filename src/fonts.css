@@ -29,3 +29,9 @@
   font-weight: 700;
   font-style: italic;
 }
+
+@font-face {
+  font-family: 'Jetbrains Mono';
+  src: url('/fonts/JetBrainsMonoNerdFontMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { hideEffect } from '$lib/utils/svelte.utils';
 	import type * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -8,11 +9,12 @@
 	};
 	let { height = 600, value = $bindable() }: Props = $props();
 
-	let editor: Monaco.editor.IStandaloneCodeEditor;
+	let editor: Monaco.editor.IStandaloneCodeEditor | undefined = undefined;
 	let monaco: typeof Monaco | undefined;
 	let theme: Monaco.editor.IStandaloneThemeData | undefined;
 	let editorContainer: HTMLElement | undefined = $state();
 	let initCompleted = $state(false);
+	$inspect(initCompleted, height, value);
 
 	onMount(async () => {
 		monaco = (await import('$lib/monaco')).default;
@@ -23,7 +25,7 @@
 	});
 
 	$effect(() => {
-		height = height || 600;
+		height;
 		initCompleted;
 		initEditor();
 	});
@@ -36,7 +38,6 @@
 		monaco.editor.getModels().forEach((model) => model.dispose());
 		editor?.dispose();
 
-		console.debug('Effect Monaco');
 		monaco.editor.defineTheme('monokai', theme as any);
 		monaco.editor.setTheme('monokai');
 
@@ -44,11 +45,19 @@
 		editor = monaco.editor.create(editorContainer, {
 			fontSize: 14
 		});
-		const model = monaco.editor.createModel(value ?? 'console.log("Hello, world!")', 'typescript');
-		editor.setModel(model);
-		editor.onDidChangeModelContent(() => {
-			value = editor.getValue();
-		});
+
+		hideEffect(() => {
+			if (!editor) return;
+			const model = monaco?.editor.createModel(
+				$state.snapshot(value) ?? 'console.log("Hello, world!")',
+				'typescript'
+			);
+			if (!model) return;
+			editor.onDidChangeModelContent(() => {
+				value = editor?.getValue();
+			});
+			editor.setModel(model);
+		})
 	};
 
 	onDestroy(() => {

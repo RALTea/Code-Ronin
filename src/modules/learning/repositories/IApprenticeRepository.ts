@@ -2,3 +2,4 @@ import type { ApprenticeProfileSummary } from '$learning/aggregates/ApprenticePr
 
 export type FetchApprenticeSolution = (id: string) => Promise<string>;
 export type FetchApprenticeProfileSummary = (id: string) => Promise<ApprenticeProfileSummary>;
+export type FetchTestCases = (id: string) => Promise<string>;
