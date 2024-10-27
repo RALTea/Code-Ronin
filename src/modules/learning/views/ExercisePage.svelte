@@ -18,7 +18,7 @@
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
 	let inputCode: string = $state(`const printalphabet = () => {
-    return "a"
+    return "abcdefghijklmnopqrstuvwxyz"
 }`)
 
 	onMount(async () => {

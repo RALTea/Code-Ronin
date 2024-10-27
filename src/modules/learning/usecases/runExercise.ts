@@ -5,6 +5,7 @@ import { FetchTestCasesError } from '$learning/errors/FetchTestCasesError';
 import * as IApprenticeRepository from '$learning/repositories/IApprenticeRepository';
 import type { IEvaluationRepository } from '$learning/repositories/IEvaluationReposiotry';
 import { CodeBuilder } from '$learning/services/CodeBuilder';
+import { OutputParser } from '$learning/services/OutputParser';
 import {
 	UseCaseResponseBuilder,
 	type InputFactory,
@@ -53,6 +54,8 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 					.build();
 				console.debug('codeToBeEvaluated', codeToBeEvaluated);
 				result = await evaluateSolution(codeToBeEvaluated, language);
+				if (result.success) result.message = OutputParser(result.message ?? '').formatSuccess().get();
+				else result.message = OutputParser(result.message ?? '').formatError().get();
 			} catch (error) {
 				throw new FetchApprenticeSolutionError(extractError(error));
 			}
