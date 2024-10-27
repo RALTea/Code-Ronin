@@ -1,17 +1,18 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import type { ExerciseAttemptResult } from '$learning/aggregates/ExerciseAttemptResult';
 	import type { Task } from '$learning/domain/Task';
+	import ProgressTree from '$learning/progression/views/ProgressTree.svelte';
 	import { InMemoryTaskRepository } from '$learning/repositories/InMemoryTaskRepository';
 	import { JudgeEvaluationRepository } from '$learning/repositories/JudgeEvaluationRepository';
 	import { runExercise } from '$learning/usecases/runExercise';
+	import { trpc } from '$lib/clients/trpc';
+	import Loading from '$lib/components/layout/Loading.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import { onMount } from 'svelte';
 	import Input from './Input.svelte';
 	import Instructions from './Instructions.svelte';
 	import Output from './Output.svelte';
-	import Loading from '$lib/components/layout/Loading.svelte';
-	import { trpc } from '$lib/clients/trpc';
-	import { page } from '$app/stores';
 
 	const taskRepository = InMemoryTaskRepository();
 	let task: Task | undefined = $state();
@@ -53,7 +54,8 @@
 	};
 </script>
 
-<div class="h-screen max-h-screen grid grid-rows-[auto_1fr]">
+<div class="h-screen max-h-screen grid grid-rows-[auto_1fr] grid-cols-[auto_1fr]">
+	<ProgressTree />
 	<Navbar class="row-auto" />
 	{#if task}
 		<div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 pt-0 p-4 gap-4 h-full min-h-fit">

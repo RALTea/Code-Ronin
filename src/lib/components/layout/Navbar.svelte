@@ -48,7 +48,7 @@
 {/snippet}
 
 <nav
-	class="h-20 bg-bg-dark rounded-lg m-4 shadow-[.15rem_.15rem_.2rem] shadow-lightless flex items-center px-4 py-2 {className}"
+	class="h-20 bg-bg-dark rounded-lg m-4 shadow-[.0rem_.15rem_.2rem] shadow-lightless flex items-center px-4 py-2 {className}"
 >
 	<div class="w-4/5 h-full flex items-center">
 		<div class="flex">
