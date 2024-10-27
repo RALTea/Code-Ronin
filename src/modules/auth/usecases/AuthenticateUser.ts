@@ -1,48 +1,56 @@
+import type {
+	IUserRepositoryCreateUser,
+	IUserRepositoryGetByEmail,
+	IUserRepositoryGetUser
+} from '$auth/interfaces/IUserRepository';
+import type { InputFactory, OutputFactory, UseCase } from '$lib/interfaces/UseCase';
+import type { IAuthTokenProvider } from '$auth/interfaces/IAuthTokenProvider';
 import type { LoginDto } from '$auth/dto/LoginDto';
-import type { IUserRepository } from '$auth/interfaces/IUserRepository';
-import { JWTAuthTokenProvider } from '$auth/services/JWTAuthTokenProvider';
-import { GITEA_CLIENT_SECRET } from '$env/static/private';
-import type { InputFactory, UseCase, UseCaseResponse } from '$lib/interfaces/UseCase';
-import type { IAuthProvider } from '$auth/interfaces/IAuthProvider';
 
 type Input = InputFactory<
 	LoginDto,
 	{
-		authProvider: IAuthProvider;
-		// TODO: Check this changes
-		userRepository: IUserRepository;
+		tokenProvider: IAuthTokenProvider;
+		userRepository: IUserRepositoryCreateUser & IUserRepositoryGetByEmail;
+		getUser: IUserRepositoryGetUser['getUser'];
 	}
 >;
-// TODO: en utilisant la output factory, on se retrouve avec Promise<Promise<Result>>
-type Output = UseCaseResponse<string>;
 
-export const LoginUseCase: UseCase<Input, Output> = ({ dependencies, data }: Input) => {
-	const { authProvider, userRepository } = dependencies;
+type Output = OutputFactory<string>;
 
+export const LoginUseCase: UseCase<Input, Output> = (dependencies) => {
+	const { userRepository, tokenProvider, getUser } = dependencies;
 	return {
-		execute: async () => {
-			const { access_token } = await authProvider.validateAuthorizationCode(data, {
-				credentials: GITEA_CLIENT_SECRET,
-				authenticateWith: 'request_body'
-			});
+		execute: async (data) => {
+			try {
+				const user = await getUser(data.code);
+				const userInDb = await userRepository.getApprenticeByGiteaEmail(user.email);
 
-			const user = await userRepository.getUserById(access_token);
-			if (!user) {
+				if (userInDb) {
+					const token = tokenProvider.generateToken(userInDb);
+					return {
+						isSuccess: true,
+						status: 200,
+						data: token
+					};
+				}
+
+				const createdUser = await userRepository.createUser(user);
+				const token = tokenProvider.generateToken(createdUser);
+
+				return {
+					isSuccess: true,
+					status: 200,
+					data: token
+				};
+			} catch (error) {
+				console.log('Error :', error);
 				return {
 					isSuccess: false,
-					status: 401,
-					message: 'User not found'
+					status: 400,
+					message: "Quelque chose c'est mal passé veuillez réessayer plus tard."
 				};
 			}
-			await userRepository.createUser(user);
-			// TODO: Inject as dependency
-			const token = JWTAuthTokenProvider().generateToken(user);
-
-			return {
-				isSuccess: true,
-				status: 200,
-				data: token
-			};
 		}
 	};
 };

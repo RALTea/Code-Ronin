@@ -11,7 +11,7 @@ Welcome to your first JavaScript exercise! We'll start with the classic "Hello, 
 5. Type the following line exactly as shown:
 
    ```javascript
-   console.log("Hello, World!");
+   console.log('Hello, World!');
    ```
 
 6. Press Enter to run the code.

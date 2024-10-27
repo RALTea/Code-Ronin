@@ -1,5 +1,5 @@
 export type ExerciseAttemptResult = {
-	id: string,
-	message?: string,
-	success: boolean,
-}
+	id: string;
+	message?: string;
+	success: boolean;
+};

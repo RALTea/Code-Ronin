@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Card from '$lib/components/cards/Card.svelte';
 
-  type OutputProps = {
+	type OutputProps = {
 		message?: string;
-  };
-  let { message }: OutputProps = $props();
+	};
+	let { message }: OutputProps = $props();
 </script>
 
 <Card class="p-4 pt-2 w-full row-span-1 h-full flex flex-col">

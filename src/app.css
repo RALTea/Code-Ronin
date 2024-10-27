@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
 html {
-  @apply bg-bg-medium font-dm-sans text-white;
+	@apply bg-bg-medium font-dm-sans text-white;
 }
 
-input, textarea {
-  @apply focus-visible:outline-primary-light focus-visible:outline-none
+input,
+textarea {
+	@apply focus-visible:outline-primary-light focus-visible:outline-none;
 }
 
 .shine {

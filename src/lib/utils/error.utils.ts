@@ -3,4 +3,4 @@ export const extractError = (error: unknown): string => {
 		return error.message;
 	}
 	return 'Unknown error';
-}
+};
