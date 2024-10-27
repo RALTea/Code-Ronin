@@ -7,8 +7,8 @@ export const InMemoryTaskRepository = (): ITaskRepository => {
 			return {
 				id: taskId,
 				instructions: await instructions,
-				exp: 100,
+				exp: 100
 			};
-		},
-	}
-}
+		}
+	};
+};

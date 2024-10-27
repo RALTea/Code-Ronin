@@ -1,14 +1,16 @@
 import type { StatusCode } from '$lib/utils/http.utils';
 
-export type UseCaseResponse<T> = {
-	isSuccess: true;
-	status: StatusCode;
-	data: T;
-} | {
-	isSuccess: false;
-	status: StatusCode;
-	message: string;
-}
+export type UseCaseResponse<T> =
+	| {
+			isSuccess: true;
+			status: StatusCode;
+			data: T;
+	  }
+	| {
+			isSuccess: false;
+			status: StatusCode;
+			message: string;
+	  };
 
 export const UseCaseResponseBuilder = {
 	success: <T>(status: StatusCode, data: T): UseCaseResponse<T> => ({
@@ -21,12 +23,12 @@ export const UseCaseResponseBuilder = {
 		status,
 		message
 	})
-}
+};
 
 export type InputFactory<TData, TDeps> = {
 	data: TData;
 	dependencies: TDeps;
-}
+};
 
 export type OutputFactory<T> = UseCaseResponse<T>;
 
@@ -36,8 +38,6 @@ export type UseCase<Input extends { data: unknown; dependencies: unknown }, Outp
 	execute(data: Input['data']): Promise<Output>;
 };
 
-
 export type UseCaseSync<Input, Output> = (input: Input) => {
 	execute(): Output;
-}
-
+};

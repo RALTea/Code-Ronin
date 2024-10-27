@@ -1,12 +1,27 @@
-import type { User } from '$auth/entities/User';
+import type { Apprentice, ApprenticeWhitoutId } from '$auth/entities/Apprentice';
 
 export interface IUserRepositoryCreateUser {
-	createUser(user: Omit<User, 'id'>): Promise<void>;
+	createUser(user: ApprenticeWhitoutId): Promise<Apprentice>;
 }
+
+export type IUserRepositoryGetByAccessToken = {
+	getGiteaUserWithAccessToken(accessToken: string): Promise<ApprenticeWhitoutId>;
+};
+
+export type IUserRepositoryGetUser = {
+	getUser(identifier?: string): Promise<ApprenticeWhitoutId>;
+};
 
 export type IUserRepositoryGetById = {
-	getUserById(id: string): Promise<User | undefined>;
-}
+	getApprenticeByGiteaId(id: number): Promise<Apprentice | null>;
+};
 
-export type IUserRepository = IUserRepositoryCreateUser & IUserRepositoryGetById;
+export type IUserRepositoryGetByEmail = {
+	getApprenticeByGiteaEmail(email: string): Promise<Apprentice | null>;
+};
 
+export type IUserRepository = IUserRepositoryCreateUser &
+	IUserRepositoryGetByAccessToken &
+	IUserRepositoryGetById &
+	IUserRepositoryGetByEmail &
+	IUserRepositoryGetUser;

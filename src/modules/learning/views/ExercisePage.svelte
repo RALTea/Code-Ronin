@@ -9,6 +9,7 @@
 	import Input from './Input.svelte';
 	import Instructions from './Instructions.svelte';
 	import Output from './Output.svelte';
+	import Loading from '$lib/components/layout/Loading.svelte';
 
 	const taskRepository = InMemoryTaskRepository();
 	let task: Task | undefined = $state();
@@ -60,6 +61,6 @@ const sayHello = (thing?: string) => {
 			</main>
 		</div>
 	{:else}
-		<p>Task not loaded</p>
+		<Loading absolute />
 	{/if}
 </div>

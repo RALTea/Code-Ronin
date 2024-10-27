@@ -13,7 +13,7 @@ type Input = InputFactory<
 >;
 type Output = OutputFactory<ApprenticeProfileSummary>;
 
-export const getApprenticeProfileSummary: UseCase<Input, Output>= (dependencies) => {
+export const getApprenticeProfileSummary: UseCase<Input, Output> = (dependencies) => {
 	const { fetchApprenticeProfileSummary } = dependencies;
 	return {
 		execute: async (data) => {
