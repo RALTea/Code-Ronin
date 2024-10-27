@@ -14,12 +14,10 @@
 	let theme: Monaco.editor.IStandaloneThemeData | undefined;
 	let editorContainer: HTMLElement | undefined = $state();
 	let initCompleted = $state(false);
-	$inspect(initCompleted, height, value);
 
 	onMount(async () => {
 		monaco = (await import('$lib/monaco')).default;
 		theme = (await import('./raltech-theme.json')) as Monaco.editor.IStandaloneThemeData;
-		console.debug('Mounting Monaco');
 		initEditor();
 		initCompleted = true;
 	});

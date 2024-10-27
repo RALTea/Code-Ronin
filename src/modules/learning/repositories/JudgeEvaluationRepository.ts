@@ -62,9 +62,6 @@ export const JudgeEvaluationRepository = (): IEvaluationRepository => {
 			});
 			const decoded: JudgeResult = await result.json();
 
-			console.debug('Solution sent to judge', unicodeToBase64(solution));
-			console.debug('B64 from judge', decoded);
-			console.debug('Response from judge', base64ToUnicode(decoded.stdout ?? ''));
 			const message = base64ToUnicode(decoded.stdout ?? '') + base64ToCode(decoded.message ?? '');
 
 			return {

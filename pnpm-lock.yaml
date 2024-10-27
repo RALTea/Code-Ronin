@@ -101,7 +101,7 @@ importers:
         version: 5.0.0-next.262
       svelte-check:
         specifier: ^4.0.0
-        version: 4.0.4(picomatch@2.3.1)(svelte@5.0.0-next.262)(typescript@5.6.2)
+        version: 4.0.4(picomatch@4.0.2)(svelte@5.0.0-next.262)(typescript@5.6.2)
       sveltekit-superforms:
         specifier: ^2.19.1
         version: 2.19.1(@sveltejs/kit@2.6.3(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.262)(vite@5.4.8(@types/node@22.7.5)))(svelte@5.0.0-next.262)(vite@5.4.8(@types/node@22.7.5)))(@types/json-schema@7.0.15)(svelte@5.0.0-next.262)

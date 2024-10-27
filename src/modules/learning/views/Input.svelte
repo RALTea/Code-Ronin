@@ -17,7 +17,6 @@
   });
 
   const setSize = () => {
-    console.debug("Setting size");
     card = document.getElementById("input") as HTMLElement | null;
     if (!card) {
       throw new Error("Card not found");

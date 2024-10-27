@@ -10,6 +10,8 @@
 	import Instructions from './Instructions.svelte';
 	import Output from './Output.svelte';
 	import Loading from '$lib/components/layout/Loading.svelte';
+	import { trpc } from '$lib/clients/trpc';
+	import { page } from '$app/stores';
 
 	const taskRepository = InMemoryTaskRepository();
 	let task: Task | undefined = $state();
@@ -24,21 +26,21 @@
 	});
 
 	const runCode = () => {
-		console.debug('Running code');
 		runningCode = true;
 		const judgeRepository = JudgeEvaluationRepository();
 		runExercise({
 				evaluateSolution: judgeRepository.evaluateSolution,
 				getApprenticeSolution: async () => inputCode,
 				getTestCases: async () => {
-					const response = await fetch('/tests/Printalphabet.test.ts')
-					const testCases = await response.text()
-					return testCases
+					const result = await trpc($page).runExercises.getTestFileFromGithub.query({
+						campaignName: 'demo',
+						fileName: 'Printalphabet.test.ts',
+					});
+					return result ?? '';
 				},
 			})
 			.execute({ apprenticeId: '1', language: 'typescript5-vitest', taskId: '1' })
 			.then((res) => {
-				console.debug('Result:', res);
 				if (!res.isSuccess) return console.error('Error running code:', res.message);
 				result = res.data;
 			})
