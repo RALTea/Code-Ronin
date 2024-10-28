@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { ApprenticeProfileSummary } from '$learning/aggregates/ApprenticeProfileSummary';
-	import { getApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary';
+	import type { ApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary/aggregates/ApprenticeProfileSummary';
+	import { getApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary/getApprenticeProfileSummary';
 	import type { AddCss } from '$lib/utils/svelte.utils';
 	import { onMount } from 'svelte';
 	import Progress from '../forms/Progress.svelte';

@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { ExerciseAttemptResult } from '$learning/aggregates/ExerciseAttemptResult';
+	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
 	import type { Task } from '$learning/domain/Task';
-	import { JudgeEvaluationRepository } from '$learning/repositories/JudgeEvaluationRepository';
-	import { runExercise } from '$learning/usecases/runExercise';
+	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
+	import { runExercise } from '$learning/usecases/runExercise/runExercise';
 	import { trpc } from '$lib/clients/trpc';
 	import Loading from '$lib/components/layout/Loading.svelte';
-	import Input from './Input.svelte';
-	import Instructions from './Instructions.svelte';
-	import Output from './Output.svelte';
+	import Input from '../usecases/runExercise/views/Input.svelte';
+	import Instructions from '../usecases/runExercise/views/Instructions.svelte';
+	import Output from '../usecases/runExercise/views/Output.svelte';
 
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);

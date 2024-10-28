@@ -1,15 +1,15 @@
-import type { ApprenticeProfileSummary } from '$learning/aggregates/ApprenticeProfileSummary';
+import type { ApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary/aggregates/ApprenticeProfileSummary';
 import {
 	UseCaseResponseBuilder,
 	type InputFactory,
 	type OutputFactory,
 	type UseCase
 } from '$lib/interfaces/UseCase';
-import * as IApprenticeRepository from '../repositories/IApprenticeRepository';
+import * as IProfileSummaryRepository from './repositories/IProfileSummaryRepository';
 
 type Input = InputFactory<
 	{ apprenticeId: string },
-	{ fetchApprenticeProfileSummary: IApprenticeRepository.FetchApprenticeProfileSummary }
+	{ fetchApprenticeProfileSummary: IProfileSummaryRepository.FetchApprenticeProfileSummary }
 >;
 type Output = OutputFactory<ApprenticeProfileSummary>;
 

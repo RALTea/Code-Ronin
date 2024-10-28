@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { TaskTreeItem } from '$learning/progression/aggregate/TaskTreeItem';
-	import { getProgressionUseCase } from '$learning/progression/getProgressionUseCase';
-	import ProgressTree from '$learning/progression/views/ProgressTree.svelte';
-	import { TaskStore } from '$learning/stores/currentTask.svelte';
+	import type { TaskTreeItem } from '$learning/usecases/getProgression/aggregate/TaskTreeItem';
+	import { getProgressionUseCase } from '$learning/usecases/getProgression/getProgressionUseCase';
+	import ProgressTree from '$learning/usecases/getProgression/views/ProgressTree.svelte';
+	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import { onMount, type Snippet } from 'svelte';
 
@@ -11,7 +11,6 @@
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
-  let currentTaskId = $derived($page.params.id);
 
 	onMount(() => {
 		const unsubscribe = page.subscribe(({params}) => {
@@ -27,7 +26,7 @@
 						id: '1',
 						name: 'Task 1',
 						exp: 1,
-						instructions: '# Task nb 1\n\n## Do Something',
+						instructions: '# Print Alphabet\n\nCreate function "printAlphabet" that prints the alphabet',
 						isMiniboss: true,
 						nextTaskId: '2',
 						isLocked: false,

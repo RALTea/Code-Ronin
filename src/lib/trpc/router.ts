@@ -1,6 +1,6 @@
 import { authRouter } from '$lib/trpc/routes/auth.route';
 import { t } from '$lib/trpc/t';
-import RunExercisesRouter from '$learning/routers/run-exercises'
+import RunExercisesRouter from '$learning/usecases/runExercise/routers/run-exercises'
 
 export const router = t.router({
 	authRouter,

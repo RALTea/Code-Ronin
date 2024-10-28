@@ -2,7 +2,7 @@ import { env } from '$env/dynamic/public';
 import type { Language } from '$learning/domain/Language';
 import { base64ToCode, base64ToUnicode, unicodeToBase64 } from '$lib/utils/b64.utils';
 import { z } from 'zod';
-import type { IEvaluationRepository } from './IEvaluationReposiotry';
+import type { EvaluateSolution } from './IRunExerciseRepository';
 
 type JudgeSubmissionPayload = {
 	source_code: string;
@@ -45,7 +45,10 @@ const mapLanguageToJudgeLanguageId = (language: Language): number => {
 	}
 };
 
-export const JudgeEvaluationRepository = (): IEvaluationRepository => {
+type JudgeEvaluationRepository = {
+	evaluateSolution: EvaluateSolution;
+}
+export const JudgeEvaluationRepository = (): JudgeEvaluationRepository => {
 	return {
 		evaluateSolution: async (solution: string, language: Language) => {
 			const url = `${env.PUBLIC_JUDGE_API}/submissions?wait=true&base64_encoded=true`;

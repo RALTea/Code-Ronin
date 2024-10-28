@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { TaskStore } from '$learning/stores/currentTask.svelte';
+	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import ExercisePage from '$learning/views/ExercisePage.svelte';
 
 	let currentTask = $derived.by(() => {
