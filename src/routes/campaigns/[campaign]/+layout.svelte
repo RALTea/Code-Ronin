@@ -15,7 +15,6 @@
 	onMount(() => {
 		const unsubscribe = page.subscribe(({params}) => {
 			const taskId = params.task;
-			console.debug('updating current task from subscribe', taskId);
       const taskToLoad = TaskStore.allTasks.find((task) => task.id === taskId);
 			TaskStore.currentTask = taskToLoad;
 		});

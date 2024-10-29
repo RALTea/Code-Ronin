@@ -1,7 +1,7 @@
 export type Validation = {
 	expectedStdout?: string;
 	expectedStderr?: string;
-	testFileIds?: string[];
+	testFileNames?: string[];
 	forbiddenSnippets?: string[];
 	mandatorySnippets?: string[];
 	taskId: string;

@@ -1,5 +1,5 @@
 export class FetchApprenticeSolutionError extends Error {
-	constructor(message: string = 'FetchApprenticeSolutionError: Unknown error') {
+	constructor(message: string = 'Unknown error') {
 		super(message);
 		this.name = 'FetchApprenticeSolutionError: ' + message;
 	}

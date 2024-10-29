@@ -1,6 +1,6 @@
 export class FetchTestCasesError extends Error {
-		constructor(message: string = 'FetchTestCasesError: Unknown error') {
+		constructor(message: string = 'Unknown error') {
 				super(message);
-				this.name = 'FetchTestCasesError';
+				this.name = 'FetchTestCasesError: ' + message;
 		}
 }

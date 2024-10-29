@@ -51,7 +51,6 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 					.replace('// (@@@*@@@)', apprenticeSolution)
 					.removeComments()
 					.build();
-				console.debug('codeToBeEvaluated', codeToBeEvaluated);
 				result = await evaluateSolution(codeToBeEvaluated, language);
 				if (result.success) result.message = OutputParser(result.message ?? '').formatSuccess().get();
 				else result.message = OutputParser(result.message ?? '').formatError().get();

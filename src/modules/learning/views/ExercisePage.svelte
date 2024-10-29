@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
 	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
-	import type { Task } from '$learning/domain/Task';
 	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
 	import { runExercise } from '$learning/usecases/runExercise/runExercise';
 	import { trpc } from '$lib/clients/trpc';
@@ -16,19 +16,23 @@
     return "abcdefghijklmnopqrstuvwxyz"
 }`);
 
-	type Props = { task: Task };
-	let { task }: Props = $props();
+	type Props = { fetchTask: Promise<TaskDetails | undefined> };
+	let { fetchTask }: Props = $props();
 
 	const runCode = () => {
 		runningCode = true;
 		const judgeRepository = JudgeEvaluationRepository();
 		runExercise({
 			evaluateSolution: judgeRepository.evaluateSolution,
-			getApprenticeSolution: async () => inputCode,
+			getApprenticeSolution: async () => {
+				return inputCode
+			},
 			getTestCases: async () => {
-				const result = await trpc($page).runExercises.getTestFileFromGithub.query({
-					campaignName: 'demo',
-					fileName: 'Printalphabet.test.ts'
+				const task = await fetchTask;
+				const fileName = task?.validation.testFileNames?.at(0) ?? '';
+				const result = await trpc($page).learning.runExercises.getTestFileFromGithub.query({
+					campaignName: $page.params.campaign,
+					fileName: fileName,
 				});
 				return result ?? '';
 			}
@@ -47,16 +51,20 @@
 	};
 </script>
 
-{#if task}
-	<div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 pt-0 p-4 gap-4 h-full min-h-fit">
-		<aside class="prose prose-invert text-white h-full max-w-full row-span-2">
-			<Instructions {...task}></Instructions>
-		</aside>
-		<main class="flex-1 space-y-4 max-h-full">
-			<Input bind:value={inputCode} {runCode} />
-			<Output message={runningCode ? 'Loading...' : result?.message} />
-		</main>
-	</div>
-{:else}
-	<Loading absolute />
-{/if}
+<div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 pt-0 p-4 gap-4 h-full min-h-fit">
+	<aside class="prose prose-invert text-white h-full max-w-full row-span-2">
+		{#await fetchTask}
+			<Loading absolute />
+		{:then task}
+			{#if task}
+				<Instructions instructions={task.instructions}></Instructions>
+			{:else}
+				<p>No Task</p>
+			{/if}
+		{/await}
+	</aside>
+	<main class="flex-1 space-y-4 max-h-full">
+		<Input bind:value={inputCode} {runCode} />
+		<Output message={runningCode ? 'Loading...' : result?.message} />
+	</main>
+</div>

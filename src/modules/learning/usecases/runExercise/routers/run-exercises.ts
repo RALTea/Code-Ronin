@@ -1,6 +1,6 @@
+import { env } from '$env/dynamic/private';
 import { t } from '$lib/trpc/t';
 import { z } from 'zod';
-import { env } from '$env/dynamic/private';
 
 const router = t.router({
 	getTestFileFromGithub: t.procedure
