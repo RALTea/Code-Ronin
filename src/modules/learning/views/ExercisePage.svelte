@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { user } from '$auth/stores/UserStore';
 	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
 	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
 	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
-	import { PrismaAttemptRepository } from '$learning/usecases/runExercise/repositories/PrismaAttemptRepository';
 	import { runExercise } from '$learning/usecases/runExercise/runExercise';
 	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
 	import { trpc } from '$lib/clients/trpc';
@@ -50,9 +50,15 @@
 			.catch((err) => {
 				console.error('Error running code:', err);
 			})
-			.finally(() => {
+			.finally(async () => {
 				runningCode = false;
 				LastRun.update();
+				if (result?.success) {
+					const task = await fetchTask;
+					console.debug('Task:', task);
+					if (!task || !task.nextTasksIds || task.nextTasksIds.length !== 1) return;
+					await goto(`/campaigns/${$page.params.campaign}/${$page.params.questId}/${task.nextTasksIds.at(0)}`);
+				}
 			});
 	};
 </script>

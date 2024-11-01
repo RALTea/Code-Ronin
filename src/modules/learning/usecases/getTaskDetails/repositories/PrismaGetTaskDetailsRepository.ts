@@ -13,11 +13,12 @@ export const PrismaGetTaskDetailsRepository = (): _PrismaGetTaskDetailsRepositor
 			const task = await prisma.task.findUnique({
 				where: { id },
 				include: {
+					nextTasks: true,
 					validations: {
 						include: {
 							snippets: true
 						}
-					}
+					},
 				}
 			});
 			if (!task) throw new TaskNotFound(`Task with id ${id} not found`);
@@ -39,7 +40,8 @@ export const PrismaGetTaskDetailsRepository = (): _PrismaGetTaskDetailsRepositor
 			return {
 				id: task.id,
 				instructions: task.instructions,
-				validation: validation
+				validation: validation,
+				nextTasksIds: task.nextTasks ? task.nextTasks.map(task => task.id) : undefined
 			}
 		}
 	};

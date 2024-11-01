@@ -4,4 +4,5 @@ export type TaskDetails = {
 	id: string;
 	instructions: string;
 	validation: Validation;
+	nextTasksIds: string[] | undefined;
 }
