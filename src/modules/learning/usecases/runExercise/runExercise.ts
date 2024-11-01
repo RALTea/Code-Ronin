@@ -1,8 +1,8 @@
 import type { Language } from '$learning/domain/Language';
 import { FetchApprenticeSolutionError } from '$learning/errors/FetchApprenticeSolutionError';
 import { FetchTestCasesError } from '$learning/errors/FetchTestCasesError';
-import * as IRunExerciseRepository from '$learning/usecases/runExercise/repositories/IRunExerciseRepository';
 import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
+import * as IRunExerciseRepository from '$learning/usecases/runExercise/repositories/IRunExerciseRepository';
 import { CodeBuilder } from '$learning/usecases/runExercise/services/CodeBuilder';
 import { OutputParser } from '$learning/usecases/runExercise/services/OutputParser';
 import {

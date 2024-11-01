@@ -1,6 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { t } from '$lib/trpc/t';
 import { z } from 'zod';
+import { TestCasesNotFoundError } from '../errors/TestCasesNotFoundError';
 
 const router = t.router({
 	getTestFileFromGithub: t.procedure
@@ -35,6 +36,7 @@ const router = t.router({
 				return fileContent;
 			} catch (error) {
 				console.error('Failed to fetch the file content:', error);
+				throw new TestCasesNotFoundError('Failed to fetch the file content');
 			}
 		})
 });
