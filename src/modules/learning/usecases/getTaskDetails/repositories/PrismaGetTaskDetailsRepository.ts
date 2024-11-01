@@ -38,7 +38,7 @@ export const PrismaGetTaskDetailsRepository = (): _PrismaGetTaskDetailsRepositor
 
 			return {
 				id: task.id,
-				instructions: task.instruction,
+				instructions: task.instructions,
 				validation: validation
 			}
 		}

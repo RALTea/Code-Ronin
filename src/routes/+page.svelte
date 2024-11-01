@@ -1,1 +1,1 @@
-<a class="underline p-8 block" href="/campaigns/demo/1">Go to demo</a>
+<a class="underline p-8 block" href="/campaigns/demo/035187b2-4872-4a22-ab10-5129447ba326/1">Go to demo</a>

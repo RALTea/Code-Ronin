@@ -62,12 +62,13 @@ model Quest {
 }
 
 model Task {
-  id          String @id @default(uuid())
-  name        String
-  instruction String
-  order       Int
-  gainedPoint Int?
-  answerType  String
+  id           String  @id @default(uuid())
+  name         String
+  instructions String
+  order        Int
+  exp          Int     @default(1)
+  answerType   String
+  isMiniboss   Boolean @default(false)
 
   nextTasks     Task[] @relation("Tasks")
   previousTasks Task[] @relation("Tasks")
@@ -78,7 +79,7 @@ model Task {
   quest   Quest  @relation(fields: [questId], references: [id])
   questId String
 
-  attempts Attempt[]
+  attempts    Attempt[]
   validations Validation[]
 }
 
@@ -92,23 +93,22 @@ model Attempt {
   apprenticeId String
   apprentice   Apprentice @relation(fields: [apprenticeId], references: [id], onDelete: Cascade)
 
-  fileId String
-  file   Task   @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  taskId String
+  tasks  Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
 }
 
 model Validation {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  testFileUrl String?
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  testFileUrl    String?
   expectedStdout String?
   expectedStderr String?
-  
+
   snippets Snippet[]
 
-
   taskId String
-  task  Task  @relation(fields: [taskId], references: [id])
+  task   Task   @relation(fields: [taskId], references: [id])
 }
 
 model Snippet {
@@ -119,5 +119,5 @@ model Snippet {
   type      String // "FORBIDDEN" | "REQUIRED"
 
   validationId String
-  validation Validation @relation(fields: [validationId], references: [id])
+  validation   Validation @relation(fields: [validationId], references: [id])
 }

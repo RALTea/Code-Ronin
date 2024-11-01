@@ -1,16 +1,20 @@
 import type { StatusCode } from '$lib/utils/http.utils';
 
+export type UseCaseResponseSuccess<T> = {
+	isSuccess: true;
+	status: StatusCode;
+	data: T;
+};
+export type UseCaseResponseError = {
+	isSuccess: false;
+	status: StatusCode;
+	message: string;
+};
+
 export type UseCaseResponse<T> =
-	| {
-			isSuccess: true;
-			status: StatusCode;
-			data: T;
-	  }
-	| {
-			isSuccess: false;
-			status: StatusCode;
-			message: string;
-	  };
+	| UseCaseResponseSuccess<T>
+	| UseCaseResponseError;
+	
 
 export const UseCaseResponseBuilder = {
 	success: <T>(status: StatusCode, data: T): UseCaseResponse<T> => ({

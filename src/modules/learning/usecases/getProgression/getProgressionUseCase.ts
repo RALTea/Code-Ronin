@@ -1,14 +1,20 @@
 import type { Task } from '$learning/domain/Task';
-import type { InputFactory, UseCase } from '$lib/interfaces/UseCase';
+import { UseCaseResponseBuilder, type InputFactory, type OutputFactory, type UseCase } from '$lib/interfaces/UseCase';
+import type { ApprenticeProgression } from './aggregates/ApprenticeProgression';
+import * as IProgressionRepository from './repositories/IProgressionRepository';
 
 type Input = InputFactory<
-	void,
 	{
-		getUnorderedTasks: () => Promise<Task[]>;
+		apprenticeId: string;
+		questId: string;
+	},
+	{
+		getUnorderedTasks: IProgressionRepository.GetTasksFromQuest;
+		getApprenticeAttemptsOnQuest: IProgressionRepository.GetApprenticeAttemptsOnQuest
 	}
 >;
 
-type Output = Task[];
+type Output = OutputFactory<ApprenticeProgression>;
 
 const sortTasks = (unorderedTasks: Task[]): Task[] => {
 	const tasks = [...unorderedTasks];
@@ -43,12 +49,32 @@ const sortTasks = (unorderedTasks: Task[]): Task[] => {
 }
 
 export const getProgressionUseCase: UseCase<Input, Output> = (deps) => {
-	const { getUnorderedTasks } = deps;
+	const { getUnorderedTasks, getApprenticeAttemptsOnQuest } = deps;
 	return {
-		execute: async () => {
-			const unorderedTasks = await getUnorderedTasks();
+		execute: async (data) => {
+			const { apprenticeId, questId } = data;
+			const unorderedTasks = await getUnorderedTasks(questId);
 			const orderedTasks = sortTasks(unorderedTasks);
-			return orderedTasks;
+			const apprenticeAttempts = await getApprenticeAttemptsOnQuest(apprenticeId, questId);
+
+			const result: ApprenticeProgression = {
+				tasks: orderedTasks.map((task) => ({
+					...task,
+					isCompleted: apprenticeAttempts.some((attempt) => attempt.taskId === task.id && attempt.success),
+					isLocked: false, // This is updated lower down for better readability
+				}))
+			}
+
+			// unlock tasks
+			result.tasks.forEach((task, index) => {
+				if (index === 0) {
+					task.isLocked = false;
+				} else {
+					const previousTask = result.tasks[index - 1];
+					task.isLocked = !previousTask.isCompleted;
+				}
+			});
+			return UseCaseResponseBuilder.success(200, result);
 		}
 	};
 };

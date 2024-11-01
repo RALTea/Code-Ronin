@@ -7,7 +7,7 @@
 	import { trpc } from '$lib/clients/trpc';
 
 	let currentTask: Promise<TaskDetails | undefined> = $derived.by(async () => {
-		const currentTaskId = $page.params.task;
+		const currentTaskId = $page.params.taskId;
 		const taskToLoad = TaskStore.allTasks.find((task) => task.id === currentTaskId);
 		TaskStore.currentTask = taskToLoad;
 		if (!taskToLoad) return undefined;
