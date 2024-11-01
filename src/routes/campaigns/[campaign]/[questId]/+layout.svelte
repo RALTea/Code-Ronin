@@ -4,11 +4,10 @@
 	import { getProgressionUseCase } from '$learning/usecases/getProgression/getProgressionUseCase';
 	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import ProgressTree from '$learning/usecases/getProgression/views/ProgressTree.svelte';
+	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import { onMount, type Snippet } from 'svelte';
-
-	let fetchTaskTreeItems: Promise<TaskTreeItem[]> = $state(Promise.resolve([] as TaskTreeItem[]));
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
@@ -19,30 +18,37 @@
 			const taskToLoad = TaskStore.allTasks.find((task) => task.id === taskId);
 			TaskStore.currentTask = taskToLoad;
 		});
+		// fetchTree();
+		return unsubscribe;
+	});
+
+	const fetchTree = async () => {
 		const questId = $page.params.questId;
-		fetchTaskTreeItems = getProgressionUseCase({
+		const res = await getProgressionUseCase({
 			getApprenticeAttemptsOnQuest: () =>
 				trpc($page).learning.getProgression.getApprenticeAttemptsOnQuest.query({ questId }),
 			getUnorderedTasks: () =>
 				trpc($page).learning.getProgression.getTasksFromQuest.query({ questId })
-		})
-			.execute({
-				questId,
-				apprenticeId: '-1' // provided by the server (authProcedure)
-			})
-			.then((res) => {
-				if (!res.isSuccess) return [];
-				// Do not reassign the array, otherwise the proxy will be lost
-				const taskItems = res.data.tasks;
-				TaskStore.allTasks.push(...taskItems);
-				return taskItems;
-			});
-		return unsubscribe;
+		}).execute({
+			questId,
+			apprenticeId: '-1' // provided by the server (authProcedure)
+		});
+		if (!res.isSuccess) return [];
+		// Do not reassign the array, otherwise the proxy will be lost
+		const taskItems = res.data.tasks;
+		TaskStore.allTasks.length = 0;
+		TaskStore.allTasks.push(...taskItems);
+		return taskItems;
+	};
+
+	let fetchTaskTreeItems: Promise<TaskTreeItem[]> = $derived.by(() => {
+		LastRun.time; // triggered by LastRun.update()
+		return fetchTree();
 	});
 </script>
 
 <div class="h-screen max-h-screen grid grid-rows-[auto_1fr] grid-cols-[auto_1fr]">
-	<ProgressTree items={fetchTaskTreeItems} />
+	<ProgressTree fetchItems={fetchTaskTreeItems} />
 	<Navbar class="row-auto" />
 	{@render children()}
 </div>

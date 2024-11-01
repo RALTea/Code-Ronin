@@ -12,6 +12,7 @@ import {
 	type UseCase
 } from '$lib/interfaces/UseCase';
 import { extractError } from '$lib/utils/error.utils';
+import type { ExerciseAttempt } from './aggregates/ExerciseAttempt';
 
 type Input = InputFactory<
 	{
@@ -23,13 +24,16 @@ type Input = InputFactory<
 		getApprenticeSolution: IRunExerciseRepository.FetchApprenticeSolution;
 		getTestCases: IRunExerciseRepository.FetchTestCases;
 		evaluateSolution: IRunExerciseRepository.EvaluateSolution;
+		successHandlers: IRunExerciseRepository.HandleSuccess[];
+		failHandlers: IRunExerciseRepository.HandleFail[];
 	}
 >;
 
 type Output = OutputFactory<ExerciseAttemptResult>;
 
 export const runExercise: UseCase<Input, Output> = (deps) => {
-	const { getApprenticeSolution, evaluateSolution, getTestCases } = deps;
+	const { getApprenticeSolution, evaluateSolution, getTestCases, successHandlers, failHandlers } =
+		deps;
 	return {
 		execute: async (data) => {
 			const { apprenticeId, language, taskId } = data;
@@ -46,18 +50,44 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 				throw new FetchTestCasesError(extractError(error));
 			}
 			let result: ExerciseAttemptResult;
+			let attempt: ExerciseAttempt = {
+				apprenticeId,
+				taskId,
+				apprenticeSolution,
+				id: '',
+				success: false,
+				message: ''
+			}
 			try {
 				const codeToBeEvaluated = CodeBuilder(testCases)
 					.replace('// (@@@*@@@)', apprenticeSolution)
 					.removeComments()
 					.build();
 				result = await evaluateSolution(codeToBeEvaluated, language);
-				if (result.success) result.message = OutputParser(result.message ?? '').formatSuccess().get();
-				else result.message = OutputParser(result.message ?? '').formatError().get();
+				attempt = {
+					...attempt,
+					...result
+				}
+
+				// Handle results
+				if (result.success) {
+					result.message = OutputParser(result.message ?? '')
+						.formatSuccess()
+						.get();
+					await Promise.all(successHandlers.map((handler) => handler(attempt)));
+				}
+				if (!result.success) {
+					result.message = OutputParser(result.message ?? '')
+						.formatError()
+						.get();
+					await Promise.all(failHandlers);
+				}
+
+				// Usecase completed; result might either be a success or a failure
+				return UseCaseResponseBuilder.success(200, result);
 			} catch (error) {
 				throw new FetchApprenticeSolutionError(extractError(error));
 			}
-			return UseCaseResponseBuilder.success(200, result);
 		}
 	};
 };

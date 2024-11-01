@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { user } from '$auth/stores/UserStore';
 	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
 	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
 	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
+	import { PrismaAttemptRepository } from '$learning/usecases/runExercise/repositories/PrismaAttemptRepository';
 	import { runExercise } from '$learning/usecases/runExercise/runExercise';
+	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Loading from '$lib/components/layout/Loading.svelte';
 	import Input from '../usecases/runExercise/views/Input.svelte';
@@ -35,9 +38,11 @@
 					fileName: fileName,
 				});
 				return result ?? '';
-			}
+			},
+			successHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate],
+			failHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate],
 		})
-			.execute({ apprenticeId: '1', language: 'typescript5-vitest', taskId: '1' })
+			.execute({ apprenticeId: $user?.id ?? '-1', language: 'typescript5-vitest', taskId: '1' })
 			.then((res) => {
 				if (!res.isSuccess) return console.error('Error running code:', res.message);
 				result = res.data;
@@ -47,6 +52,7 @@
 			})
 			.finally(() => {
 				runningCode = false;
+				LastRun.update();
 			});
 	};
 </script>

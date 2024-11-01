@@ -2,9 +2,12 @@ import { env } from '$env/dynamic/private';
 import { t } from '$lib/trpc/t';
 import { z } from 'zod';
 import { TestCasesNotFoundError } from '../errors/TestCasesNotFoundError';
+import { authProcedure } from '$lib/trpc/middlewares/auth.middleware';
+import { PrismaAttemptRepository } from '../repositories/PrismaAttemptRepository';
+import { ExerciseAttemptSchema } from '../aggregates/ExerciseAttempt';
 
 const router = t.router({
-	getTestFileFromGithub: t.procedure
+	getTestFileFromGithub: authProcedure
 		.input(
 			z.object({
 				fileName: z.string(),
@@ -15,7 +18,7 @@ const router = t.router({
 			const { EXERCICES_REPO_URL, GITHUB_PAT_EXERCISES_REPO } = env;
 			const { fileName, campaignName } = input;
 
-			const url = `${EXERCICES_REPO_URL}/${campaignName}/${fileName}`
+			const url = `${EXERCICES_REPO_URL}/${campaignName}/${fileName}`;
 			try {
 				const response = await fetch(url, {
 					method: 'GET',
@@ -32,13 +35,21 @@ const router = t.router({
 				}
 
 				const fileContent = await response.text(); // Read the content as text
-				
+
 				return fileContent;
 			} catch (error) {
 				console.error('Failed to fetch the file content:', error);
 				throw new TestCasesNotFoundError('Failed to fetch the file content');
 			}
-		})
+		}),
+	handleSuccess: authProcedure.input(ExerciseAttemptSchema).mutation(async ({ input, ctx }) => {
+		const attemptRepository = PrismaAttemptRepository(ctx.prisma);
+		await attemptRepository.handleSuccess(input);
+	}),
+	handleFail: authProcedure.input(ExerciseAttemptSchema).mutation(async ({ input, ctx }) => {
+		const attemptRepository = PrismaAttemptRepository(ctx.prisma);
+		await attemptRepository.handleFail(input);
+	})
 });
 
 export default router;
