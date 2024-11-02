@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Loading from '$lib/components/layout/Loading.svelte';
+	import { onMount } from 'svelte';
 	import type { TaskTreeItem } from '../aggregates/TaskTreeItem';
 
 	type Props = {
@@ -14,6 +15,12 @@
 			return rect.top + rect.height / 2;
 		})
 	);
+	onMount(() => {
+		fetchItems.catch((error) => {
+			console.debug("Error caught in onMount", error)
+			// throw new Error(error)
+		})
+	})
 </script>
 
 {#snippet bullet(task: TaskTreeItem, index: number, isNextLocked: boolean)}

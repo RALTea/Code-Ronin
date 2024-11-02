@@ -7,6 +7,7 @@
 	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
 	import { runExercise } from '$learning/usecases/runExercise/runExercise';
 	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
+	import Bim from '$learning/usecases/runExercise/views/Bim.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Loading from '$lib/components/layout/Loading.svelte';
 	import Input from '../usecases/runExercise/views/Input.svelte';
@@ -18,6 +19,8 @@
 	let inputCode: string = $state(`const printalphabet = () => {
     return "abcdefghijklmnopqrstuvwxyz"
 }`);
+	let nextItemUrl: string = $state('');
+	let bimVisible: boolean = $state(false);
 
 	type Props = { fetchTask: Promise<TaskDetails | undefined> };
 	let { fetchTask }: Props = $props();
@@ -28,19 +31,19 @@
 		runExercise({
 			evaluateSolution: judgeRepository.evaluateSolution,
 			getApprenticeSolution: async () => {
-				return inputCode
+				return inputCode;
 			},
 			getTestCases: async () => {
 				const task = await fetchTask;
 				const fileName = task?.validation.testFileNames?.at(0) ?? '';
 				const result = await trpc($page).learning.runExercises.getTestFileFromGithub.query({
 					campaignName: $page.params.campaign,
-					fileName: fileName,
+					fileName: fileName
 				});
 				return result ?? '';
 			},
 			successHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate],
-			failHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate],
+			failHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate]
 		})
 			.execute({ apprenticeId: $user?.id ?? '-1', language: 'typescript5-vitest', taskId: '1' })
 			.then((res) => {
@@ -57,11 +60,24 @@
 					const task = await fetchTask;
 					console.debug('Task:', task);
 					if (!task || !task.nextTasksIds || task.nextTasksIds.length !== 1) return;
-					await goto(`/campaigns/${$page.params.campaign}/${$page.params.questId}/${task.nextTasksIds.at(0)}`);
+					nextItemUrl = `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task?.nextTasksIds?.at(0) ?? ''}`;
+					bimVisible = true;
 				}
 			});
 	};
+
+	const onContinue = async () => {
+		bimVisible = false;
+	};
+	const onBimOutroEnd = async () => {
+		await goto(nextItemUrl);
+		nextItemUrl = '';
+	};
 </script>
+
+{#if bimVisible}
+	<Bim {onContinue} onOutroEnd={onBimOutroEnd} />
+{/if}
 
 <div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 pt-0 p-4 gap-4 h-full min-h-fit">
 	<aside class="prose prose-invert text-white h-full max-w-full row-span-2">
