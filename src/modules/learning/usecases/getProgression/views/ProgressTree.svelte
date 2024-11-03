@@ -21,11 +21,6 @@
 	let currentWidth = tweened(maxWidth, { easing: cubicOut });
 	let animating = $state(false);
 
-	$inspect('animating', animating);
-
-
-	$inspect('nav width',navRef?.clientWidth, currentWidth);
-
 	$effect(() => {
 		if (!navRef) return;
 		isCollapsed;

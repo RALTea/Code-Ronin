@@ -14,17 +14,33 @@
 	let theme: Monaco.editor.IStandaloneThemeData | undefined;
 	let editorContainer: HTMLElement | undefined = $state();
 	let initCompleted = $state(false);
+	let observer: ResizeObserver | undefined;
+	let isObserving = $state(false);
 
 	onMount(async () => {
 		monaco = (await import('$lib/monaco')).default;
 		theme = (await import('./raltech-theme.json')) as Monaco.editor.IStandaloneThemeData;
+		observer = new ResizeObserver((entries) => {
+			const entry = entries[0];
+			if (!entry) return;
+			initEditor();
+		});
+
 		initEditor();
 		initCompleted = true;
+	});
+
+	onDestroy(() => {
+		observer?.disconnect();
 	});
 
 	$effect(() => {
 		height;
 		initCompleted;
+		if (!isObserving && observer) {
+			observer.observe(editorContainer!);
+			isObserving = true;
+		}
 		initEditor();
 	});
 
