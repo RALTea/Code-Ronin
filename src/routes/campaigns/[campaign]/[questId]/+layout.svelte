@@ -8,27 +8,26 @@
 	import { trpc } from '$lib/clients/trpc';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import { onMount, type Snippet } from 'svelte';
-
+	
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
-
+	
 	onMount(() => {
 		const unsubscribe = page.subscribe(({ params }) => {
 			const taskId = params.taskId;
 			const taskToLoad = TaskStore.allTasks.find((task) => task.id === taskId);
 			TaskStore.currentTask = taskToLoad;
 		});
-		// fetchTree();
 		return unsubscribe;
 	});
-
+	
 	const fetchTree = async () => {
 		const questId = $page.params.questId;
 		const res = await getProgressionUseCase({
 			getApprenticeAttemptsOnQuest: () =>
-				trpc($page).learning.getProgression.getApprenticeAttemptsOnQuest.query({ questId }),
+			trpc($page).learning.getProgression.getApprenticeAttemptsOnQuest.query({ questId }),
 			getUnorderedTasks: () =>
-				trpc($page).learning.getProgression.getTasksFromQuest.query({ questId })
+			trpc($page).learning.getProgression.getTasksFromQuest.query({ questId })
 		}).execute({
 			questId,
 			apprenticeId: '-1' // provided by the server (authProcedure)
@@ -40,11 +39,15 @@
 		TaskStore.allTasks.push(...taskItems);
 		return taskItems;
 	};
+	
+	let fetchTaskTreeItems: Promise<TaskTreeItem[]> = $state(fetchTree());
 
-	let fetchTaskTreeItems: Promise<TaskTreeItem[]> = $derived.by(() => {
-		LastRun.time; // triggered by LastRun.update()
-		return fetchTree();
-	});
+	// Run each time the LastRun.time changes (i.e. when LastRun.update() is called)
+	$effect(() => {
+		LastRun.time;
+		fetchTaskTreeItems = fetchTree()
+	})
+
 </script>
 
 <div class="h-screen max-h-screen grid grid-rows-[auto_1fr] grid-cols-[auto_1fr]">

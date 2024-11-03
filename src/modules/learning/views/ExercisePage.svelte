@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { user } from '$auth/stores/UserStore';
+	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
 	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
 	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
@@ -55,12 +56,12 @@
 			})
 			.finally(async () => {
 				runningCode = false;
-				LastRun.update();
 				if (result?.success) {
 					const task = await fetchTask;
 					console.debug('Task:', task);
 					if (!task || !task.nextTasksIds || task.nextTasksIds.length !== 1) return;
 					nextItemUrl = `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task?.nextTasksIds?.at(0) ?? ''}`;
+					LastRun.update();
 					bimVisible = true;
 				}
 			});
