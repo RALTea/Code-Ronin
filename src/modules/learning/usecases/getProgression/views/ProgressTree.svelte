@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import type { TaskTreeItem } from '../aggregates/TaskTreeItem';
 
 	type Props = {
@@ -47,7 +48,7 @@
 			class="flex items-center gap-2 relative cursor-pointer {task.isLocked
 				? 'cursor-not-allowed'
 				: 'cursor-pointer'}"
-			href={task.isLocked ? 'javascript:void(0)' : task.id}
+			href={task.isLocked ? 'javascript:void(0)' : `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task.id}`}
 		>
 			<div
 				class="absolute blur-md rounded-full z-20 {task.isCompleted
