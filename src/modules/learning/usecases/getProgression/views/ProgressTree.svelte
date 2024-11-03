@@ -1,12 +1,41 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import IconChevronsLeft from '$lib/components/icons/IconChevronsLeft.svelte';
+	import IconWrapper from '$lib/components/icons/IconWrapper.svelte';
+	import { cubicOut, linear } from 'svelte/easing';
+	import { tweened } from 'svelte/motion';
 	import type { TaskTreeItem } from '../aggregates/TaskTreeItem';
+	import { fade, slide } from 'svelte/transition';
 
 	type Props = {
 		fetchItems: Promise<TaskTreeItem[]>;
 	};
 	let { fetchItems }: Props = $props();
 	let treeItems: TaskTreeItem[] = $state([]);
+	const maxWidth = 15; // rem
+	const minWidth = 4; // rem
+
+	let isCollapsed = $state(false);
+
+	let navRef = $state<HTMLElement | undefined>(undefined);
+	let currentWidth = tweened(maxWidth, { easing: cubicOut });
+	let animating = $state(false);
+
+	$inspect('animating', animating);
+
+
+	$inspect('nav width',navRef?.clientWidth, currentWidth);
+
+	$effect(() => {
+		if (!navRef) return;
+		isCollapsed;
+		console.debug('navRef', navRef.clientWidth);
+		currentWidth.set(isCollapsed ? minWidth : maxWidth);
+		currentWidth.subscribe((value) => {
+			console.debug('currentWidth', value);
+			animating = value !== maxWidth;
+		})
+	});
 
 	// Run each time the fetchItems prop changes
 	$effect(() => {
@@ -26,6 +55,10 @@
 			return rect.top + rect.height / 2;
 		})
 	);
+
+	const toggleCollapse = () => {
+		isCollapsed = !isCollapsed;
+	};
 
 	// Skeleton data
 	const fakeTasks: TaskTreeItem[] = [
@@ -48,7 +81,9 @@
 			class="flex items-center gap-2 relative cursor-pointer {task.isLocked
 				? 'cursor-not-allowed'
 				: 'cursor-pointer'}"
-			href={task.isLocked ? 'javascript:void(0)' : `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task.id}`}
+			href={task.isLocked
+				? 'javascript:void(0)'
+				: `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task.id}`}
 		>
 			<div
 				class="absolute blur-md rounded-full z-20 {task.isCompleted
@@ -62,14 +97,14 @@
 					? 'h-7 w-7 mx-[.125rem] shadow-[inset_0_0px_.5rem_0_rgb(0_0_0)]'
 					: 'h-4 w-4 min-w-4 m-2 shadow-[inset_0_0px_.15rem_0_rgb(0_0_0)]'}"
 			></div>
-			{#if task.name}
-				<p class="font-space-mono {task.isLocked ? 'text-opacity-60 text-light' : ''}">
+			{#if task.name && !isCollapsed && !animating}
+				<p in:fade={{delay: 100}}
+				 class="font-space-mono {task.isLocked ? 'text-opacity-60 text-light' : ''}">
 					{task.name}
 				</p>
-			{:else}
+			{:else if task.name === ''}
 				<div class="flex flex-col w-full gap-2">
 					<p class="w-full bg-light">.</p>
-					<!-- <p class="w-full bg-light">.</p> -->
 				</div>
 			{/if}
 			{#if task.nextTaskId}
@@ -93,11 +128,12 @@
 {/snippet}
 
 <nav
-	class="bg-bg-dark w-60 row-span-2 my-4 rounded-lg shadow-[.0rem_.15rem_.2rem] shadow-lightless relative overflow-y-auto"
+	bind:this={navRef}
+	style:width={`${$currentWidth}rem`}
+	class="bg-bg-dark row-span-2 my-4 ml-4 rounded-lg shadow-[.0rem_.15rem_.2rem] shadow-lightless relative overflow-y-auto flex flex-col"
 >
 	{#if treeItems.length === 0}
 		{#await fetchItems}
-			<!-- <Loading absolute/> -->
 			<div class="opacity-50">
 				<ul class="space-y-12 py-8 p-4 animate-pulse">
 					{#each fakeTasks as task, index}
@@ -121,4 +157,16 @@
 			{/each}
 		</ul>
 	{/if}
+
+	<button
+		class="mt-auto p-4 mr-auto {isCollapsed
+			? 'rotate-180'
+			: 'rotate-0'} transition-transform duration-300
+		[&_svg]:stroke-lightless"
+		onclick={toggleCollapse}
+	>
+		<IconWrapper size="8">
+			<IconChevronsLeft />
+		</IconWrapper>
+	</button>
 </nav>
