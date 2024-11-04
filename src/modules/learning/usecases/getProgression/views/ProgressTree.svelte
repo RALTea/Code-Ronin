@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import IconChevronsLeft from '$lib/components/icons/IconChevronsLeft.svelte';
 	import IconWrapper from '$lib/components/icons/IconWrapper.svelte';
-	import { cubicOut, linear } from 'svelte/easing';
+	import { cubicOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
 	import type { TaskTreeItem } from '../aggregates/TaskTreeItem';
-	import { fade, slide } from 'svelte/transition';
+	import ProgressTreeItem from './ProgressTreeItem.svelte';
 
 	type Props = {
 		fetchItems: Promise<TaskTreeItem[]>;
@@ -21,16 +20,24 @@
 	let currentWidth = tweened(maxWidth, { easing: cubicOut });
 	let animating = $state(false);
 
+	// Run each time the collapse state changes (i.e. when the toggle button is clicked)
+	// The role of this effect is to update the width of the nav and the animation state
 	$effect(() => {
 		if (!navRef) return;
 		isCollapsed;
 		currentWidth.set(isCollapsed ? minWidth : maxWidth);
 		currentWidth.subscribe((value) => {
 			animating = value !== maxWidth;
-		})
+		});
 	});
+	
+	const toggleCollapse = () => {
+		isCollapsed = !isCollapsed;
+	};
 
 	// Run each time the fetchItems prop changes
+	// The role of this effect is to cache the fetched items, so the loading
+	// skeleton is displayed only once (not shown on each navigation)
 	$effect(() => {
 		fetchItems
 			.then((items) => {
@@ -49,10 +56,6 @@
 		})
 	);
 
-	const toggleCollapse = () => {
-		isCollapsed = !isCollapsed;
-	};
-
 	// Skeleton data
 	const fakeTasks: TaskTreeItem[] = [
 		{ id: '1', name: '', nextTaskId: '2' },
@@ -68,56 +71,21 @@
 	] as TaskTreeItem[];
 </script>
 
-{#snippet bullet(task: TaskTreeItem, index: number, isNextLocked: boolean)}
-	<li bind:this={treeElementsRefs[index]} class="min-h-12 max-h-12">
-		<a
-			class="flex items-center gap-2 relative cursor-pointer {task.isLocked
-				? 'cursor-not-allowed'
-				: 'cursor-pointer'}"
-			href={task.isLocked
-				? 'javascript:void(0)'
-				: `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task.id}`}
-		>
-			<div
-				class="absolute self-start blur-md rounded-full z-20 {task.isCompleted
-					? 'bg-primary-light'
-					: 'bg-light'} {task.isMiniboss ? 'h-7 w-7 mx-[.125rem]' : 'h-4 w-4 min-w-4 mx-2'}"
-			></div>
-			<div
-				class="rounded-full self-start z-10 shadow-black {task.isCompleted
-					? 'bg-primary-light'
-					: 'bg-light'} {task.isMiniboss
-					? 'h-7 w-7 mx-[.125rem] shadow-[inset_0_0px_.5rem_0_rgb(0_0_0)]'
-					: 'h-4 w-4 min-w-4 m-2 shadow-[inset_0_0px_.15rem_0_rgb(0_0_0)]'}"
-			></div>
-			{#if task.name && !isCollapsed && !animating}
-				<p in:fade={{delay: 100}}
-				 class="font-space-mono line-clamp-2 text-ellipsis {task.isLocked ? 'text-opacity-60 text-light' : ''}">
-					{task.name}
-				</p>
-			{:else if task.name === ''}
-				<div class="flex flex-col w-full gap-2">
-					<p class="w-full bg-light">.</p>
-				</div>
-			{/if}
-			{#if task.nextTaskId}
-				{@render path(task.isCompleted, index, isNextLocked, task.name === '')}
-			{/if}
-		</a>
-	</li>
-{/snippet}
-
-{#snippet path(isCompleted: boolean, index: number, isNextLocked: boolean, isSkelleton = false)}
-	{@const height = isSkelleton
-		? '5.5rem'
-		: `${treeElementsCenters[index + 1] - treeElementsCenters[index]}px`}
-	<div
-		class="left-[1rem] -translate-x-1/2 top-1/2 {isCompleted
-			? 'bg-primary-light'
-			: 'bg-light'} w-[.125rem] absolute z-0
-			{isNextLocked ? 'bg-gradient-to-b from-light to-transparent' : ''}"
-		style="height: {height}"
-	></div>
+{#snippet tree(treeItems: TaskTreeItem[])}
+	{@const pulsing = treeItems.every((task) => task.name === '')}
+	<ul class="p-4 py-8 space-y-12 {pulsing ? 'animate-pulse' : ''}">
+		{#each treeItems as task, index}
+			<ProgressTreeItem
+				{task}
+				{index}
+				{animating}
+				{isCollapsed}
+				{treeElementsCenters}
+				bind:refs={treeElementsRefs}
+				isNextLocked={treeItems[index + 1]?.isLocked}
+			/>
+		{/each}
+	</ul>
 {/snippet}
 
 <nav
@@ -128,29 +96,18 @@
 	{#if treeItems.length === 0}
 		{#await fetchItems}
 			<div class="opacity-50">
-				<ul class="p-4 py-8 space-y-12 animate-pulse">
-					{#each fakeTasks as task, index}
-						{@render bullet(task, index, fakeTasks[index + 1]?.isLocked)}
-					{/each}
-				</ul>
+				{@render tree(fakeTasks)}
 			</div>
 		{:then items}
-			<ul class="p-4 py-8 space-y-12">
-				{#each items as task, index}
-					{@render bullet(task, index, items[index + 1]?.isLocked)}
-				{/each}
-			</ul>
+			{@render tree(items)}
 		{:catch error}
 			<p>{error.message}</p>
 		{/await}
 	{:else}
-		<ul class="p-4 py-8 space-y-12">
-			{#each treeItems as task, index}
-				{@render bullet(task, index, treeItems[index + 1]?.isLocked)}
-			{/each}
-		</ul>
+		{@render tree(treeItems)}
 	{/if}
 
+	<!-- Toggle collapse button -->
 	<button
 		class="mt-auto p-4 mr-auto {isCollapsed
 			? 'rotate-180'
