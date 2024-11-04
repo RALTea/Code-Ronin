@@ -11,6 +11,7 @@
   let { value = $bindable(), runCode }: InputProps = $props();
   let card: HTMLElement | null = null;
   let cardHeight: number = $state(600);
+  $inspect('Value:', value);
 
   onMount(() => {
     setSize();

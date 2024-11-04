@@ -24,10 +24,8 @@
 	$effect(() => {
 		if (!navRef) return;
 		isCollapsed;
-		console.debug('navRef', navRef.clientWidth);
 		currentWidth.set(isCollapsed ? minWidth : maxWidth);
 		currentWidth.subscribe((value) => {
-			console.debug('currentWidth', value);
 			animating = value !== maxWidth;
 		})
 	});
@@ -71,7 +69,7 @@
 </script>
 
 {#snippet bullet(task: TaskTreeItem, index: number, isNextLocked: boolean)}
-	<li bind:this={treeElementsRefs[index]}>
+	<li bind:this={treeElementsRefs[index]} class="min-h-12 max-h-12">
 		<a
 			class="flex items-center gap-2 relative cursor-pointer {task.isLocked
 				? 'cursor-not-allowed'
@@ -81,12 +79,12 @@
 				: `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task.id}`}
 		>
 			<div
-				class="absolute blur-md rounded-full z-20 {task.isCompleted
+				class="absolute self-start blur-md rounded-full z-20 {task.isCompleted
 					? 'bg-primary-light'
 					: 'bg-light'} {task.isMiniboss ? 'h-7 w-7 mx-[.125rem]' : 'h-4 w-4 min-w-4 mx-2'}"
 			></div>
 			<div
-				class="rounded-full z-10 shadow-black {task.isCompleted
+				class="rounded-full self-start z-10 shadow-black {task.isCompleted
 					? 'bg-primary-light'
 					: 'bg-light'} {task.isMiniboss
 					? 'h-7 w-7 mx-[.125rem] shadow-[inset_0_0px_.5rem_0_rgb(0_0_0)]'
@@ -94,7 +92,7 @@
 			></div>
 			{#if task.name && !isCollapsed && !animating}
 				<p in:fade={{delay: 100}}
-				 class="font-space-mono {task.isLocked ? 'text-opacity-60 text-light' : ''}">
+				 class="font-space-mono line-clamp-2 text-ellipsis {task.isLocked ? 'text-opacity-60 text-light' : ''}">
 					{task.name}
 				</p>
 			{:else if task.name === ''}
@@ -111,7 +109,7 @@
 
 {#snippet path(isCompleted: boolean, index: number, isNextLocked: boolean, isSkelleton = false)}
 	{@const height = isSkelleton
-		? '4.5rem'
+		? '5.5rem'
 		: `${treeElementsCenters[index + 1] - treeElementsCenters[index]}px`}
 	<div
 		class="left-[1rem] -translate-x-1/2 top-1/2 {isCompleted
@@ -130,14 +128,14 @@
 	{#if treeItems.length === 0}
 		{#await fetchItems}
 			<div class="opacity-50">
-				<ul class="space-y-12 py-8 p-4 animate-pulse">
+				<ul class="p-4 py-8 space-y-12 animate-pulse">
 					{#each fakeTasks as task, index}
 						{@render bullet(task, index, fakeTasks[index + 1]?.isLocked)}
 					{/each}
 				</ul>
 			</div>
 		{:then items}
-			<ul class="space-y-12 py-8 p-4">
+			<ul class="p-4 py-8 space-y-12">
 				{#each items as task, index}
 					{@render bullet(task, index, items[index + 1]?.isLocked)}
 				{/each}
@@ -146,7 +144,7 @@
 			<p>{error.message}</p>
 		{/await}
 	{:else}
-		<ul class="space-y-12 py-8 p-4">
+		<ul class="p-4 py-8 space-y-12">
 			{#each treeItems as task, index}
 				{@render bullet(task, index, treeItems[index + 1]?.isLocked)}
 			{/each}

@@ -23,10 +23,12 @@
 		observer = new ResizeObserver((entries) => {
 			const entry = entries[0];
 			if (!entry) return;
+			console.debug('resize detected');
 			initEditor();
+			isObserving = true;
 		});
 
-		initEditor();
+		// initEditor();
 		initCompleted = true;
 	});
 
@@ -35,19 +37,23 @@
 	});
 
 	$effect(() => {
+		initCompleted;
+		if (isObserving) return;
+		if (!observer) return;
+		observer.observe(editorContainer!);
+	});
+
+	$effect(() => {
 		height;
 		initCompleted;
-		if (!isObserving && observer) {
-			observer.observe(editorContainer!);
-			isObserving = true;
-		}
 		initEditor();
 	});
 
 	const initEditor = () => {
-		if (!monaco || !theme || !editorContainer) {
+		if (!monaco || !theme || !editorContainer || !isObserving) {
 			return;
 		}
+		console.debug('initEditor');
 
 		monaco.editor.getModels().forEach((model) => model.dispose());
 		editor?.dispose();
@@ -71,7 +77,7 @@
 				value = editor?.getValue();
 			});
 			editor.setModel(model);
-		})
+		});
 	};
 
 	onDestroy(() => {
