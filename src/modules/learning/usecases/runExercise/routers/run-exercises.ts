@@ -5,6 +5,7 @@ import { TestCasesNotFoundError } from '../errors/TestCasesNotFoundError';
 import { authProcedure } from '$lib/trpc/middlewares/auth.middleware';
 import { PrismaAttemptRepository } from '../repositories/PrismaAttemptRepository';
 import { ExerciseAttemptSchema } from '../aggregates/ExerciseAttempt';
+import { PrismaTaskRepository } from '../repositories/PrismaTaskRepository';
 
 const router = t.router({
 	getTestFileFromGithub: authProcedure
@@ -22,6 +23,7 @@ const router = t.router({
 			try {
 				const response = await fetch(url, {
 					method: 'GET',
+					cache: 'no-store',
 					headers: {
 						Authorization: `token ${GITHUB_PAT_EXERCISES_REPO}`,
 						Accept: 'application/vnd.github.v3.raw' // Use this to get the raw file content
@@ -49,6 +51,10 @@ const router = t.router({
 	handleFail: authProcedure.input(ExerciseAttemptSchema).mutation(async ({ input, ctx }) => {
 		const attemptRepository = PrismaAttemptRepository(ctx.prisma);
 		await attemptRepository.handleFail(input);
+	}),
+	getTaskDetails: authProcedure.input(z.object({ taskId: z.string() })).query(async ({ input, ctx }) => {
+		const taskRepository = PrismaTaskRepository(ctx.prisma);
+		return taskRepository.getTaskDetails(input.taskId);
 	})
 });
 

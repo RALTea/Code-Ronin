@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import type { Task } from '$learning/domain/Task';
 	import type { TaskTreeItem } from '$learning/usecases/getProgression/aggregates/TaskTreeItem';
 	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
@@ -28,7 +27,7 @@
 		currentTask.then((task) => {
 			if (!task) return;
 			if (!task.isLocked) return;
-			console.debug('Task is locked, redirecting to previous task');
+			console.info('Task is locked, redirecting to previous task');
 			goto(`/campaigns/${$page.params.campaign}/${$page.params.questId}`);
 		});
 	})

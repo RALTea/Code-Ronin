@@ -23,7 +23,6 @@
 		observer = new ResizeObserver((entries) => {
 			const entry = entries[0];
 			if (!entry) return;
-			console.debug('resize detected');
 			initEditor();
 			isObserving = true;
 		});

@@ -1,7 +1,7 @@
 import type { Language } from '$learning/domain/Language';
-import { FetchApprenticeSolutionError } from '$learning/errors/FetchApprenticeSolutionError';
-import { FetchTestCasesError } from '$learning/errors/FetchTestCasesError';
 import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
+import { FetchApprenticeSolutionError } from '$learning/usecases/runExercise/errors/FetchApprenticeSolutionError';
+import { FetchTestCasesError } from '$learning/usecases/runExercise/errors/FetchTestCasesError';
 import * as IRunExerciseRepository from '$learning/usecases/runExercise/repositories/IRunExerciseRepository';
 import { CodeBuilder } from '$learning/usecases/runExercise/services/CodeBuilder';
 import { OutputParser } from '$learning/usecases/runExercise/services/OutputParser';
@@ -13,6 +13,8 @@ import {
 } from '$lib/interfaces/UseCase';
 import { extractError } from '$lib/utils/error.utils';
 import type { ExerciseAttempt } from './aggregates/ExerciseAttempt';
+import type { AnswerType } from './aggregates/TaskDetails';
+import { FetchTaskDetailsError } from './errors/FetchTaskDetailsError';
 
 type Input = InputFactory<
 	{
@@ -26,48 +28,78 @@ type Input = InputFactory<
 		evaluateSolution: IRunExerciseRepository.EvaluateSolution;
 		successHandlers: IRunExerciseRepository.HandleSuccess[];
 		failHandlers: IRunExerciseRepository.HandleFail[];
+		getTaskDetails: IRunExerciseRepository.FetchTaskDetails;
 	}
 >;
 
 type Output = OutputFactory<ExerciseAttemptResult>;
 
 export const runExercise: UseCase<Input, Output> = (deps) => {
-	const { getApprenticeSolution, evaluateSolution, getTestCases, successHandlers, failHandlers } =
-		deps;
+	const {
+		getApprenticeSolution,
+		evaluateSolution,
+		getTestCases,
+		successHandlers,
+		failHandlers,
+		getTaskDetails
+	} = deps;
+
+	const _fetchApprenticeSolution = async (apprenticeId: string) => {
+		try {
+			return getApprenticeSolution(apprenticeId);
+		} catch (error) {
+			throw new FetchApprenticeSolutionError(extractError(error));
+		}
+	};
+
+	const _getTestCases = async (taskId: string) => {
+		try {
+			return getTestCases(taskId);
+		} catch (error) {
+			throw new FetchTestCasesError(extractError(error));
+		}
+	};
+
+	const _getTaskDetails = async (taskId: string) => {
+		try {
+			return getTaskDetails(taskId);
+		} catch (error) {
+			throw new FetchTaskDetailsError(extractError(error));
+		}
+	};
+
+	const _buildCodeToBeEvaluated = (apprenticeSolution: string, testCases: string, taskType: AnswerType) => {
+		const builder = CodeBuilder(testCases);
+		if (taskType === 'tests') builder.replace('// (@@@*@@@)', apprenticeSolution);
+		if (taskType === 'stdout') {
+			builder.replace('// (@@@*@@@)', `const studentSolution = () => {\n${apprenticeSolution}\n}`);
+		}
+		if (taskType === 'stderr') {
+			builder.replace('// (@@@*@@@)', `const studentSolution = () => {\n${apprenticeSolution}\n}`);
+		}
+		return builder
+			.removeComments()
+			.build();
+	}
+
 	return {
 		execute: async (data) => {
 			const { apprenticeId, language, taskId } = data;
-			let apprenticeSolution;
+
+			const apprenticeSolution = await _fetchApprenticeSolution(apprenticeId);
+			const testCases = await _getTestCases(taskId);
+			const taskDetails = await _getTaskDetails(taskId);
+
 			try {
-				apprenticeSolution = await getApprenticeSolution(apprenticeId);
-			} catch (error) {
-				throw new FetchApprenticeSolutionError(extractError(error));
-			}
-			let testCases: string = '';
-			try {
-				testCases = await getTestCases(taskId);
-			} catch (error) {
-				throw new FetchTestCasesError(extractError(error));
-			}
-			let result: ExerciseAttemptResult;
-			let attempt: ExerciseAttempt = {
-				apprenticeId,
-				taskId,
-				apprenticeSolution,
-				id: '',
-				success: false,
-				message: ''
-			}
-			try {
-				const codeToBeEvaluated = CodeBuilder(testCases)
-					.replace('// (@@@*@@@)', apprenticeSolution)
-					.removeComments()
-					.build();
-				result = await evaluateSolution(codeToBeEvaluated, language);
-				attempt = {
-					...attempt,
+				const codeToBeEvaluated = _buildCodeToBeEvaluated(apprenticeSolution, testCases, taskDetails.answerType);
+				const result: ExerciseAttemptResult = await evaluateSolution(codeToBeEvaluated, language);
+				
+				const attempt: ExerciseAttempt = {
+					apprenticeId,
+					taskId,
+					apprenticeSolution,
 					...result
-				}
+				};
 
 				// Handle results
 				if (result.success) {

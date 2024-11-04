@@ -2,7 +2,6 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { user } from '$auth/stores/UserStore';
-	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
 	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
 	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
@@ -17,9 +16,7 @@
 
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
-	let inputCode: string = $state(`const printalphabet = () => {
-    return "abcdefghijklmnopqrstuvwxyz"
-}`);
+	let inputCode: string = $state(`console.log('Hello world')`);
 	let nextItemUrl: string = $state('');
 	let bimVisible: boolean = $state(false);
 
@@ -44,9 +41,13 @@
 				return result ?? '';
 			},
 			successHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate],
-			failHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate]
+			failHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate],
+			getTaskDetails: async () => {
+				const task = await fetchTask;
+				return trpc($page).learning.runExercises.getTaskDetails.query({ taskId: task?.id ?? '' });
+			}
 		})
-			.execute({ apprenticeId: $user?.id ?? '-1', language: 'typescript5-vitest', taskId: '1' })
+			.execute({ apprenticeId: $user?.id ?? '-1', language: 'typescript5-vitest', taskId: $page.params.taskId })
 			.then((res) => {
 				if (!res.isSuccess) return console.error('Error running code:', res.message);
 				result = res.data;
@@ -58,7 +59,6 @@
 				runningCode = false;
 				if (result?.success) {
 					const task = await fetchTask;
-					console.debug('Task:', task);
 					if (!task || !task.nextTasksIds || task.nextTasksIds.length !== 1) return;
 					nextItemUrl = `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task?.nextTasksIds?.at(0) ?? ''}`;
 					LastRun.update();
