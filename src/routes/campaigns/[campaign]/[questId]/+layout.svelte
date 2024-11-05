@@ -15,7 +15,7 @@
 	onMount(() => {
 		const unsubscribe = page.subscribe(({ params }) => {
 			const taskId = params.taskId;
-			const taskToLoad = TaskStore.allTasks.find((task) => task.id === taskId);
+			const taskToLoad = TaskStore.allTasks?.find((task) => task?.id === taskId);
 			TaskStore.currentTask = taskToLoad;
 		});
 		return unsubscribe;

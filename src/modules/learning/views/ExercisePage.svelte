@@ -2,17 +2,21 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { user } from '$auth/stores/UserStore';
+	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
 	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
 	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
 	import { runExercise } from '$learning/usecases/runExercise/runExercise';
 	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
 	import Bim from '$learning/usecases/runExercise/views/Bim.svelte';
+	import InstructonSkeleton from '$learning/usecases/runExercise/views/InstructonSkeleton.svelte';
 	import { trpc } from '$lib/clients/trpc';
-	import Loading from '$lib/components/layout/Loading.svelte';
+	import SvelteMarkdown from 'svelte-markdown';
 	import Input from '../usecases/runExercise/views/Input.svelte';
 	import Instructions from '../usecases/runExercise/views/Instructions.svelte';
 	import Output from '../usecases/runExercise/views/Output.svelte';
+	import Card from '$lib/components/cards/Card.svelte';
+	import { fade } from 'svelte/transition';
 
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
@@ -22,6 +26,9 @@
 
 	type Props = { fetchTask: Promise<TaskDetails | undefined> };
 	let { fetchTask }: Props = $props();
+	let animating = $state(true);
+
+	$inspect('animating', animating);
 
 	const runCode = () => {
 		runningCode = true;
@@ -47,7 +54,11 @@
 				return trpc($page).learning.runExercises.getTaskDetails.query({ taskId: task?.id ?? '' });
 			}
 		})
-			.execute({ apprenticeId: $user?.id ?? '-1', language: 'typescript5-vitest', taskId: $page.params.taskId })
+			.execute({
+				apprenticeId: $user?.id ?? '-1',
+				language: 'typescript5-vitest',
+				taskId: $page.params.taskId
+			})
 			.then((res) => {
 				if (!res.isSuccess) return console.error('Error running code:', res.message);
 				result = res.data;
@@ -83,13 +94,17 @@
 <div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 pt-0 p-4 gap-4 h-full min-h-fit">
 	<aside class="prose prose-invert text-white h-full max-w-full row-span-2">
 		{#await fetchTask}
-			<Loading absolute />
+			<InstructonSkeleton animate bind:animating />
 		{:then task}
-			{#if task}
-				<Instructions instructions={task.instructions}></Instructions>
-			{:else}
-				<p>No Task</p>
-			{/if}
+			<Card class={'p-4 h-full overflow-auto'}>
+				{#if animating || TaskStore.allTasks.at(0) === undefined}
+					<div></div>
+				{:else if task}
+					<Instructions instructions={task.instructions} />
+				{:else}
+					<p>No task</p>
+				{/if}
+			</Card>
 		{/await}
 	</aside>
 	<main class="flex-1 space-y-4 max-h-full">

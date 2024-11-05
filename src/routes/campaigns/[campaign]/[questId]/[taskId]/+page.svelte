@@ -10,7 +10,7 @@
 
 	let currentTask: Promise<(TaskTreeItem & TaskDetails) | undefined> = $derived.by(async () => {
 		const currentTaskId = $page.params.taskId;
-		const taskToLoad = TaskStore.allTasks.find((task) => task.id === currentTaskId);
+		const taskToLoad = TaskStore.allTasks?.find((task) => task?.id === currentTaskId);
 		TaskStore.currentTask = taskToLoad;
 		if (!taskToLoad) return undefined;
 		const res = await getTaskDetails({
@@ -20,6 +20,7 @@
 		}).execute({ taskId: currentTaskId });
 		if (!res.isSuccess) return undefined;
 		return {...taskToLoad, ...res.data};
+		// return new Promise(() => [])
 	});
 
 	// Run each time the current task changes to check if it is locked

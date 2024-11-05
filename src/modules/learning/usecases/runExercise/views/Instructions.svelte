@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Card from '$lib/components/cards/Card.svelte';
 	import SvelteMarkdown from 'svelte-markdown';
+	import { fade } from 'svelte/transition';
 
 	type InstructionsProps = {
 		instructions: string;
@@ -8,10 +8,8 @@
 	let { instructions }: InstructionsProps = $props();
 </script>
 
-<div class="course h-full">
-	<Card class={'p-4 h-full overflow-auto'}>
-		<SvelteMarkdown source={instructions} />
-	</Card>
+<div in:fade={{ duration: 150, delay: 150 }} class="course">
+	<SvelteMarkdown source={instructions} />
 </div>
 
 <style lang="postcss">
