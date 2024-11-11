@@ -1,44 +1,68 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { user } from '$auth/stores/UserStore';
 	import type { ApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary/aggregates/ApprenticeProfileSummary';
 	import { getApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary/getApprenticeProfileSummary';
+	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
+	import { trpc } from '$lib/clients/trpc';
 	import type { AddCss } from '$lib/utils/svelte.utils';
-	import { onMount } from 'svelte';
 	import Progress from '../forms/Progress.svelte';
 	import IconPower from '../icons/IconPower.svelte';
 	import IconWrapper from '../icons/IconWrapper.svelte';
+	import NavbarSkeleton from './NavbarSkeleton.svelte';
 
 	type Props = AddCss;
-	let apprenticeSummary: ApprenticeProfileSummary | null = $state(null);
 	const medalsIndex = [0, 1, 2];
 	const emptyMedal = '/medals/Item=default.png';
 	const defaultApprenticeSummary: ApprenticeProfileSummary = {
 		name: 'Anonymous',
-		title: 'Developer'
+		title: 'Developer',
+		exp: 0
 	};
+	let errorMessage = $state('');
 	const fetchDataUsecase = getApprenticeProfileSummary({
-		fetchApprenticeProfileSummary: async () => {
-			return {
-				name: 'Robin TOURNÉ',
-				title: 'Apprentice',
-				avatar: '/default-pfp2.webp',
-				medals: ['/medals/Item=svelte.png', '/medals/Item=docker.png']
-			};
+		fetchApprenticeInfos: async () => {
+			return trpc($page)
+				.learning.getApprenticeProfileSummary.getApprenticeInfos.query({
+					apprenticeId: $user?.id ?? '-1'
+				})
+				.catch(() => defaultApprenticeSummary);
+		},
+		fetchApprenticeExp: async () => {
+			return trpc($page)
+				.learning.getApprenticeProfileSummary.getApprenticeExp.query({
+					apprenticeId: $user?.id ?? '-1'
+				})
+				.catch(() => 0);
 		}
 	});
 	const { class: className }: Props = $props();
+	let apprenticeId = $derived($user?.id ?? '-1');
 
-	onMount(() => {
+	let apprenticeSummary: ApprenticeProfileSummary | undefined = $state(undefined);
+
+	const fetchApprenticeSummary = () => {
 		fetchDataUsecase
-			.execute({ apprenticeId: '1' })
+			.execute({ apprenticeId: apprenticeId })
 			.then((result) => {
 				if (result.isSuccess) return (apprenticeSummary = result.data);
-				apprenticeSummary = defaultApprenticeSummary;
+				return (apprenticeSummary = defaultApprenticeSummary);
 			})
 			.catch((err) => {
 				console.error(err);
-				apprenticeSummary = defaultApprenticeSummary;
+				errorMessage = 'Error fetching apprentice summary';
+				return (apprenticeSummary = defaultApprenticeSummary);
 			});
+	};
+
+	$effect(() => {
+		LastRun.time;
+		fetchApprenticeSummary();
 	});
+
+	$inspect("INSPECT - LastRun", LastRun.time)
+
+	$inspect("INSPECT - LastRun", LastRun.time)
 </script>
 
 {#snippet divider()}
@@ -50,47 +74,53 @@
 <nav
 	class="h-20 bg-bg-dark rounded-lg m-4 shadow-[.0rem_.15rem_.2rem] shadow-lightless flex items-center px-4 py-2 {className}"
 >
-	<div class="w-4/5 h-full flex items-center">
-		<div class="flex">
-			<img
-				src={apprenticeSummary?.avatar}
-				alt="profile"
-				class="object-cover w-12 h-12 mx-2 rounded-full"
-			/>
-			<div class="mx-2">
-				<h1 class="font-extrabold">{apprenticeSummary?.name}</h1>
-				<p class="font-space-mono text-primary-light">{apprenticeSummary?.title}</p>
-			</div>
-		</div>
-		{@render divider()}
-		<div class="flex gap-4">
-			{#each medalsIndex as medal}
-				{@const src = apprenticeSummary?.medals?.at(medal) ?? emptyMedal}
-				<div class="shine">
-					<img {src} alt="medal" class="w-10 h-10 relative" />
+	{#if apprenticeSummary}
+		<div class="w-4/5 h-full flex items-center">
+			<div class="flex">
+				<img
+					src={apprenticeSummary?.avatar}
+					alt="profile"
+					class="object-cover w-12 h-12 mx-2 rounded-full"
+				/>
+				<div class="mx-2">
+					<h1 class="font-extrabold">{apprenticeSummary?.name}</h1>
+					<p class="font-space-mono text-primary-light">{apprenticeSummary?.title}</p>
 				</div>
-			{/each}
-		</div>
-		{@render divider()}
-		<div class="flex  flex-1 h-full items-center">
-			<div class="flex flex-col flex-1">
-				<p class="font-space-mono text-primary-light">Experience</p>
-				<div class="flex gap-4">
-					<div class="h-2 w-full flex items-center my-auto">
-						<Progress value={70} max={100} />
+			</div>
+			{@render divider()}
+			<div class="flex gap-4">
+				{#each medalsIndex as medal}
+					{@const src = apprenticeSummary?.medals?.at(medal) ?? emptyMedal}
+					<div class="shine">
+						<img {src} alt="medal" class="w-10 h-10 relative" />
 					</div>
-					<div class="row-span-2 content-end">70/100</div>
+				{/each}
+			</div>
+			{@render divider()}
+			<div class="flex flex-1 h-full items-center">
+				<div class="flex flex-col flex-1">
+					<p class="font-space-mono text-primary-light">Experience</p>
+					<div class="flex gap-4">
+						<div class="h-2 w-full flex items-center my-auto">
+							<Progress value={apprenticeSummary?.exp ?? 0} max={100} />
+						</div>
+						<div class="row-span-2 content-end">
+							{apprenticeSummary?.exp}/100
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="flex items-center justify-center h-full mr-2 ml-auto">
-		{@render divider()}
-		<button>
-			<IconWrapper size="8">
-				<IconPower />
-			</IconWrapper>
-		</button>
-	</div>
+		<div class="flex items-center justify-center h-full mr-2 ml-auto">
+			{@render divider()}
+			<button>
+				<IconWrapper size="8">
+					<IconPower />
+				</IconWrapper>
+			</button>
+		</div>
+	{:else}
+		<NavbarSkeleton />
+	{/if}
 </nav>

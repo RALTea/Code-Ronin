@@ -19,6 +19,7 @@ model Apprentice {
 
   email          String
   role           String @default("USER")
+  title          String @default("Newbie")
   profilePicture String
 
   attempts  Attempt[]
