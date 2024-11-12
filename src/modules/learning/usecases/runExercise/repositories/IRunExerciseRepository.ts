@@ -7,5 +7,5 @@ export type FetchApprenticeSolution = (id: string) => Promise<string>;
 export type FetchTestCases = (id: string) => Promise<string>;
 export type EvaluateSolution = (solution: string, language: Language) => Promise<ExerciseAttemptResult>;
 export type HandleSuccess = (data: ExerciseAttempt) => Promise<void>;
-export type HandleFail = (data: ExerciseAttempt) => Promise<void>;
+export type HandleFail = (data?: ExerciseAttempt) => Promise<void>;
 export type FetchTaskDetails = (id: string) => Promise<TaskDetails>;

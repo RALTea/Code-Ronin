@@ -16,7 +16,6 @@
 	import Instructions from '../usecases/runExercise/views/Instructions.svelte';
 	import Output from '../usecases/runExercise/views/Output.svelte';
 	import Card from '$lib/components/cards/Card.svelte';
-	import { fade } from 'svelte/transition';
 
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
@@ -28,7 +27,14 @@
 	let { fetchTask }: Props = $props();
 	let animating = $state(true);
 
-	$inspect('animating', animating);
+
+	// 
+	$effect(() => {
+		fetchTask.then((task) => {
+			if (!task || !task.lastInput) return;
+			inputCode = task.lastInput.code;
+		});
+	});
 
 	const runCode = () => {
 		runningCode = true;
@@ -48,7 +54,7 @@
 				return result ?? '';
 			},
 			successHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate],
-			failHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate],
+			failHandlers: [trpc($page).learning.runExercises.handleFail.mutate],
 			getTaskDetails: async () => {
 				const task = await fetchTask;
 				return trpc($page).learning.runExercises.getTaskDetails.query({ taskId: task?.id ?? '' });

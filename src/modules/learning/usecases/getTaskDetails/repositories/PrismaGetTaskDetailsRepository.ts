@@ -19,6 +19,12 @@ export const PrismaGetTaskDetailsRepository = (): _PrismaGetTaskDetailsRepositor
 							snippets: true
 						}
 					},
+					attempts: {
+						orderBy: {
+							createdAt: 'desc'
+						},
+						take: 1
+					}
 				}
 			});
 			if (!task) throw new TaskNotFound(`Task with id ${id} not found`);
@@ -41,7 +47,11 @@ export const PrismaGetTaskDetailsRepository = (): _PrismaGetTaskDetailsRepositor
 				id: task.id,
 				instructions: task.instructions,
 				validation: validation,
-				nextTasksIds: task.nextTasks ? task.nextTasks.map(task => task.id) : undefined
+				nextTasksIds: task.nextTasks ? task.nextTasks.map(task => task.id) : undefined,
+				lastInput: task.attempts[0] ? {
+					code: task.attempts[0].userSolution,
+					date: task.attempts[0].createdAt.getTime()
+				} : undefined
 			}
 		}
 	};

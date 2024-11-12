@@ -5,4 +5,8 @@ export type TaskDetails = {
 	instructions: string;
 	validation: Validation;
 	nextTasksIds: string[] | undefined;
-}
+	lastInput: {
+		code: string;
+		date: number;
+	} | undefined;
+};

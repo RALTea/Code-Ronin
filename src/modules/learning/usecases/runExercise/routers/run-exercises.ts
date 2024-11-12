@@ -48,7 +48,7 @@ const router = t.router({
 		const attemptRepository = PrismaAttemptRepository(ctx.prisma);
 		await attemptRepository.handleSuccess(input);
 	}),
-	handleFail: authProcedure.input(ExerciseAttemptSchema).mutation(async ({ input, ctx }) => {
+	handleFail: authProcedure.input(ExerciseAttemptSchema.optional()).mutation(async ({ input, ctx }) => {
 		const attemptRepository = PrismaAttemptRepository(ctx.prisma);
 		await attemptRepository.handleFail(input);
 	}),

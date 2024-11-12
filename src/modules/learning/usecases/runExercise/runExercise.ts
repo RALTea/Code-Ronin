@@ -112,12 +112,13 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 					result.message = OutputParser(result.message ?? '')
 						.formatError()
 						.get();
-					await Promise.all(failHandlers);
+					await Promise.all(failHandlers.map((handler) => handler(attempt)));
 				}
 
 				// Usecase completed; result might either be a success or a failure
 				return UseCaseResponseBuilder.success(200, result);
 			} catch (error) {
+				await Promise.all(failHandlers.map((handler) => handler()));
 				throw new FetchApprenticeSolutionError(extractError(error));
 			}
 		}

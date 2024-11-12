@@ -59,10 +59,6 @@
 		LastRun.time;
 		fetchApprenticeSummary();
 	});
-
-	$inspect("INSPECT - LastRun", LastRun.time)
-
-	$inspect("INSPECT - LastRun", LastRun.time)
 </script>
 
 {#snippet divider()}
