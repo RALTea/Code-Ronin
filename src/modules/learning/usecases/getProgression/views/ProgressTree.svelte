@@ -5,6 +5,8 @@
 	import { tweened } from 'svelte/motion';
 	import type { TaskTreeItem } from '../aggregates/TaskTreeItem';
 	import ProgressTreeItem from './ProgressTreeItem.svelte';
+	import { page } from '$app/stores';
+	import { PencilLine } from 'lucide-svelte';
 
 	type Props = {
 		fetchItems: Promise<TaskTreeItem[]>;
@@ -108,8 +110,13 @@
 	{/if}
 
 	<!-- Toggle collapse button -->
+	 <a href="/admin/quests/{$page.params.questId}" class="mt-auto block p-5 pb-0 mr-auto [&_svg]:stroke-lightless">
+		<IconWrapper size="6">
+			<PencilLine size=6  />
+		</IconWrapper>
+	 </a>
 	<button
-		class="mt-auto p-4 mr-auto {isCollapsed
+		class="p-4 mr-auto {isCollapsed
 			? 'rotate-180'
 			: 'rotate-0'} transition-transform duration-300
 		[&_svg]:stroke-lightless"

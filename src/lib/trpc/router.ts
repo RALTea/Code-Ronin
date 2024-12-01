@@ -4,6 +4,7 @@ import RunExercisesRouter from '$learning/usecases/runExercise/routers/run-exerc
 import GetApprenticeProfileSummaryRouter from '$learning/usecases/getApprenticeProfileSummary/routers/getApprenticeProfileSummary';
 import { authRouter } from '$lib/trpc/routes/auth.route';
 import { t } from '$lib/trpc/t';
+import { GetQuestDataTRPCRouter } from '$learning/usecases/getQuestData/routers/GetQuestDataTRPCRouter';
 
 export const router = t.router({
 	authRouter,
@@ -12,6 +13,7 @@ export const router = t.router({
 		runExercises: RunExercisesRouter,
 		getProgression: GetProgressionRouter,
 		getApprenticeProfileSummary: GetApprenticeProfileSummaryRouter,
+		getQuestData: GetQuestDataTRPCRouter,
 	})
 });
 

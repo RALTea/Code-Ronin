@@ -13,6 +13,12 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	// Add this into app.d.ts inside the global namespace declaration
+	declare namespace svelteHTML {
+		interface HTMLAttributes<T> {
+			'onclickOutside'?: (event: CustomEvent) => void;
+		}
+	}
 }
 
 export {};

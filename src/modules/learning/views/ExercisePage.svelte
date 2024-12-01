@@ -11,11 +11,10 @@
 	import Bim from '$learning/usecases/runExercise/views/Bim.svelte';
 	import InstructonSkeleton from '$learning/usecases/runExercise/views/InstructonSkeleton.svelte';
 	import { trpc } from '$lib/clients/trpc';
-	import SvelteMarkdown from 'svelte-markdown';
+	import Card from '$lib/components/cards/Card.svelte';
 	import Input from '../usecases/runExercise/views/Input.svelte';
 	import Instructions from '../usecases/runExercise/views/Instructions.svelte';
 	import Output from '../usecases/runExercise/views/Output.svelte';
-	import Card from '$lib/components/cards/Card.svelte';
 
 	let result: ExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
