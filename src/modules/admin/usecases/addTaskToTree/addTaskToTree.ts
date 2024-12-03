@@ -31,7 +31,6 @@ export const AddTaskToTreeUseCase: UseCase<Input, Output> = () => {
 					?.find((task) => task?.id === previousTaskId)
 					?.nextTaskIds?.push(task.id);
 			});
-			console.debug('tree after add', newTree);
 			return UseCaseResponseBuilder.success(200, [newTree]);
 		}
 	};

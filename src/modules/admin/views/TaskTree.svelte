@@ -3,8 +3,9 @@
 
 	type Props = {
 		tasks: QuestData['tasks'];
+		ontaskselected: (taskId: string) => void;
 	};
-	let { tasks }: Props = $props();
+	let { tasks, ontaskselected }: Props = $props();
 
 	type Bubble = {
 		ref: HTMLDivElement;
@@ -20,7 +21,6 @@
 		let bubbleRefs: (Bubble | null)[] = [];
 		// Ensure all refs are collected
 		if (bubbleRefs.some((ref) => ref === null)) {
-			console.debug('Not all refs collected');
 			return;
 		}
 		bubbleRefs = [...document.querySelectorAll<HTMLDivElement>('.bubble')].map((el) => {
@@ -66,7 +66,6 @@
 						line.setAttribute('y2', nextBubble.centerY.toString());
 						line.setAttribute('stroke', 'rgba(255,255,255,.6)');
 						line.setAttribute('stroke-width', '2');
-						console.debug();
 
 						svgTree.appendChild(line);
 					}
@@ -90,10 +89,12 @@
 			<ul class="flex gap-4 justify-center">
 				{#each taskLayer as task}
 					<li class="block">
-						<div
+						<button
 							class="h-6 w-6 rounded-full bg-light m-auto bubble"
 							title={task.id}
-						></div>
+							onclick="{() => ontaskselected(task.id)}"
+							aria-label={task.name}
+						></button>
 						<p class="w-36 text-center">{task.name}</p>
 					</li>
 				{/each}

@@ -1,4 +1,4 @@
-import { authProcedure } from '$lib/trpc/middlewares/auth.middleware';
+import { adminProcedure } from '$lib/trpc/middlewares/admin.middleware';
 import { t } from '$lib/trpc/t';
 import { z } from 'zod';
 import { CreateTaskDtoSchema } from '../aggregates/CreateTaskDto';
@@ -6,7 +6,7 @@ import { CreateTaskUseCase } from '../createTask';
 import { PrismaCreateTaskRepository } from '../repositories/PrismaCreateTaskRepository';
 
 export const CreateTaskTRPCRouter = t.router({
-	createTask: authProcedure
+	createTask: adminProcedure
 		.input(
 			CreateTaskDtoSchema.merge(
 				z.object({

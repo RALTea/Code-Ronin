@@ -6,6 +6,8 @@ import { authRouter } from '$lib/trpc/routes/auth.route';
 import { t } from '$lib/trpc/t';
 import { GetQuestDataTRPCRouter } from '../../modules/admin/usecases/getQuestData/routers/GetQuestDataTRPCRouter';
 import { CreateTaskTRPCRouter } from '$admin/usecases/createTask/routers/CreateTaskTRPCRouter';
+import { GetTaskDataTRPCRouter } from '$admin/usecases/getTaskData/routers/GetTaskDataTRPCRouter';
+import { EditTaskTRPCRouter } from '$admin/usecases/editTask/routers/EditTaskTRPCRouter';
 
 export const router = t.router({
 	authRouter,
@@ -14,10 +16,12 @@ export const router = t.router({
 		runExercises: RunExercisesRouter,
 		getProgression: GetProgressionRouter,
 		getApprenticeProfileSummary: GetApprenticeProfileSummaryRouter,
-		getQuestData: GetQuestDataTRPCRouter,
 	}),
 	admin: t.router({
+		getQuestData: GetQuestDataTRPCRouter,
 		createTask: CreateTaskTRPCRouter,
+		getTask: GetTaskDataTRPCRouter,
+		editTask: EditTaskTRPCRouter,
 	})
 });
 

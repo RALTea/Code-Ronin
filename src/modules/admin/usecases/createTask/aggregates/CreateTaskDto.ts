@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { TaskTreeItem } from '../../../domain/TaskTreeItem';
+import { ValidationDataSchema } from '$admin/domain/ValidationData';
 
 export const CreateTaskDtoSchema = z.object({
 	id: z.string().uuid(),
@@ -9,22 +10,16 @@ export const CreateTaskDtoSchema = z.object({
 	previousTaskIds: z.string().array().optional(),
 	nextTaskIds: z.string().array().optional(),
 	isMiniboss: z.boolean(),
-	validation: z.object({
-		expectedStdout: z.string().optional(),
-		expectedStderr: z.string().optional(),
-		testFileName: z.string().optional(),
-		forbiddenSnippets: z.array(z.string()).optional(),
-		mandatorySnippets: z.array(z.string()).optional(),
-	}),
+	validation: ValidationDataSchema
 });
 
 export type CreateTaskDto = z.infer<typeof CreateTaskDtoSchema>;
 
 export const mapCreateTaskDtoToTaskTreeItem = (dto: CreateTaskDto): TaskTreeItem => {
-	return {	
+	return {
 		id: dto.id,
 		name: dto.name,
 		nextTaskIds: dto.nextTaskIds || [],
-		previousTaskIds: dto.previousTaskIds || [],
-	}
+		previousTaskIds: dto.previousTaskIds || []
+	};
 };

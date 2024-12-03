@@ -104,9 +104,7 @@ export const GetQuestDataUseCase: UseCase<Input, Output> = (deps) => {
 			const { questId } = data;
 			try {
 				const questData = await fetchQuestData(questId);
-				console.debug('Fetched quest data:', questData);
 				questData.tasks = _sortLayers(questData.tasks);
-				console.debug('Sorted quest data:', questData);
 				return UseCaseResponseBuilder.success(200, questData);
 			} catch (error) {
 				console.error(error);

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { TaskData } from '$admin/domain/TaskData.js';
 	import { AddTaskToTreeUseCase } from '$admin/usecases/addTaskToTree/addTaskToTree';
 	import {
 		mapCreateTaskDtoToTaskTreeItem,
@@ -6,7 +7,9 @@
 	} from '$admin/usecases/createTask/aggregates/CreateTaskDto';
 	import { CreateTaskUseCase } from '$admin/usecases/createTask/createTask.js';
 	import TaskCreator from '$admin/usecases/createTask/views/TaskCreator.svelte';
+	import { EditTaskUseCase } from '$admin/usecases/editTask/editTask.js';
 	import { GetQuestDataUseCase } from '$admin/usecases/getQuestData/getQuestData';
+	import { GetTaskDataUseCase } from '$admin/usecases/getTaskData/getTaskData.js';
 	import TaskTree from '$admin/views/TaskTree.svelte';
 	import { page } from '$app/stores';
 	import { trpc } from '$lib/clients/trpc.js';
@@ -18,9 +21,9 @@
 	let { data = $bindable() } = $props();
 
 	let tasks = $state(data.questData.tasks);
-	$inspect('tasks in page (data)', tasks.at(1));
 
 	let taskCreatorOpened = $state(false);
+	let editingTask: TaskData | undefined = $state(undefined);
 
 	const openTaskCreator = () => {
 		taskCreatorOpened = true;
@@ -30,8 +33,47 @@
 		taskCreatorOpened = false;
 	};
 
+	const getTaskData = async (taskId: string) => {
+		const taskData = await GetTaskDataUseCase({
+			getTaskData: async () => trpc($page).admin.getTask.execute.query({ taskId })
+		}).execute({ taskId });
+		if (!taskData.isSuccess) {
+			console.error('Failed to get task data', taskData.message);
+			return;
+		}
+		editingTask = taskData.data;
+		openTaskCreator();
+	};
+
+	const onConfirm = async (task: CreateTaskDto) => {
+		if (editingTask) {
+			await saveEdit(task);
+			return;
+		}
+		await addNewTask(task);
+	};
+
+	const saveEdit = async (task: CreateTaskDto) => {
+		const editUC = await EditTaskUseCase({
+			saveTaskData: async () => trpc($page).admin.editTask.saveTaskData.query(task),
+			saveValidation: async () => trpc($page).admin.editTask.saveValidation.query(task)
+		}).execute({ taskData: task });
+		if (!editUC.isSuccess) {
+			console.error('Failed to edit task', editUC.message);
+			return;
+		}
+		const questData = await trpc($page).admin.getQuestData.load.query({
+			questId: data.questData.id
+		});
+		if (!questData.isSuccess) {
+			console.error('Failed to get quest data', questData.message);
+			return;
+		}
+		tasks = questData.data.tasks;
+		closeTaskCreator();
+	};
+
 	const addNewTask = async (taskDto: CreateTaskDto) => {
-		console.debug('adding task', taskDto);
 		const payload = { ...taskDto, questId: data.questData.id };
 		const createTaskUseCase = await CreateTaskUseCase({
 			saveTask: async () => trpc($page).admin.createTask.createTask.query(payload)
@@ -85,7 +127,7 @@
 		use:clickOutside
 		onclickOutside={closeTaskCreator}
 	>
-		<TaskCreator taskList={tasks.flat()} onconfirm={addNewTask} />
+		<TaskCreator taskList={tasks.flat()} onconfirm={onConfirm} {editingTask} />
 	</div>
 {/if}
-<TaskTree {tasks} />
+<TaskTree {tasks} ontaskselected={getTaskData} />

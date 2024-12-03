@@ -9,11 +9,9 @@
 	let { animate = false, animating = $bindable(true) }: Props = $props();
 
 	const onIntroStart = () => {
-		console.debug('Skeleton - onIntroStart called');
 		animating = true;
 	};
 	const onOutroEnd = () => {
-		console.debug('Skeleton - onOutroEnd called');
 		animating = false;
 	};
 </script>

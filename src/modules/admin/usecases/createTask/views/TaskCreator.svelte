@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { TaskData } from '$admin/domain/TaskData';
 	import type { TaskTreeItem } from '$admin/domain/TaskTreeItem';
 	import type { CreateTaskDto } from '$admin/usecases/createTask/aggregates/CreateTaskDto';
 	import { TaskBuilder } from '$admin/usecases/createTask/services/TaskBuilder';
@@ -8,35 +9,74 @@
 	import TextArea from '$lib/components/forms/TextArea.svelte';
 	import IconWrapper from '$lib/components/icons/IconWrapper.svelte';
 	import { Eye, PencilLine } from 'lucide-svelte';
+	import { onMount } from 'svelte';
 	import SvelteMarkdown from 'svelte-markdown';
 
 	type Props = {
 		taskList: TaskTreeItem[];
+		editingTask?: TaskData;
 		onconfirm: (task: CreateTaskDto) => void;
 	};
-	let { taskList, onconfirm }: Props = $props();
-	let dropDownItems = taskList.map((task) => ({ value: task.id, label: task.name }));
+	let { taskList, onconfirm, editingTask }: Props = $props();
+	let dropDownItems = taskList
+		.map((task) => ({ value: task.id, label: task.name }))
+		.filter((task) => task.value !== editingTask?.id);
 	let instructionsDisplayMode: 'edit' | 'preview' = $state('edit');
 
 	let taskBuilder = TaskBuilder().setExp(0).setName('Added Task');
+	let currentTask = $state(taskBuilder.build());
+
+	onMount(() => {
+		if (!editingTask) return;
+		taskBuilder
+			.setId(editingTask.id)
+			.setName(editingTask.name)
+			.setInstructions(editingTask.instructions)
+			.setIsMiniboss(editingTask.isMiniboss)
+			.setTestFile(editingTask.validation.testFileName ?? '')
+			.setExp(editingTask.exp)
+			.setExpectedStderr(editingTask.validation.expectedStderr ?? '')
+			.setExpectedStdout(editingTask.validation.expectedStdout ?? '');
+		(editingTask.previousTaskIds ?? []).forEach((taskId) => taskBuilder.addPreviousTaskId(taskId));
+		(editingTask.nextTaskIds ?? []).forEach((taskId) => taskBuilder.addNextTaskId(taskId));
+		currentTask = taskBuilder.build();
+	});
 
 	const updateName = (val: string) => {
-		console.debug(val);
 		taskBuilder.setName(val);
-		console.debug('task', taskBuilder.build());
 	};
 
 	const onConfirm = () => {
 		onconfirm(taskBuilder.build());
 	};
+
+	const onInstructionsChanged = (val: string) => {
+		taskBuilder.setInstructions(val);
+		if (editingTask) {
+			currentTask.instructions = val;
+		}
+	};
+
+	const onPreviousTaskSelected = (val: string) => {
+		taskBuilder
+			.build()
+			.previousTaskIds?.forEach((taskId) => taskBuilder.removePreviousTaskId(taskId));
+		taskBuilder.addPreviousTaskId(val);
+	};
 </script>
 
 <div class="space-y-6">
-	<Input label={'Task name'} oninput={updateName} name={'task_name'} class="" />
+	<Input
+		options={{ value: currentTask.name }}
+		label={'Task name'}
+		oninput={updateName}
+		name={'task_name'}
+		class=""
+	/>
 	<div class="flex gap-6">
 		<Input
 			label={'Exp'}
-			options={{ type: 'number' }}
+			options={{ type: 'number', value: currentTask.exp }}
 			oninput={(val) => taskBuilder.setExp(Number(val) ?? 0)}
 		/>
 		<Checkbox
@@ -51,21 +91,22 @@
 		items={dropDownItems}
 		label={'Unlocked by :'}
 		class={'dark'}
-		onItemSelected={(val) => taskBuilder.addPreviousTaskId(val)}
+		onItemSelected={onPreviousTaskSelected}
 	/>
 	<Input
 		label={'Test file name'}
 		oninput={(val) => taskBuilder.setTestFile(val)}
 		name={'test_file_name'}
+		options={{ value: currentTask.validation.testFileName }}
 		class=""
 	/>
 	<div>
 		{#if instructionsDisplayMode === 'edit'}
 			<TextArea
 				label={'Instructions'}
-				oninput={(val) => taskBuilder.setInstructions(val)}
+				oninput={(val) => onInstructionsChanged(val)}
 				name={'instructions'}
-				value={taskBuilder.build().instructions}
+				value={editingTask ? currentTask.instructions : taskBuilder.build().instructions}
 				class=""
 			/>
 		{:else}
@@ -88,5 +129,7 @@
 			</button>
 		</div>
 	</div>
-	<button onclick={onConfirm} class="border-2 border-white rounded-md"> Create </button>
+	<button onclick={onConfirm} class="border-2 border-white rounded-md px-4 py-2"
+		>{editingTask ? 'Save' : 'Create'}</button
+	>
 </div>

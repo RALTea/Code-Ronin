@@ -4,7 +4,7 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
-	const questDataUCResult = await createCaller(await createContext(event)).learning.getQuestData.load({
+	const questDataUCResult = await createCaller(await createContext(event)).admin.getQuestData.load({
 		questId: event.params.questid
 	});
 	if (!questDataUCResult.isSuccess) {

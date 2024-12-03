@@ -22,6 +22,10 @@ export const TaskBuilder = () => {
 		build: function () {
 			return createTaskDto;
 		},
+		setId: function (id: string) {
+			createTaskDto.id = id;
+			return this;
+		},
 		getId: function () {
 			return [createTaskDto.id, this];
 		},
