@@ -23,6 +23,10 @@ export const PrismaAttemptRepository = (prisma: PrismaClient): _PrismaAttemptRep
 			});
 		},
 		handleFail: async (data) => {
+			if (!data) {
+				console.log('data is empty');
+				return;
+			}
 			await prisma.attempt.create({
 				data: {
 					tasks: {

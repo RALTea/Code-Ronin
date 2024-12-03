@@ -1,4 +1,4 @@
-import type { CreateTaskDto } from '$learning/usecases/createTask/aggregates/CreateTaskDto';
+import type { CreateTaskDto } from '../aggregates/CreateTaskDto';
 
 export const TaskBuilder = () => {
 	const createTaskDto: CreateTaskDto = {
@@ -7,14 +7,14 @@ export const TaskBuilder = () => {
 		instructions: 'Instructions...',
 		isMiniboss: false,
 		name: 'Task name',
-		previousTaskId: undefined,
-		nextTaskId: undefined,
+		previousTaskIds: undefined,
+		nextTaskIds: undefined,
 		validation: {
 			expectedStderr: undefined,
 			expectedStdout: undefined,
 			forbiddenSnippets: [],
 			mandatorySnippets: [],
-			testFileNames: []
+			testFileName: undefined
 		}
 	};
 
@@ -41,12 +41,26 @@ export const TaskBuilder = () => {
 			createTaskDto.name = name;
 			return this;
 		},
-		setNextTaskId: function (nextTaskId: string) {
-			createTaskDto.nextTaskId = nextTaskId;
+		addNextTaskId: function (nextTaskId: string) {
+			createTaskDto.nextTaskIds ??= [];
+			createTaskDto.nextTaskIds.push(nextTaskId);
 			return this;
 		},
-		setPreviousTaskId: function (previousTaskId: string) {
-			createTaskDto.previousTaskId = previousTaskId;
+		addPreviousTaskId: function (previousTaskId: string) {
+			createTaskDto.previousTaskIds ??= [];
+			createTaskDto.previousTaskIds.push(previousTaskId);
+			return this;
+		},
+		removeNextTaskId: function (nextTaskId: string) {
+			createTaskDto.nextTaskIds = createTaskDto.nextTaskIds?.filter(
+				(taskId) => taskId !== nextTaskId
+			);
+			return this;
+		},
+		removePreviousTaskId: function (previousTaskId: string) {
+			createTaskDto.previousTaskIds = createTaskDto.previousTaskIds?.filter(
+				(taskId) => taskId !== previousTaskId
+			);
 			return this;
 		},
 		setExpectedStderr: function (expectedStderr: string) {
@@ -67,9 +81,8 @@ export const TaskBuilder = () => {
 			createTaskDto.validation.mandatorySnippets.push(mandatorySnippet);
 			return this;
 		},
-		addTestFile: function (testFileName: string) {
-			createTaskDto.validation.testFileNames ??= [];
-			createTaskDto.validation.testFileNames.push(testFileName);
+		setTestFile: function (testFileName: string) {
+			createTaskDto.validation.testFileName = testFileName;
 			return this;
 		},
 		removeForbiddenSnippet: function (forbiddenSnippet: string) {
@@ -84,12 +97,6 @@ export const TaskBuilder = () => {
 				createTaskDto.validation.mandatorySnippets?.filter(
 					(snippet) => snippet !== mandatorySnippet
 				);
-			return this;
-		},
-		removeTestFile: function (testFileName: string) {
-			createTaskDto.validation.testFileNames = createTaskDto.validation.testFileNames?.filter(
-				(fileName) => fileName !== testFileName
-			);
 			return this;
 		}
 	};

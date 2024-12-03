@@ -1,54 +1,70 @@
 <script lang="ts">
-	import { clickOutside } from '$lib/directives/clickOutside';
-	import type { TaskTreeItem } from '$learning/usecases/getQuestData/aggregates/TaskTreeItem';
-	import TaskTree from '$learning/usecases/getQuestData/views/TaskTree.svelte';
-	import TaskCreator from '$learning/views/TaskCreator.svelte';
+	import { AddTaskToTreeUseCase } from '$admin/usecases/addTaskToTree/addTaskToTree';
+	import {
+		mapCreateTaskDtoToTaskTreeItem,
+		type CreateTaskDto
+	} from '$admin/usecases/createTask/aggregates/CreateTaskDto';
+	import { CreateTaskUseCase } from '$admin/usecases/createTask/createTask.js';
+	import TaskCreator from '$admin/usecases/createTask/views/TaskCreator.svelte';
+	import { GetQuestDataUseCase } from '$admin/usecases/getQuestData/getQuestData';
+	import TaskTree from '$admin/views/TaskTree.svelte';
+	import { page } from '$app/stores';
+	import { trpc } from '$lib/clients/trpc.js';
 	import IconWrapper from '$lib/components/icons/IconWrapper.svelte';
+	import { clickOutside } from '$lib/directives/clickOutside';
 	import { Plus } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
-	import { TaskBuilder } from '$learning/usecases/getQuestData/services/TaskBuilder.js';
-	import { GetQuestDataUseCase } from '$learning/usecases/getQuestData/getQuestData.js';
 
-	let { data = $bindable()} = $props();
-	// const { name, tasks } = data.questData;
+	let { data = $bindable() } = $props();
+
 	let tasks = $state(data.questData.tasks);
-	$inspect("tasks in page (data)", tasks.at(1))
+	$inspect('tasks in page (data)', tasks.at(1));
 
 	let taskCreatorOpened = $state(false);
 
 	const openTaskCreator = () => {
-		// taskCreatorOpened = true;
-		const newTask = TaskBuilder().setPreviousTaskId(tasks[1][0].id).build();
-		addNewTask(newTask);
+		taskCreatorOpened = true;
 	};
 
 	const closeTaskCreator = () => {
 		taskCreatorOpened = false;
 	};
 
-	const addNewTask = async (task: TaskTreeItem) => {
-		console.debug('adding task', task);
-		await getQuestData(task);
-		closeTaskCreator();
-	};
+	const addNewTask = async (taskDto: CreateTaskDto) => {
+		console.debug('adding task', taskDto);
+		const payload = { ...taskDto, questId: data.questData.id };
+		const createTaskUseCase = await CreateTaskUseCase({
+			saveTask: async () => trpc($page).admin.createTask.createTask.query(payload)
+		}).execute(payload);
+		if (!createTaskUseCase.isSuccess) {
+			console.error('Failed to create task', createTaskUseCase.message);
+			return;
+		}
 
-	const getQuestData = async (newTask: TaskTreeItem) => {
 		const getQuestDataUseCase = GetQuestDataUseCase({
 			fetchQuestData: async () => {
 				const questData = data.questData;
-				questData.tasks = [questData.tasks.flat()];
-				questData.tasks[0].push(newTask);
+				const newTask = mapCreateTaskDtoToTaskTreeItem(taskDto);
+				const newTree = await AddTaskToTreeUseCase().execute({
+					tree: questData.tasks,
+					task: newTask
+				});
+				if (!newTree.isSuccess) {
+					console.error('Failed to add task to tree', newTree.message);
+					return questData;
+				}
+				questData.tasks = newTree.data;
 				return questData;
 			}
 		});
-		const newQuestData = await getQuestDataUseCase.execute({questId: data.questData.id});
+		const newQuestData = await getQuestDataUseCase.execute({ questId: data.questData.id });
 		if (!newQuestData.isSuccess) {
 			console.error('Failed to get quest data', newQuestData.message);
 			return;
 		}
 		tasks = newQuestData.data.tasks;
+		closeTaskCreator();
 	};
-
 </script>
 
 <button

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { TaskTreeItem } from '$learning/usecases/getQuestData/aggregates/TaskTreeItem';
-	import { TaskBuilder } from '$learning/usecases/getQuestData/services/TaskBuilder';
+	import type { TaskTreeItem } from '$admin/domain/TaskTreeItem';
+	import type { CreateTaskDto } from '$admin/usecases/createTask/aggregates/CreateTaskDto';
+	import { TaskBuilder } from '$admin/usecases/createTask/services/TaskBuilder';
 	import Checkbox from '$lib/components/forms/Checkbox.svelte';
 	import Dropdown from '$lib/components/forms/Dropdown.svelte';
 	import Input from '$lib/components/forms/Input.svelte';
@@ -11,7 +12,7 @@
 
 	type Props = {
 		taskList: TaskTreeItem[];
-		onconfirm: (task: TaskTreeItem) => void;
+		onconfirm: (task: CreateTaskDto) => void;
 	};
 	let { taskList, onconfirm }: Props = $props();
 	let dropDownItems = taskList.map((task) => ({ value: task.id, label: task.name }));
@@ -50,11 +51,11 @@
 		items={dropDownItems}
 		label={'Unlocked by :'}
 		class={'dark'}
-		onItemSelected={(val) => taskBuilder.setPreviousTaskId(val)}
+		onItemSelected={(val) => taskBuilder.addPreviousTaskId(val)}
 	/>
 	<Input
 		label={'Test file name'}
-		oninput={(val) => taskBuilder.addTestFile(val)}
+		oninput={(val) => taskBuilder.setTestFile(val)}
 		name={'test_file_name'}
 		class=""
 	/>
