@@ -1,3 +1,4 @@
+import type { TestType } from '$admin/domain/TestType';
 import type { CreateTaskDto } from '../aggregates/CreateTaskDto';
 
 export const TaskBuilder = () => {
@@ -9,6 +10,7 @@ export const TaskBuilder = () => {
 		name: 'Task name',
 		previousTaskIds: undefined,
 		nextTaskIds: undefined,
+		testType: 'tests',
 		validation: {
 			expectedStderr: undefined,
 			expectedStdout: undefined,
@@ -65,6 +67,10 @@ export const TaskBuilder = () => {
 			createTaskDto.previousTaskIds = createTaskDto.previousTaskIds?.filter(
 				(taskId) => taskId !== previousTaskId
 			);
+			return this;
+		},
+		setTestType: function (testType: TestType) {
+			createTaskDto.testType = testType;
 			return this;
 		},
 		setExpectedStderr: function (expectedStderr: string) {

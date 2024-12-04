@@ -22,7 +22,7 @@ export const PrismaCreateTaskRepository = (prisma: PrismaClient): _PrismaCreateT
 					isMiniboss: task.isMiniboss,
 					questId: task.questId,
 					order: task.order ?? 0,
-					answerType: 'tests',
+					answerType: task.testType,
 					validations: {
 						create: [
 							{

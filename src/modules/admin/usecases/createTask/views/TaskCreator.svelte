@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { TaskData } from '$admin/domain/TaskData';
 	import type { TaskTreeItem } from '$admin/domain/TaskTreeItem';
+	import type { TestType } from '$admin/domain/TestType';
 	import type { CreateTaskDto } from '$admin/usecases/createTask/aggregates/CreateTaskDto';
 	import { TaskBuilder } from '$admin/usecases/createTask/services/TaskBuilder';
 	import Checkbox from '$lib/components/forms/Checkbox.svelte';
@@ -11,6 +12,7 @@
 	import { Eye, PencilLine } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import SvelteMarkdown from 'svelte-markdown';
+	import { get } from 'svelte/store';
 
 	type Props = {
 		taskList: TaskTreeItem[];
@@ -18,9 +20,18 @@
 		onconfirm: (task: CreateTaskDto) => void;
 	};
 	let { taskList, onconfirm, editingTask }: Props = $props();
-	let dropDownItems = taskList
-		.map((task) => ({ value: task.id, label: task.name }))
-		.filter((task) => task.value !== editingTask?.id);
+	let dropDownItems = [
+		{ value: '', label: '[None]' },
+		...taskList
+			.map((task) => ({ value: task.id, label: task.name }))
+			.filter((task) => task.value !== editingTask?.id),
+	];
+
+	const testTypesDropdownItems: { value: TestType; label: string }[] = [
+		{ value: 'tests', label: 'tests' },
+		{ value: 'stdout', label: 'stdout' },
+		{ value: 'stderr', label: 'stderr' }
+	];
 	let instructionsDisplayMode: 'edit' | 'preview' = $state('edit');
 
 	let taskBuilder = TaskBuilder().setExp(0).setName('Added Task');
@@ -28,6 +39,7 @@
 
 	onMount(() => {
 		if (!editingTask) return;
+		console.debug('Editing task', editingTask);
 		taskBuilder
 			.setId(editingTask.id)
 			.setName(editingTask.name)
@@ -61,8 +73,21 @@
 		taskBuilder
 			.build()
 			.previousTaskIds?.forEach((taskId) => taskBuilder.removePreviousTaskId(taskId));
+		if (val === '') return;
 		taskBuilder.addPreviousTaskId(val);
 	};
+
+	const getOriginalTestType = () => {
+		return testTypesDropdownItems.find((item) => {
+			return editingTask ? (editingTask.testType === item.value) : (item.value === 'tests'); 
+		})
+	}
+
+	const getOriginalPreviousTask = () => {
+		return dropDownItems.find((item) => {
+			return editingTask ? (editingTask.previousTaskIds?.includes(item.value)) : false;
+		})
+	}
 </script>
 
 <div class="space-y-6">
@@ -92,14 +117,24 @@
 		label={'Unlocked by :'}
 		class={'dark'}
 		onItemSelected={onPreviousTaskSelected}
+		defaultItem={getOriginalPreviousTask()}
 	/>
-	<Input
-		label={'Test file name'}
-		oninput={(val) => taskBuilder.setTestFile(val)}
-		name={'test_file_name'}
-		options={{ value: currentTask.validation.testFileName }}
-		class=""
-	/>
+	<div class="flex gap-4 items-center">
+		<Input
+			label={'Test file name'}
+			oninput={(val) => taskBuilder.setTestFile(val)}
+			name={'test_file_name'}
+			options={{ value: currentTask.validation.testFileName }}
+			class="flex-1"
+		/>
+		<Dropdown
+			items={testTypesDropdownItems}
+			label={'Test type'}
+			class={'dark flex-1'}
+			defaultItem={getOriginalTestType()}
+			onItemSelected={(val) => taskBuilder.setTestType(val as TestType)}
+		/>
+	</div>
 	<div>
 		{#if instructionsDisplayMode === 'edit'}
 			<TextArea

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ValidationDataSchema } from './ValidationData';
+import { TestTypeSchema } from './TestType';
 
 export const TaskDataSchema = z.object({
 	id: z.string().uuid(),
@@ -9,6 +10,7 @@ export const TaskDataSchema = z.object({
 	previousTaskIds: z.string().array().optional(),
 	nextTaskIds: z.string().array().optional(),
 	isMiniboss: z.boolean(),
+	testType: TestTypeSchema,
 	validation: ValidationDataSchema,
 });
 

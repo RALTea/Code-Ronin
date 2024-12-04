@@ -10,7 +10,7 @@
 		label?: string;
     onItemSelected?: (value: string) => void;
   }
-  let { items, defaultItem, class: className = "", onItemSelected }: Props = $props();
+  let { items, defaultItem, class: className = "", onItemSelected, label }: Props = $props();
 
 	let selected: Item = $state(defaultItem ?? items[0]);
 	let isOpen = $state(false);
@@ -25,7 +25,10 @@
 </script>
 
 <div class="relative w-full {className}">
-	<button class="flex gap-1 items-center w-full" onclick={toggleExpanded}><ChevronDown/>{selected.label}</button>
+	{#if label}
+		<p class="text-black text-opacity-60 dark:text-white">{label}</p>
+	{/if}
+	<button class="flex gap-1 items-center w-full dark:bg-white text-black rounded-md h-10 px-2" onclick={toggleExpanded}><ChevronDown/>{selected.label}</button>
 	{#if isOpen}
 		<ul
 			class="absolute z-10 bg-white rounded-md divide-y-[.1rem] shadow-2xl min-w-24 bg-bg-primary-accent dark:bg-bg-medium overflow-hidden"

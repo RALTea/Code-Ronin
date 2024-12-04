@@ -17,6 +17,7 @@ export const PrismaEditTaskRepository = (prisma: PrismaClient): _PrismaEditTaskR
 					instructions: dto.instructions,
 					exp: dto.exp,
 					isMiniboss: dto.isMiniboss,
+					answerType: dto.testType,
 					previousTasks: {
 						set: (dto.previousTaskIds ?? []).map((id) => ({ id }))
 					},
