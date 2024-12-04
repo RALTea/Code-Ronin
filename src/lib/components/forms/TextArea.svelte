@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { HTMLTextareaAttributes } from "svelte/elements";
+
 	type Props = {
 		label: string;
 		name: string;
@@ -6,6 +8,7 @@
 		value?: string;
 		oninput?: (value: string) => void;
 		class?: string;
+		options?: HTMLTextareaAttributes;
 	};
 
 	let {
@@ -14,7 +17,8 @@
 		required = false,
 		value = '',
 		oninput,
-		class: className = ''
+		class: className = '',
+		options = {},
 	}: Props = $props();
 </script>
 
@@ -25,6 +29,7 @@
 	<textarea
 		{name}
 		{required}
+		{...options}
 		oninput={(event) => oninput?.((event.target as HTMLTextAreaElement).value)}
 		class="w-full px-4 py-2 text-black rounded-md focus-visible:outline-primary-dark"
 	>{value}</textarea>

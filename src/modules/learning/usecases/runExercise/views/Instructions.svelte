@@ -8,7 +8,7 @@
 	let { instructions }: InstructionsProps = $props();
 </script>
 
-<div in:fade={{ duration: 150, delay: 150 }} class="course">
+<div in:fade={{ duration: 150, delay: 150 }} class="course prose-li:marker:text-primary-light">
 	<SvelteMarkdown source={instructions} />
 </div>
 

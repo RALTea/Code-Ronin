@@ -35,7 +35,24 @@ export const PrismaEditTaskRepository = (prisma: PrismaClient): _PrismaEditTaskR
 			if (!existingValidation) {
 				await prisma.validation.create({
 					data: {
-						...dto
+						expectedStderr: dto.expectedStderr,
+						expectedStdout: dto.expectedStdout,
+						testFileUrl: dto.testFileName,
+						task: {
+							connect: { id: dto.taskId }
+						},
+						snippets: {
+							create: [
+								...(dto.forbiddenSnippets ?? []).map((snippet) => ({
+									type: 'FORBIDDEN',
+									content: snippet
+								})),
+								...(dto.mandatorySnippets ?? []).map((snippet) => ({
+									type: 'REQUIRED',
+									content: snippet
+								}))
+							]
+						}
 					}
 				});
 				return;

@@ -143,6 +143,7 @@
 				name={'instructions'}
 				value={editingTask ? currentTask.instructions : taskBuilder.build().instructions}
 				class=""
+				options={{ rows: 10 }}
 			/>
 		{:else}
 			<div class="prose prose-invert">
