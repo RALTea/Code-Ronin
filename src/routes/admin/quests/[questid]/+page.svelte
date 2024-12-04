@@ -122,7 +122,7 @@
 
 {#if taskCreatorOpened}
 	<div
-		class="fixed top-0 right-0 w-1/2 h-screen bg-black/50 z-20 backdrop-blur-md p-8"
+		class="fixed top-0 right-0 w-1/2 h-screen bg-black/50 z-20 backdrop-blur-md p-8 overflow-auto"
 		transition:fly={{ x: 1000 }}
 		use:clickOutside
 		onclickOutside={closeTaskCreator}

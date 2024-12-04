@@ -97,7 +97,7 @@
 {/if}
 
 <div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 pt-0 p-4 gap-4 h-full min-h-fit">
-	<aside class="prose prose-invert text-white h-full max-w-full row-span-2">
+	<aside class="prose prose-invert text-white h-full max-w-full row-span-2 prose-blockquote:border-primary-light prose-em:text-primary-light prose-em:font-bold">
 		{#await fetchTask}
 			<InstructonSkeleton animate bind:animating />
 		{:then task}
