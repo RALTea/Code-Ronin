@@ -20,7 +20,6 @@
 		}).execute({ taskId: currentTaskId });
 		if (!res.isSuccess) return undefined;
 		return {...taskToLoad, ...res.data};
-		// return new Promise(() => [])
 	});
 
 	// Run each time the current task changes to check if it is locked

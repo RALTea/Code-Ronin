@@ -1,0 +1,29 @@
+/* HTML */
+.hljs-tag, .hljs-name, .hljs-meta {
+  @apply text-primary-medium;
+}
+
+.hljs-attr {
+  @apply text-white;
+}
+
+.hljs-string, .hljs-meta-string {
+  @apply text-green-400;
+}
+
+/* CSS */
+.hljs-selector-class, .hljs-selector-id, .hljs-selector-tag {
+  @apply text-primary-medium;
+}
+
+.hljs-attribute {
+  @apply text-purple-300;
+}
+
+.hljs-number {
+  @apply text-blue-300;
+}
+
+.hljs-keyword {
+  @apply text-primary-medium;
+}

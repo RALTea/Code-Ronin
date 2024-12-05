@@ -12,6 +12,8 @@
 	import InstructonSkeleton from '$learning/usecases/runExercise/views/InstructonSkeleton.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Card from '$lib/components/cards/Card.svelte';
+	import { SendNotificationUseCase } from '../../notifications/usecases/SendNotification/SendNotification';
+	import { NotificationStack } from '../../notifications/stores/NotificationStack.svelte';
 	import Input from '../usecases/runExercise/views/Input.svelte';
 	import Instructions from '../usecases/runExercise/views/Instructions.svelte';
 	import Output from '../usecases/runExercise/views/Output.svelte';
@@ -26,8 +28,7 @@
 	let { fetchTask }: Props = $props();
 	let animating = $state(true);
 
-
-	// 
+	//
 	$effect(() => {
 		fetchTask.then((task) => {
 			if (!task || !task.lastInput) return;
@@ -69,7 +70,16 @@
 				result = res.data;
 			})
 			.catch((err) => {
-				console.error('Error running code:', err);
+				let message = 'Error running code';
+				if (err instanceof Error) {
+					message = err.message;
+				}
+				console.error(message, err);
+				SendNotificationUseCase({
+					addToStack: NotificationStack.addToStack
+				}).execute({
+					dto: { message, type: 'ERROR' }
+				});
 			})
 			.finally(async () => {
 				runningCode = false;
@@ -97,7 +107,9 @@
 {/if}
 
 <div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 pt-0 p-4 gap-4 h-full min-h-fit">
-	<aside class="prose prose-invert text-white h-full max-w-full row-span-2 prose-blockquote:border-primary-light prose-em:text-primary-light prose-em:font-bold">
+	<aside
+		class="prose prose-invert text-white h-full max-w-full row-span-2 prose-blockquote:border-primary-light prose-em:text-primary-light prose-em:font-bold"
+	>
 		{#await fetchTask}
 			<InstructonSkeleton animate bind:animating />
 		{:then task}
