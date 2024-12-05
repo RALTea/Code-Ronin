@@ -30,6 +30,7 @@
 	};
 
 	const closeTaskCreator = () => {
+		editingTask = undefined
 		taskCreatorOpened = false;
 	};
 
