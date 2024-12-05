@@ -8,6 +8,7 @@
 		value?: string;
 	};
 	let { height = 600, value = $bindable() }: Props = $props();
+	$inspect("Monaco Value", value);
 
 	let editor: Monaco.editor.IStandaloneCodeEditor | undefined = undefined;
 	let monaco: typeof Monaco | undefined;
@@ -36,6 +37,14 @@
 	});
 
 	$effect(() => {
+		if (!monaco || !editor) return;
+		monaco.editor.getModels().forEach((model) => model.dispose());
+		const model = monaco.editor.createModel(value ?? 'console.log("Hello, world!")', 'typescript');
+		if (!model) return;
+		editor.setModel(model);
+	})
+
+	$effect(() => {
 		initCompleted;
 		if (isObserving) return;
 		if (!observer) return;
@@ -45,6 +54,7 @@
 	$effect(() => {
 		height;
 		initCompleted;
+
 		initEditor();
 	});
 
