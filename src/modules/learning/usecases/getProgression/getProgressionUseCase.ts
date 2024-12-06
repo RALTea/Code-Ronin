@@ -69,11 +69,6 @@ export const getProgressionUseCase: UseCase<Input, Output> = (deps) => {
 				console.error("getProgression.getApprenticeAttemptsOnQuest Error", error);
 			}
 
-			console.debug("getProgressionUseCase", {
-				orderedTasks,
-				apprenticeAttempts
-			})
-
 			const result: ApprenticeProgression = {
 				tasks: orderedTasks.map((task) => ({
 					...task,

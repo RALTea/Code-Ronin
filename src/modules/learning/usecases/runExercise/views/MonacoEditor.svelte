@@ -86,7 +86,10 @@
 
 		// Your monaco instance is ready, let's display some code!
 		editor = monaco.editor.create(editorContainer, {
-			fontSize: 14
+			fontSize: 14,
+			minimap: {
+				enabled: false,
+			}
 		});
 
 		hideEffect(() => {
