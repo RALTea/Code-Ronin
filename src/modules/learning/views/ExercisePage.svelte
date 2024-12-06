@@ -5,7 +5,7 @@
 	import { env } from '$env/dynamic/public';
 	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
-	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
+	import type { FormattedExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
 	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
 	import { LocalStorageAttemptRepository } from '$learning/usecases/runExercise/repositories/LocalStorageAttemptRepository';
 	import { runExercise } from '$learning/usecases/runExercise/runExercise';
@@ -14,13 +14,14 @@
 	import InstructionsSkeleton from '$learning/usecases/runExercise/views/InstructionsSkeleton.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Card from '$lib/components/cards/Card.svelte';
+	import { onMount } from 'svelte';
 	import { NotificationStack } from '../../notifications/stores/NotificationStack.svelte';
 	import { SendNotificationUseCase } from '../../notifications/usecases/SendNotification/SendNotification';
 	import Input from '../usecases/runExercise/views/Input.svelte';
 	import Instructions from '../usecases/runExercise/views/Instructions.svelte';
 	import Output from '../usecases/runExercise/views/Output.svelte';
 
-	let result: ExerciseAttemptResult | undefined = $state();
+	let result: FormattedExerciseAttemptResult | undefined = $state();
 	let runningCode: boolean = $state(false);
 	let inputCode: string = $state(`console.log('Hello world')`);
 	let nextItemUrl: string = $state('');
@@ -29,6 +30,12 @@
 	type Props = { fetchTask: Promise<TaskDetails | undefined> };
 	let { fetchTask }: Props = $props();
 	let animating = $state(true);
+	let currentSelectedMode: 'Simplified' | 'Full' = $state('Simplified');
+	let shownOutput: string | undefined = $derived(currentSelectedMode === 'Simplified' ? result?.formattedOutput : result?.output);
+
+	onMount(() => {
+		currentSelectedMode = localStorage.getItem('outputMode') as 'Simplified' | 'Full' || 'Simplified'
+	});
 
 	//
 	$effect(() => {
@@ -43,10 +50,10 @@
 		const isDemo = $page.params.campaign === env.PUBLIC_DEMO_CAMPAIGN_NAME;
 		const localStorageAttemptRepository = LocalStorageAttemptRepository();
 		const judgeRepository = JudgeEvaluationRepository();
-		const failHandlers = isDemo
+		const failHandlers = isDemo && !UserStore.user
 			? [localStorageAttemptRepository.handleFail]
 			: [trpc($page).learning.runExercises.handleFail.mutate];
-		const successHandlers = isDemo
+		const successHandlers = isDemo && !UserStore.user
 			? [localStorageAttemptRepository.handleSuccess]
 			: [trpc($page).learning.runExercises.handleSuccess.mutate];
 		runExercise({
@@ -96,7 +103,6 @@
 			})
 			.finally(async () => {
 				runningCode = false;
-				console.log('Code run complete', result);
 				if (result?.status === 'SUCCESS') {
 					const task = await fetchTask;
 					if (!task || !task.nextTasksIds || task.nextTasksIds.length !== 1) return;
@@ -140,6 +146,6 @@
 	</aside>
 	<main class="flex-1 space-y-4 max-h-full">
 		<Input bind:value={inputCode} {runCode} />
-		<Output message={runningCode ? 'Loading...' : result?.message} />
+		<Output message={runningCode ? 'Loading...' : shownOutput} bind:mode={currentSelectedMode}/>
 	</main>
 </div>

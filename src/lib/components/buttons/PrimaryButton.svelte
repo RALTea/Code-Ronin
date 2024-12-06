@@ -3,12 +3,12 @@
 
 	type PrimaryButtonProps = {
 		onclick?: () => void;
-		className?: string;
+		class?: string;
 		children?: Snippet;
 		variant?: 'primary' | 'outline';
 		type?: 'button' | 'submit' | 'reset';
 	};
-	let { onclick, className, children, variant = 'primary', type }: PrimaryButtonProps = $props();
+	let { onclick, class: className, children, variant = 'primary', type }: PrimaryButtonProps = $props();
 </script>
 
 <button

@@ -1,77 +1,61 @@
 export const OutputParser = (output: string) => {
-	let result = output;
-	const messageTitleFail = () => "Exercise Failed ×"
-	const messageTitleSuccess = () => "Exercise completed ✓"
-	const messageTestNameFail = (testName: string) => `❯ Test named '${testName}' - Failed ×`
-	const messageTestNameSuccess = (testName: string) => `❯ Test named '${testName}' - Passed ✓`
-	const messageTestFail = (actualOutput: string, expectedOutput: string) => {
-		const actualOutputMessage = actualOutput ? `\n\t→ Your code outputs: '${actualOutput}'` : '';
-		const expectedOutputMessage = expectedOutput
-			? `\n\t→ Expected output: '${expectedOutput}'`
-			: '';
-
-		return `${actualOutputMessage}${expectedOutputMessage}`;
-	}
-	const messageTestSuccess = (numberOfPassedTests: number) => {
-		return `❯ ${numberOfPassedTests} tests passed`;
-	}
-
-
 	return {
-		messageTitleFail,
-		messageTitleSuccess,
-		messageTestNameFail,
-		messageTestNameSuccess,
-		messageTestFail,
-		messageTestSuccess,
-		trim: function () {
-			result = result.trim();
-			return this;
+		_listCauses: () => {
+			const matches = Array.from(output.matchAll(/FAIL [^>]+> [^>]+> (.+?)(?=\n)/g));
+			return matches.map((match) => match[1]); // Extract the captured group
 		},
-		removeRunHeader: function () {
-			result = result.replace(/ RUN.*\n/, '');
-			return this;
-		},
-		removeExitMessage: function () {
-			result = result.replace(/\nExited with error status \d+/, '');
-			return this;
-		},
-		applyAll: function () {
-			result = this.trim().get();
-			return this;
-		},
-		formatError: function () {
-			// Regular expressions to extract relevant information
-			// const testNameRegex = /StudentSolution:(\w+)/;
-			console.debug({result})
-			const firstFailedTest = result.split('⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯').at(0);
-			if (firstFailedTest) {
-				result = firstFailedTest;
-			}
-			const descriptionRegex = /> (.+)/;
-			const actualOutputRegex = /expected '(.+)' to be/;
-			const expectedOutputRegex = /to be '(.+)'/;
-
-			// Extract information using regex
-			const description = descriptionRegex.exec(result)?.[1] ?? '';
-			const actualOutput = actualOutputRegex.exec(result)?.[1] ?? '';
-			const expectedOutput = expectedOutputRegex.exec(result)?.[1] ?? '';
-
-			// Format the extracted information into the desired string
-			result = `${messageTitleFail()}\n\n${messageTestNameFail(description)}${messageTestFail(actualOutput, expectedOutput)}`;
-
-			return this;
+		_extractStdout: () => {
+			const stdoutMatch = output.match(/stdout \| script\.test\.ts\n([\s\S]*?)\n\s*❯/);
+			if (!stdoutMatch || !stdoutMatch[1]) return 'STDOUT: <empty>';
+			return `⚙ STDOUT:\n  ${stdoutMatch[1]?.trim()?.replaceAll('\n', '\n  ')}\n`;
 		},
 		formatSuccess: function () {
-			const numberOfPassedTestsRegex = /Tests {2}(\d+) passed/;
-			const numberOfPassedTests = numberOfPassedTestsRegex.exec(result)?.[1] ?? '0';
-
-			result = `${messageTitleSuccess()}\n\n${messageTestSuccess(Number(numberOfPassedTests))}`;
-
-			return this;
+			const title = `Exercise Completed ✓\n\n`;
+			return `${title}${this._extractStdout()}`;
 		},
-		get: function () {
-			return result;
+		_formatCauses: function () {
+			const prettify = (cause: string) => `  × ${cause}`;
+			const causes = this._listCauses();
+			const title = causes.length > 1 ? 'Failed Tests:' : 'Failed Test:';
+			return `× ${title}\n${causes.map(prettify).join('\n')}`;
+		},
+		_extractTestResults: () => {
+			const testMatch = output.match(/❯ script\.test\.ts\s+\(\d+ tests[^]*?Duration.*?ms\)/);
+			if (!testMatch) return '<no test results>';
+			return testMatch[0];
+		},
+		_extractAssertions: () => {
+			const assertionPattern = /AssertionError:.*?\nExpected: "(.*?)"\nReceived: "(.*?)"/gs;
+			const matches = Array.from(output.matchAll(assertionPattern));
+
+			return matches.map((match) => ({
+				expected: match[1],
+				received: match[2]
+			}));
+		},
+		_extractFailures: () => {
+			// Match each FAIL block including its assertion
+			const failurePattern =
+				/FAIL [^>]+> [^>]+> (.+?)\nAssertionError:.*?\nExpected: "(.*?)"\nReceived: "(.*?)"/gs;
+			const matches = Array.from(output.matchAll(failurePattern));
+
+			return matches.map((match) => ({
+				cause: match[1],
+				expected: match[2],
+				received: match[3]
+			}));
+		},
+		formatErrors: function () {
+			const title = 'Exercise Failed ×\n\n';
+			const failures = this._extractFailures().map(
+				({ cause, expected, received }) =>
+					`  × ${cause}\n    - Expected: "${expected}"\n    + Received: "${received}"`
+			);
+
+			return title + failures.join('\n\n');
+		},
+		cleanUp() {
+			return this._extractTestResults();
 		}
 	};
 };

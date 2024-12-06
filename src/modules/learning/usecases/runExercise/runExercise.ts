@@ -1,5 +1,5 @@
 import type { Language } from '$learning/domain/Language';
-import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
+import type { FormattedExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
 import { FetchApprenticeSolutionError } from '$learning/usecases/runExercise/errors/FetchApprenticeSolutionError';
 import { FetchTestCasesError } from '$learning/usecases/runExercise/errors/FetchTestCasesError';
 import * as IRunExerciseRepository from '$learning/usecases/runExercise/repositories/IRunExerciseRepository';
@@ -32,7 +32,7 @@ type Input = InputFactory<
 	}
 >;
 
-type Output = OutputFactory<ExerciseAttemptResult>;
+type Output = OutputFactory<FormattedExerciseAttemptResult>;
 
 export const runExercise: UseCase<Input, Output> = (deps) => {
 	const {
@@ -97,7 +97,10 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 			try {
 				const codeToBeEvaluated = _buildCodeToBeEvaluated(apprenticeSolution, testCases, taskDetails.answerType);
 				console.debug('Code to be evaluated:', codeToBeEvaluated);
-				const result: ExerciseAttemptResult = await evaluateSolution(codeToBeEvaluated, language);
+				const result: FormattedExerciseAttemptResult = {
+					...(await evaluateSolution(codeToBeEvaluated, language)),
+					formattedOutput: '',
+				};
 				
 				const attempt: ExerciseAttempt = {
 					apprenticeId,
@@ -107,18 +110,18 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 				};
 
 				// Handle results
+				
 				if (result.status === 'SUCCESS') {
-					result.message = OutputParser(result.message ?? '')
-						.formatSuccess()
-						.get();
+					result.formattedOutput = OutputParser(result.output ?? '').formatSuccess()
 					await Promise.all(successHandlers.map((handler) => handler(attempt)));
 				}
-				if (result.status !== 'SUCCESS') {
-					result.message = OutputParser(result.message ?? '')
-						.formatError()
-						.get();
+				
+				if (result.formattedOutput !== 'SUCCESS') {
+					result.formattedOutput = OutputParser(result.output ?? '').formatErrors()
 					await Promise.all(failHandlers.map((handler) => handler(attempt)));
 				}
+
+				result.output = OutputParser(result.output ?? '').cleanUp();
 
 				// Usecase completed; result might either be a success or a failure
 				return UseCaseResponseBuilder.success(200, result);

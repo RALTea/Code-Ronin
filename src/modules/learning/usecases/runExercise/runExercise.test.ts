@@ -1,6 +1,6 @@
+import { describe, expect, it, vi } from 'vitest';
 import type { TaskDetails } from './aggregates/TaskDetails';
 import { runExercise } from './runExercise';
-import { describe, it, expect, vi } from 'vitest';
 
 describe('runExercise', () => {
 	it('Should call fail handlers when the solution is not valid', async () => {
@@ -12,7 +12,9 @@ describe('runExercise', () => {
 			evaluateSolution: vi.fn(() => Promise.resolve({
 				id: '1',
 				success: false,
-				message: 'Message'
+				output: 'Message',
+				formattedOutput: 'FormattedMessage',
+				status: 'COMPILE_ERROR' as const,
 			})),
 			failHandlers,
 			getApprenticeSolution: vi.fn(() => Promise.resolve('Solution')),

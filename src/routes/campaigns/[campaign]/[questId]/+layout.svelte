@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { UserStore } from '$auth/stores/UserStore.svelte';
 	import { env } from '$env/dynamic/public';
 	import type { Attempt } from '$learning/domain/Attempt';
 	import type { ApprenticeAttempt } from '$learning/usecases/getProgression/aggregates/ApprenticeAttempt';
@@ -10,6 +11,7 @@
 	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
+	import { User } from 'lucide-svelte';
 	import { onMount, type Snippet } from 'svelte';
 
 	type Props = { children: Snippet };
@@ -30,7 +32,7 @@
 		const isDemo = $page.params.campaign === 'demo';
 		const res = await getProgressionUseCase({
 			getApprenticeAttemptsOnQuest: async () => {
-				if (!isDemo)
+				if (!isDemo || UserStore.user)
 					return trpc($page).learning.getProgression.getApprenticeAttemptsOnQuest.query({
 						questId
 					});

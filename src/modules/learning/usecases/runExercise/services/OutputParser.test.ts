@@ -1,91 +1,67 @@
 import { describe, expect, it } from 'vitest';
 import { OutputParser } from './OutputParser';
+import { OutputExamples } from './OutputExamples.fake';
 
-const typicalError = `
- RUN  v2.1.3 /box
+describe('OutputParser', () => {
+	it('Err: should extract the causes of the error', () => {
+		const output = OutputExamples.err1;
+		const causes = OutputParser(output)._listCauses();
 
- ❯ script.test.ts  (1 test | 1 failed) 8ms
-   × StudentSolution:printalphabet > should print the alphabet
-     → expected 'a' to be 'abcdefghijklmnopqrstuvwxyz' // Object.is equality
+		expect(causes).toEqual([
+			'A variable named "username" should exist (be declared)',
+			'The variable "username" should be a string'
+		]);
+	});
+	it('All: should extract the stdout from the output', () => {
+		const output = OutputExamples.stdout1;
+		const stdout = OutputParser(output)._extractStdout();
+
+		expect(stdout).toEqual(`⚙ STDOUT:\n  Hello world\n`);
+	});
+	it('All: cleanup should extract the test results', () => {
+		const output = OutputExamples.errPlusStd;
+		const testResults = OutputParser(output).cleanUp();
+		const expectedResult = `❯ script.test.ts  (3 tests | 2 failed) 8ms
+   × StudentSolution:ANewDevIsBorn > A variable named "username" should exist (be declared)
+     → username is not defined
+   × StudentSolution:ANewDevIsBorn > The variable "username" should be a string
+     → expected 'undefined' to be 'string' // Object.is equality
 
  Test Files  1 failed (1)
-      Tests  1 failed (1)
-   Start at  10:12:55
-   Duration  301ms (transform 35ms, setup 0ms, collect 26ms, tests 8ms, environment 0ms, prepare 83ms)
+      Tests  2 failed | 1 passed (3)
+   Start at  12:44:03
+   Duration  296ms (transform 38ms, setup 0ms, collect 26ms, tests 8ms, environment 0ms, prepare 63ms)`
 
-Exited with error status 1`;
-
-const typicalSuccess = `
- RUN  v2.1.3 /box
-
- ✓ script.test.ts  (2 tests) 2ms
-
- Test Files  1 passed (1)
-      Tests  2 passed (2)
-   Start at  11:43:25
-   Duration  263ms (transform 40ms, setup 0ms, collect 27ms, tests 2ms, environment 0ms, prepare 78ms)
-`;
-
-describe('OutputParser:Unit', () => {
-	it('Should remove trailing newlines', () => {
-		const output = OutputParser('\nabc\n').trim().get();
-		expect(output).toBe('abc');
-	});
-	it('Should remove the RUN header', () => {
-		const output = OutputParser(' RUN  v2.1.3 /box\nscript.test.ts  (1 test | 1 failed) 8ms')
-			.removeRunHeader()
-			.get();
-		expect(output).toBe('script.test.ts  (1 test | 1 failed) 8ms');
-	});
-	it('Should remove Exit message', () => {
-		const output = OutputParser(
-			'script.test.ts  (1 test | 1 failed) 8ms\nExited with error status 1'
-		)
-			.removeExitMessage()
-			.get();
-		expect(output).toBe('script.test.ts  (1 test | 1 failed) 8ms');
-	});
-	it('Should format error', () => {
-		const output = OutputParser(typicalError)
-			.trim()
-			.removeExitMessage()
-			.removeRunHeader()
-			.formatError()
-			.get();
-
-		expect(output).toBe(`Exercise Failed ×\n
-❯ Test named 'should print the alphabet' - Failed ×
-\t→ Your code outputs: 'a'
-\t→ Expected output: 'abcdefghijklmnopqrstuvwxyz'`);
+		expect(testResults).toEqual(expectedResult);
 	});
 
-	it('Should format success', () => {
-		const parser = OutputParser(typicalSuccess);
-		const output = parser.formatSuccess().get();
+	it('Err: should extract assertions from the output', () => {
+		const output = OutputExamples.assert;
+		const assertions = OutputParser(output)._extractAssertions();
 
-		expect(output).toBe(`${parser.messageTitleSuccess()}\n\n❯ 2 tests passed\n\nExercise completed ✓`);
+		expect(assertions).toEqual([
+			{
+				expected: 'The Excalibur is a Sword that deals 100 damage',
+				received: 'The Excalibur is aSwordthat deals100 damage'
+			}
+		]);
 	});
 
-	it('Should omit outputs if they are empty', () => {
-		const errMsg = `
-RUN  v2.1.3 /box
+	it('Err: should extract assertions for each failed test', () => {
+		const output = OutputExamples.assertMultiple;
+		const failures = OutputParser(output)._extractFailures();
 
- ❯ script.test.ts  (3 tests | 1 failed) 9ms
-   × StudentSolution:ANewDevIsBorn > The variable "username" should be a constant
-     → expected [Function] to throw an error
-
- Test Files  1 failed (1)
-      Tests  1 failed | 2 passed (3)
-   Start at  11:15:11
-   Duration  292ms (transform 37ms, setup 0ms, collect 26ms, tests 9ms, environment 0ms, prepare 66ms)
-
-Exited with error status 1`;
-
-		const parser = OutputParser(errMsg);
-		const output = parser.trim().removeExitMessage().removeRunHeader().formatError().get();
-
-		expect(output).toBe(
-			`${parser.messageTitleFail()}\n\n${parser.messageTestNameFail('The variable "username" should be a constant')}`
-		);
-	});
-});
+		expect(failures).toEqual([
+			{
+				cause: 'First test',
+				expected: 'def',
+				received: 'abc'
+			},
+			{
+				cause: 'Second test',
+				expected: '456',
+				received: '123'
+			}
+		]);
+	})
+})

@@ -81,14 +81,15 @@ export const JudgeEvaluationRepository = (): JudgeEvaluationRepository => {
 				decoded
 			});
 
-			const message = decoded.stdout + decoded.message;
-
+			// const message = decoded.stdout + decoded.message;
+			const output = `${decoded.stderr}\n${decoded.stdout}`;
+			console.log({output})
 			return {
 				id: decoded.token,
 				time: parseFloat(decoded.time),
 				status: getJudgeSuccess(decoded),
+				output: output,
 				// message: base64ToUnicode(decoded.stdout ?? '') + base64ToUnicode(decoded.stderr ?? '')
-				message: message
 				// decoded.compile_output +
 				// decoded.message +
 				// 'Your code returned no output'

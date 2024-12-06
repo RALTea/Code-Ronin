@@ -59,7 +59,7 @@
       >
 				<PrimaryButton
 					onclick={onContinue}
-					className="px-12 py-2 m-auto mt-6 flex gap-2 items-center hover:scale-105 duration-200 [&_svg]:hover:translate-x-1 [&_svg]:duration-200"
+					class="px-12 py-2 m-auto mt-6 flex gap-2 items-center hover:scale-105 duration-200 [&_svg]:hover:translate-x-1 [&_svg]:duration-200"
 				>
 					Continue
 					<IconArrowRight />
