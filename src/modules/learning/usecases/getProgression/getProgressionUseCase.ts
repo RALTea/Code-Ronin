@@ -1,5 +1,6 @@
 import type { Task } from '$learning/domain/Task';
 import { UseCaseResponseBuilder, type InputFactory, type OutputFactory, type UseCase } from '$lib/interfaces/UseCase';
+import type { ApprenticeAttempt } from './aggregates/ApprenticeAttempt';
 import type { ApprenticeProgression } from './aggregates/ApprenticeProgression';
 import * as IProgressionRepository from './repositories/IProgressionRepository';
 
@@ -53,9 +54,25 @@ export const getProgressionUseCase: UseCase<Input, Output> = (deps) => {
 	return {
 		execute: async (data) => {
 			const { apprenticeId, questId } = data;
-			const unorderedTasks = await getUnorderedTasks(questId);
+			console.debug('getProgressionUseCase', { apprenticeId, questId });
+			let unorderedTasks: Task[] = []
+			try {
+				unorderedTasks = await getUnorderedTasks(questId);
+			} catch (error) {
+				console.error("getProgression.getUnorderedTasks Error", error);
+			}
 			const orderedTasks = sortTasks(unorderedTasks);
-			const apprenticeAttempts = await getApprenticeAttemptsOnQuest(apprenticeId, questId);
+			let apprenticeAttempts: ApprenticeAttempt[] = [];
+			try {
+				apprenticeAttempts = await getApprenticeAttemptsOnQuest(apprenticeId, questId);
+			} catch (error) {
+				console.error("getProgression.getApprenticeAttemptsOnQuest Error", error);
+			}
+
+			console.debug("getProgressionUseCase", {
+				orderedTasks,
+				apprenticeAttempts
+			})
 
 			const result: ApprenticeProgression = {
 				tasks: orderedTasks.map((task) => ({

@@ -14,7 +14,7 @@
 		if (!contentWrapperRef) return;
 		const codeBlocks = contentWrapperRef.querySelectorAll<HTMLElement>('pre code');
 		codeBlocks.forEach((block) => {
-			highlight.highlightBlock(block);
+			highlight.highlightElement(block);
 		});
 	});
 </script>

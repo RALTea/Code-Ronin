@@ -1,3 +1,4 @@
+import { env } from '$env/dynamic/private';
 import { handle as AuthHandle } from '$lib/auth/auth';
 import { createContext } from '$lib/trpc/context';
 import { router } from '$lib/trpc/router';
@@ -32,9 +33,9 @@ export const handle: Handle = sequence(
 			const httpCode = getHTTPStatusCodeFromError(trpcError);
 			const trpcCode = trpcError.code;
 			console.error(`[${httpCode} | ${trpcCode}] - TRPC - ${type}@${path}`);
-			// if (env.DEBUG === "1") {
-			// 	console.error(trpcError);
-			// }
+			if (env.DEBUG === "1") {
+				console.error(trpcError.cause);
+			}
 		}
 	})
 );

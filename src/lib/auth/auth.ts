@@ -7,6 +7,7 @@ import GitHub from '@auth/sveltekit/providers/github';
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
 	providers: [GitHub],
+	trustHost: true,
 	callbacks: {
     // return true if successful, false otherwise
 		signIn: async (data) => {

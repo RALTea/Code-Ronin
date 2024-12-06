@@ -1,6 +1,7 @@
-export class ApprenticeNotFoundError extends Error {
+import { AppError } from '$lib/errors/AppError';
+
+export class ApprenticeNotFoundError extends AppError {
 	constructor(apprenticeId: string) {
-		super(`Apprentice with id ${apprenticeId} not found`);
-		this.name = 'ApprenticeNotFoundError';
+		super(`Apprentice with id ${apprenticeId} not found`, 404);
 	}
 }

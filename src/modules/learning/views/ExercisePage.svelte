@@ -2,14 +2,16 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { UserStore } from '$auth/stores/UserStore.svelte';
+	import { env } from '$env/dynamic/public';
 	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
 	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
 	import { JudgeEvaluationRepository } from '$learning/usecases/runExercise/repositories/JudgeEvaluationRepository';
+	import { LocalStorageAttemptRepository } from '$learning/usecases/runExercise/repositories/LocalStorageAttemptRepository';
 	import { runExercise } from '$learning/usecases/runExercise/runExercise';
 	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
 	import Bim from '$learning/usecases/runExercise/views/Bim.svelte';
-	import InstructonSkeleton from '$learning/usecases/runExercise/views/InstructonSkeleton.svelte';
+	import InstructionsSkeleton from '$learning/usecases/runExercise/views/InstructionsSkeleton.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Card from '$lib/components/cards/Card.svelte';
 	import { NotificationStack } from '../../notifications/stores/NotificationStack.svelte';
@@ -38,7 +40,15 @@
 
 	const runCode = () => {
 		runningCode = true;
+		const isDemo = $page.params.campaign === env.PUBLIC_DEMO_CAMPAIGN_NAME;
+		const localStorageAttemptRepository = LocalStorageAttemptRepository();
 		const judgeRepository = JudgeEvaluationRepository();
+		const failHandlers = isDemo
+			? [localStorageAttemptRepository.handleFail]
+			: [trpc($page).learning.runExercises.handleFail.mutate];
+		const successHandlers = isDemo
+			? [localStorageAttemptRepository.handleSuccess]
+			: [trpc($page).learning.runExercises.handleSuccess.mutate];
 		runExercise({
 			evaluateSolution: judgeRepository.evaluateSolution,
 			getApprenticeSolution: async () => {
@@ -53,11 +63,14 @@
 				});
 				return result ?? '';
 			},
-			successHandlers: [trpc($page).learning.runExercises.handleSuccess.mutate],
-			failHandlers: [trpc($page).learning.runExercises.handleFail.mutate],
+			successHandlers: successHandlers,
+			failHandlers: failHandlers,
 			getTaskDetails: async () => {
 				const task = await fetchTask;
-				return trpc($page).learning.runExercises.getTaskDetails.query({ taskId: task?.id ?? '' });
+				return trpc($page).learning.runExercises.getTaskDetails.query({
+					taskId: task?.id ?? '',
+					campaignName: $page.params.campaign
+				});
 			}
 		})
 			.execute({
@@ -112,7 +125,7 @@
 		class="prose prose-invert text-white h-full max-w-full row-span-2 prose-blockquote:border-primary-light prose-em:text-primary-light prose-em:font-bold"
 	>
 		{#await fetchTask}
-			<InstructonSkeleton animate bind:animating />
+			<InstructionsSkeleton animate bind:animating />
 		{:then task}
 			<Card class={'p-4 h-full overflow-auto'}>
 				{#if animating || TaskStore.allTasks.at(0) === undefined}

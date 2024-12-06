@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { env } from '$env/dynamic/public';
+	import type { Attempt } from '$learning/domain/Attempt';
+	import type { ApprenticeAttempt } from '$learning/usecases/getProgression/aggregates/ApprenticeAttempt';
 	import type { TaskTreeItem } from '$learning/usecases/getProgression/aggregates/TaskTreeItem';
 	import { getProgressionUseCase } from '$learning/usecases/getProgression/getProgressionUseCase';
 	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
@@ -23,15 +26,30 @@
 
 	const fetchTree = async () => {
 		const questId = $page.params.questId;
+		console.debug('fetchTree', questId);
+		const isDemo = $page.params.campaign === 'demo';
 		const res = await getProgressionUseCase({
-			getApprenticeAttemptsOnQuest: () =>
-				trpc($page).learning.getProgression.getApprenticeAttemptsOnQuest.query({ questId }),
+			getApprenticeAttemptsOnQuest: async () => {
+				if (!isDemo)
+					return trpc($page).learning.getProgression.getApprenticeAttemptsOnQuest.query({
+						questId
+					});
+				const demoAttempts = JSON.parse(
+					localStorage.getItem(env.PUBLIC_DEMO_CAMPAIGN_NAME) ?? '[]'
+				) as Attempt[];
+				console.debug('demoAttempts', demoAttempts);
+				// Do not care about the quest ID for dep.
+				return demoAttempts.map((it) => ({ ...it, questId: '-1' }));
+			},
 			getUnorderedTasks: () =>
-				trpc($page).learning.getProgression.getTasksFromQuest.query({ questId })
+				isDemo
+					? trpc($page).learning.getProgression.getTasksFromDemoQuest.query({ questId })
+					: trpc($page).learning.getProgression.getTasksFromQuest.query({ questId })
 		}).execute({
 			questId,
 			apprenticeId: '-1' // provided by the server (authProcedure)
 		});
+		console.debug('Fetch tree result: ', res);
 		if (!res.isSuccess) return [];
 		// Do not reassign the array, otherwise the proxy will be lost
 		const taskItems = res.data.tasks;

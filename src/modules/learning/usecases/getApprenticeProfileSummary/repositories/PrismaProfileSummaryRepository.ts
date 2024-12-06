@@ -1,5 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import type * as IProfileSummaryRepository from './IProfileSummaryRepository';
+import { ApprenticeNotFoundError } from '../errors/ApprenticeNotFoundError';
 
 type _PrismaProfileSummaryRepository = {
 	fetchApprenticeInfos: IProfileSummaryRepository.FetchApprenticeInfos;
@@ -12,7 +13,7 @@ export const PrismaProfileSummaryRepository = (prisma: PrismaClient): _PrismaPro
 			const apprentice = await prisma.apprentice.findUnique({
 				where: { id }
 			});
-			if (!apprentice) throw new Error('Apprentice not found');
+			if (!apprentice) throw new ApprenticeNotFoundError(id);
 			return {
 				name: apprentice.username,
 				title: apprentice.title,

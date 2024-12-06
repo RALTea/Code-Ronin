@@ -12,14 +12,26 @@ const router = t.router({
 			})
 		)
 		.query(async ({ input, ctx }) => {
+			console.debug('getApprenticeAttemptsOnQuest', input);
 			const progressionRepository = PrismaProgressionRepository(prisma);
 			const result = await progressionRepository.getApprenticeAttemptsOnQuest(
-				ctx.user.id,
+				ctx.user?.id ?? '-1',
 				input.questId
 			);
 			return result;
 		}),
 	getTasksFromQuest: authProcedure
+		.input(
+			z.object({
+				questId: z.string()
+			})
+		)
+		.query(async ({ input }) => {
+			const progressionRepository = PrismaProgressionRepository(prisma);
+			const result = await progressionRepository.getTasksFromQuest(input.questId);
+			return result;
+		}),
+	getTasksFromDemoQuest: t.procedure
 		.input(
 			z.object({
 				questId: z.string()

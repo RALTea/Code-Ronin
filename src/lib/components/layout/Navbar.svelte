@@ -18,6 +18,7 @@
 	const defaultApprenticeSummary: ApprenticeProfileSummary = {
 		name: 'Anonymous',
 		title: 'Developer',
+		avatar: '/default-pfp.png',
 		exp: 0
 	};
 	let errorMessage = $state('');
@@ -46,9 +47,11 @@
 	let apprenticeSummary: ApprenticeProfileSummary | undefined = $state(undefined);
 
 	const fetchApprenticeSummary = () => {
+		console.debug('fetchApprenticeSummary', apprenticeId);
 		fetchDataUsecase
 			.execute({ apprenticeId: apprenticeId })
 			.then((result) => {
+				console.debug("fetchApprenticeSummary result", result);
 				if (apprenticeSummary && apprenticeSummary !== defaultApprenticeSummary) return;
 				if (result.isSuccess) return (apprenticeSummary = result.data);
 				return (apprenticeSummary = defaultApprenticeSummary);

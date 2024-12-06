@@ -6,9 +6,9 @@ import type { TaskDetails } from '../aggregates/TaskDetails';
 const router = t.router({
 	getTaskDetails: t.procedure.input(z.object({
 		taskId: z.string(),
-	})).query(({input}): Promise<TaskDetails> => {
+	})).query(({input, ctx}): Promise<TaskDetails> => {
 		const { taskId } = input;
-		return PrismaGetTaskDetailsRepository().run(taskId);
+		return PrismaGetTaskDetailsRepository().run(taskId, ctx.user?.id ?? '-1');
 	}),
 })
 export default router;

@@ -45,7 +45,9 @@
 			.then((items) => {
 				treeItems = items;
 			})
-			.catch(() => void 0); // Catch unauthorized error thrown from trpc when prerendering
+			.catch(() => {
+				treeItems = [];
+			}); // Catch unauthorized error thrown from trpc when prerendering
 	});
 
 	// Pathes between Tasks states

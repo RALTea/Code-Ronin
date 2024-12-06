@@ -1,0 +1,11 @@
+services:
+  raltech:
+    image: rotour/coderonin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    # platform: linux/arm64
+
+    ports:
+      - "5174:3000"

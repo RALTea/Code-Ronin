@@ -1,0 +1,27 @@
+services:
+  coderonin:
+    restart: always
+    container_name: coderonin
+    image: rotour/coderonin
+    ports:
+      - "5174:3000"
+    env_file:
+      - .env
+    networks:
+      - traefik-net
+    volumes:
+      - ./prisma/dev.db:/app/prisma/dev.db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.coderonin.rule=Host(`coderonin.raltech.school`)"
+      - "traefik.http.routers.coderonin.priority=2"
+      - "traefik.http.routers.coderonin.entrypoints=websecure"
+      - "traefik.http.routers.coderonin.tls=true"
+      - "traefik.http.routers.coderonin.tls.certresolver=letsencrypt"
+
+volumes:
+  coderonin-data:
+
+networks:
+  traefik-net:
+    external: true
