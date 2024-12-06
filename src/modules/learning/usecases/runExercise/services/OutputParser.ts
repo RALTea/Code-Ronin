@@ -6,7 +6,7 @@ export const OutputParser = (output: string) => {
 		},
 		_extractStdout: () => {
 			const stdoutMatch = output.match(/stdout \| script\.test\.ts\n([\s\S]*?)\n\s*❯/);
-			if (!stdoutMatch || !stdoutMatch[1]) return 'STDOUT: <empty>';
+			if (!stdoutMatch || !stdoutMatch[1]) return '';
 			return `⚙ STDOUT:\n  ${stdoutMatch[1]?.trim()?.replaceAll('\n', '\n  ')}\n`;
 		},
 		formatSuccess: function () {
