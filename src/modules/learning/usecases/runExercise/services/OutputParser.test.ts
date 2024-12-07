@@ -33,21 +33,25 @@ describe('OutputParser:Unit', () => {
 	});
 	it('Should remove the RUN header', () => {
 		const output = OutputParser(' RUN  v2.1.3 /box\nscript.test.ts  (1 test | 1 failed) 8ms')
-		.removeRunHeader()
-		.get();
+			.removeRunHeader()
+			.get();
 		expect(output).toBe('script.test.ts  (1 test | 1 failed) 8ms');
 	});
 	it('Should remove Exit message', () => {
-		const output = OutputParser('script.test.ts  (1 test | 1 failed) 8ms\nExited with error status 1').removeExitMessage().get();
+		const output = OutputParser(
+			'script.test.ts  (1 test | 1 failed) 8ms\nExited with error status 1'
+		)
+			.removeExitMessage()
+			.get();
 		expect(output).toBe('script.test.ts  (1 test | 1 failed) 8ms');
 	});
 	it('Should format error', () => {
 		const output = OutputParser(typicalError)
-		.trim()
-		.removeExitMessage()
-		.removeRunHeader()
-		.formatError()
-		.get();
+			.trim()
+			.removeExitMessage()
+			.removeRunHeader()
+			.formatError()
+			.get();
 
 		expect(output).toBe(`Exercise Failed ×\n
 ❯ Test named 'should print the alphabet' - Failed ×
@@ -56,10 +60,32 @@ describe('OutputParser:Unit', () => {
 	});
 
 	it('Should format success', () => {
-		const output = OutputParser(typicalSuccess)
-		.formatSuccess()
-		.get();
+		const parser = OutputParser(typicalSuccess);
+		const output = parser.formatSuccess().get();
 
-		expect(output).toBe(`❯ 2 tests passed\n\nExercise completed ✓`);
+		expect(output).toBe(`${parser.messageTitleSuccess()}\n\n❯ 2 tests passed\n\nExercise completed ✓`);
+	});
+
+	it('Should omit outputs if they are empty', () => {
+		const errMsg = `
+RUN  v2.1.3 /box
+
+ ❯ script.test.ts  (3 tests | 1 failed) 9ms
+   × StudentSolution:ANewDevIsBorn > The variable "username" should be a constant
+     → expected [Function] to throw an error
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  11:15:11
+   Duration  292ms (transform 37ms, setup 0ms, collect 26ms, tests 9ms, environment 0ms, prepare 66ms)
+
+Exited with error status 1`;
+
+		const parser = OutputParser(errMsg);
+		const output = parser.trim().removeExitMessage().removeRunHeader().formatError().get();
+
+		expect(output).toBe(
+			`${parser.messageTitleFail()}\n\n${parser.messageTestNameFail('The variable "username" should be a constant')}`
+		);
 	});
 });

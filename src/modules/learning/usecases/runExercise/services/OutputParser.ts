@@ -1,6 +1,29 @@
 export const OutputParser = (output: string) => {
 	let result = output;
+	const messageTitleFail = () => "Exercise Failed ×"
+	const messageTitleSuccess = () => "Exercise completed ✓"
+	const messageTestNameFail = (testName: string) => `❯ Test named '${testName}' - Failed ×`
+	const messageTestNameSuccess = (testName: string) => `❯ Test named '${testName}' - Passed ✓`
+	const messageTestFail = (actualOutput: string, expectedOutput: string) => {
+		const actualOutputMessage = actualOutput ? `\n\t→ Your code outputs: '${actualOutput}'` : '';
+		const expectedOutputMessage = expectedOutput
+			? `\n\t→ Expected output: '${expectedOutput}'`
+			: '';
+
+		return `${actualOutputMessage}${expectedOutputMessage}`;
+	}
+	const messageTestSuccess = (numberOfPassedTests: number) => {
+		return `❯ ${numberOfPassedTests} tests passed\n\nExercise completed ✓`;
+	}
+
+
 	return {
+		messageTitleFail,
+		messageTitleSuccess,
+		messageTestNameFail,
+		messageTestNameSuccess,
+		messageTestFail,
+		messageTestSuccess,
 		trim: function () {
 			result = result.trim();
 			return this;
@@ -25,23 +48,20 @@ export const OutputParser = (output: string) => {
 			const expectedOutputRegex = /to be '(.+)'/;
 
 			// Extract information using regex
-			// const testName = testNameRegex.exec(result)?.[1] ?? '';
 			const description = descriptionRegex.exec(result)?.[1] ?? '';
 			const actualOutput = actualOutputRegex.exec(result)?.[1] ?? '';
 			const expectedOutput = expectedOutputRegex.exec(result)?.[1] ?? '';
 
 			// Format the extracted information into the desired string
-			result = `Exercise Failed ×\n
-❯ Test named '${description}' - Failed ×
-\t→ Your code outputs: '${actualOutput}'
-\t→ Expected output: '${expectedOutput}'`;
+			result = `${messageTitleFail()}\n\n${messageTestNameFail(description)}${messageTestFail(actualOutput, expectedOutput)}`;
+
 			return this;
 		},
 		formatSuccess: function () {
 			const numberOfPassedTestsRegex = /Tests {2}(\d+) passed/;
 			const numberOfPassedTests = numberOfPassedTestsRegex.exec(result)?.[1] ?? '0';
-			
-			result = `❯ ${numberOfPassedTests} tests passed\n\nExercise completed ✓`;
+
+			result = `${messageTitleSuccess()}\n\n${messageTestSuccess(Number(numberOfPassedTests))}`;
 
 			return this;
 		},

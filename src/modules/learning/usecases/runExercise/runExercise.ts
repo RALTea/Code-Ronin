@@ -102,6 +102,7 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 				};
 
 				// Handle results
+				console.log('result', result.message);
 				if (result.success) {
 					result.message = OutputParser(result.message ?? '')
 						.formatSuccess()
