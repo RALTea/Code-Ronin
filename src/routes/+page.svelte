@@ -22,7 +22,7 @@
         </p>
         <div class="flex flex-col gap-4 sm:flex-row">
           <a 
-            href="/campaigns/demo/035187b2-4872-4a22-ab10-5129447ba326/1" 
+            href="/campaigns/demo/035187b2-4872-4a22-ab10-5129447ba326/132e689c-988d-4b62-a2aa-dee68f6167ad" 
             class="inline-flex items-center justify-center rounded-md bg-primary-dark px-6 py-3 text-sm font-medium text-black hover:bg-yellow-400"
           >
             Start Coding Now
