@@ -11,6 +11,8 @@
 	import IconPower from '../icons/IconPower.svelte';
 	import IconWrapper from '../icons/IconWrapper.svelte';
 	import NavbarSkeleton from './NavbarSkeleton.svelte';
+	import { SendNotificationUseCase } from '$notifications/usecases/SendNotification/SendNotification';
+	import { NotificationStack } from '$notifications/stores/NotificationStack.svelte';
 
 	type Props = AddCss;
 	const medalsIndex = [0, 1, 2];
@@ -21,7 +23,6 @@
 		avatar: '/default-pfp.png',
 		exp: 0
 	};
-	let errorMessage = $state('');
 	const fetchDataUsecase = $derived.by(() => {
 		UserStore.user;
 		return getApprenticeProfileSummary({
@@ -48,17 +49,25 @@
 
 	const fetchApprenticeSummary = () => {
 		console.debug('fetchApprenticeSummary', apprenticeId);
+		if (apprenticeId === '-1') return (apprenticeSummary = defaultApprenticeSummary);
 		fetchDataUsecase
 			.execute({ apprenticeId: apprenticeId })
 			.then((result) => {
-				console.debug("fetchApprenticeSummary result", result);
+				console.debug('fetchApprenticeSummary result', result);
 				if (apprenticeSummary && apprenticeSummary !== defaultApprenticeSummary) return;
 				if (result.isSuccess) return (apprenticeSummary = result.data);
 				return (apprenticeSummary = defaultApprenticeSummary);
 			})
 			.catch((err) => {
 				console.error(err);
-				errorMessage = 'Error fetching apprentice summary';
+				SendNotificationUseCase({
+					addToStack: NotificationStack.addToStack
+				}).execute({
+					dto: {
+						message: 'Failed to fetch apprentice summary',
+						type: 'ERROR'
+					}
+				});
 				return (apprenticeSummary = defaultApprenticeSummary);
 			});
 	};
@@ -68,6 +77,7 @@
 		UserStore.user;
 		fetchApprenticeSummary();
 	});
+	$inspect('Apprentice Summary', apprenticeSummary);
 </script>
 
 {#snippet divider()}
@@ -119,15 +129,23 @@
 
 		<div class="flex items-center justify-center h-full mr-2 ml-auto">
 			{@render divider()}
-			<SignOut className={'flex items-center [&_button]:h-fit'}>
-				<!-- <button slot="submitButton"> -->
-				<svelte:fragment slot="submitButton">
+			{#if UserStore.user}
+				<SignOut className={'flex items-center [&_button]:h-fit'}>
+					<!-- <button slot="submitButton"> -->
+					<svelte:fragment slot="submitButton">
+						<IconWrapper size="8">
+							<IconPower />
+						</IconWrapper>
+					</svelte:fragment>
+					<!-- </button> -->
+				</SignOut>
+			{:else}
+				<a href="/login">
 					<IconWrapper size="8">
 						<IconPower />
 					</IconWrapper>
-				</svelte:fragment>
-				<!-- </button> -->
-			</SignOut>
+				</a>
+			{/if}
 		</div>
 	{:else}
 		<NavbarSkeleton />
