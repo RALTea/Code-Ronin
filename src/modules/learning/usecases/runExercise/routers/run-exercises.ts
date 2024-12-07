@@ -41,7 +41,7 @@ const router = t.router({
 				return fileContent;
 			} catch (error) {
 				console.error('Failed to fetch the file content:', error);
-				throw new TestCasesNotFoundError('Failed to fetch the file content');
+				throw new TestCasesNotFoundError(`/${campaignName}/${fileName}`);
 			}
 		}),
 	handleSuccess: authProcedure.input(ExerciseAttemptSchema).mutation(async ({ input, ctx }) => {

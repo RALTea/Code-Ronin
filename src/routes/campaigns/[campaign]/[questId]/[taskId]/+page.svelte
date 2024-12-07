@@ -8,18 +8,25 @@
 	import ExercisePage from '$learning/views/ExercisePage.svelte';
 	import { trpc } from '$lib/clients/trpc';
 
-	let currentTask: Promise<(TaskTreeItem & TaskDetails) | undefined> = $derived.by(async () => {
+	let currentTask: Promise<(TaskTreeItem & TaskDetails) | undefined> = $state(
+		(async () => undefined)()
+	);
+
+	$effect(() => {
 		const currentTaskId = $page.params.taskId;
 		const taskToLoad = TaskStore.allTasks?.find((task) => task?.id === currentTaskId);
 		TaskStore.currentTask = taskToLoad;
 		if (!taskToLoad) return undefined;
-		const res = await getTaskDetails({
+		currentTask = getTaskDetails({
 			getTaskDetails: async () => {
 				return trpc($page).learning.getTaskDetails.getTaskDetails.query({ taskId: taskToLoad.id });
 			}
-		}).execute({ taskId: currentTaskId });
-		if (!res.isSuccess) return undefined;
-		return {...taskToLoad, ...res.data};
+		})
+			.execute({ taskId: currentTaskId })
+			.then((res) => {
+				if (!res.isSuccess) return undefined;
+				return { ...taskToLoad, ...res.data };
+			});
 	});
 
 	// Run each time the current task changes to check if it is locked
@@ -30,7 +37,8 @@
 			console.info('Task is locked, redirecting to previous task');
 			goto(`/campaigns/${$page.params.campaign}/${$page.params.questId}`);
 		});
-	})
+	});
+	$inspect('Current Task', TaskStore.currentTask);
 </script>
 
 {#if currentTask}

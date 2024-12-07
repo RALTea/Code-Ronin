@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import { hideEffect } from '$lib/utils/svelte.utils';
 	import type * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 	import { onDestroy, onMount } from 'svelte';
@@ -8,7 +9,8 @@
 		value?: string;
 	};
 	let { height = 600, value = $bindable() }: Props = $props();
-	$inspect("Monaco Value", value);
+	$inspect('Monaco Value', value);
+	$inspect('Monaco Current Task', TaskStore.currentTask);
 
 	let editor: Monaco.editor.IStandaloneCodeEditor | undefined = undefined;
 	let monaco: typeof Monaco | undefined;
@@ -36,13 +38,24 @@
 		observer?.disconnect();
 	});
 
+	// Update the editor when the value changes
 	$effect(() => {
-		if (!monaco || !editor) return;
-		monaco.editor.getModels().forEach((model) => model.dispose());
-		const model = monaco.editor.createModel(value ?? 'console.log("Hello, world!")', 'typescript');
-		if (!model) return;
-		editor.setModel(model);
-	})
+		TaskStore.currentTask;
+		hideEffect(() => {
+			if (!monaco || !editor) return;
+			monaco.editor.getModels().forEach((model) => {
+				console.debug('Disposing model', model.uri.toString());
+				try {
+					model.dispose();
+				} catch (e) {
+					console.error('Error disposing model', e);
+				}
+			});
+			const model = monaco.editor.createModel(value ?? 'console.log("Hello, world!")', 'typescript');
+			if (!model) return;
+			editor.setModel(model);
+		})
+	});
 
 	$effect(() => {
 		initCompleted;
@@ -64,7 +77,10 @@
 		}
 		console.debug('initEditor');
 
-		monaco.editor.getModels().forEach((model) => model.dispose());
+		monaco.editor.getModels().forEach((model) => {
+			console.debug('Disposing model', model.uri.toString());
+			model.dispose();
+		});
 		editor?.dispose();
 
 		monaco.editor.defineTheme('monokai', theme as any);
@@ -90,7 +106,11 @@
 	};
 
 	onDestroy(() => {
-		monaco?.editor.getModels().forEach((model) => model.dispose());
+		monaco?.editor.getModels().forEach((model) => {
+			console.debug('Disposing model', model.uri.toString());
+			model.dispose();
+			console.error('Error disposing model', e);
+		});
 		editor?.dispose();
 	});
 
