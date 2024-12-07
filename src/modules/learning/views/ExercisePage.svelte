@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { user } from '$auth/stores/UserStore';
+	import { UserStore } from '$auth/stores/UserStore.svelte';
 	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
 	import type { TaskDetails } from '$learning/usecases/getTaskDetails/aggregates/TaskDetails';
 	import type { ExerciseAttemptResult } from '$learning/usecases/runExercise/aggregates/ExerciseAttemptResult';
@@ -61,7 +61,7 @@
 			}
 		})
 			.execute({
-				apprenticeId: $user?.id ?? '-1',
+				apprenticeId: UserStore.user?.id ?? '-1',
 				language: 'typescript5-vitest',
 				taskId: $page.params.taskId
 			})

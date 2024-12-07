@@ -12,6 +12,7 @@ export const PrismaProfileSummaryRepository = (prisma: PrismaClient): _PrismaPro
 			const apprentice = await prisma.apprentice.findUnique({
 				where: { id }
 			});
+			console.log({apprentice, id});
 			if (!apprentice) throw new Error('Apprentice not found');
 			return {
 				name: apprentice.username,
@@ -26,6 +27,7 @@ export const PrismaProfileSummaryRepository = (prisma: PrismaClient): _PrismaPro
 				select: { tasks: { select: { exp: true } } },
 				distinct: ['taskId']
 			});
+			console.log({successfulAttempts});
 			// const sumOfTasksXp = (tasks: Task[]) => tasks.reduce((acc, task) => acc + task.exp, 0);
 			const exp = successfulAttempts.reduce((acc, attempt) => acc + attempt.tasks.exp, 0);
 			return exp;

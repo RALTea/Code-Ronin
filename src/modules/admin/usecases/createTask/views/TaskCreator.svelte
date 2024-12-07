@@ -39,7 +39,6 @@
 
 	onMount(() => {
 		if (!editingTask) return;
-		console.debug('Editing task', editingTask);
 		taskBuilder
 			.setId(editingTask.id)
 			.setName(editingTask.name)

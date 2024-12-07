@@ -36,6 +36,14 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		return ApiResponse.send(loginUseCase);
 	}
 
-	cookies.set(COOKEYS.JWT_TOKEN, loginUseCase.data, { path: '/' });
+	// cookies.set(COOKEYS.JWT_TOKEN, loginUseCase.data, { path: '/' });
+	// When setting the token
+	cookies.set(COOKEYS.JWT_TOKEN, loginUseCase.data, {
+		path: '/',
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'strict',
+		maxAge: 60 * 60 * 24 * 7 // 1 week, adjust as needed
+	});
 	return redirect(303, '/');
 };

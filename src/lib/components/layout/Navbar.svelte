@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { user } from '$auth/stores/UserStore';
+	import { UserStore } from '$auth/stores/UserStore.svelte';
 	import type { ApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary/aggregates/ApprenticeProfileSummary';
 	import { getApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary/getApprenticeProfileSummary';
 	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
@@ -20,24 +20,28 @@
 		exp: 0
 	};
 	let errorMessage = $state('');
-	const fetchDataUsecase = getApprenticeProfileSummary({
-		fetchApprenticeInfos: async () => {
-			return trpc($page)
-				.learning.getApprenticeProfileSummary.getApprenticeInfos.query({
-					apprenticeId: $user?.id ?? '-1'
-				})
-				.catch(() => defaultApprenticeSummary);
-		},
-		fetchApprenticeExp: async () => {
-			return trpc($page)
-				.learning.getApprenticeProfileSummary.getApprenticeExp.query({
-					apprenticeId: $user?.id ?? '-1'
-				})
-				.catch(() => 0);
-		}
+	$inspect('User in Navbar', UserStore.user);
+	const fetchDataUsecase = $derived.by(() => {
+		UserStore.user;
+		return getApprenticeProfileSummary({
+			fetchApprenticeInfos: async () => {
+				return trpc($page)
+					.learning.getApprenticeProfileSummary.getApprenticeInfos.query({
+						apprenticeId: UserStore.user?.id ?? '-1'
+					})
+					.catch(() => defaultApprenticeSummary);
+			},
+			fetchApprenticeExp: async () => {
+				return trpc($page)
+					.learning.getApprenticeProfileSummary.getApprenticeExp.query({
+						apprenticeId: UserStore.user?.id ?? '-1'
+					})
+					.catch(() => 0);
+			}
+		});
 	});
 	const { class: className }: Props = $props();
-	let apprenticeId = $derived($user?.id ?? '-1');
+	let apprenticeId = $derived(UserStore.user?.id ?? '-1');
 
 	let apprenticeSummary: ApprenticeProfileSummary | undefined = $state(undefined);
 
@@ -45,6 +49,7 @@
 		fetchDataUsecase
 			.execute({ apprenticeId: apprenticeId })
 			.then((result) => {
+				if (apprenticeSummary && apprenticeSummary !== defaultApprenticeSummary) return;
 				if (result.isSuccess) return (apprenticeSummary = result.data);
 				return (apprenticeSummary = defaultApprenticeSummary);
 			})
@@ -57,6 +62,7 @@
 
 	$effect(() => {
 		LastRun.time;
+		UserStore.user;
 		fetchApprenticeSummary();
 	});
 </script>
@@ -73,11 +79,11 @@
 	{#if apprenticeSummary}
 		<div class="w-4/5 h-full flex items-center">
 			<div class="flex">
-				<img
-					src={apprenticeSummary?.avatar}
-					alt="profile"
-					class="object-cover w-12 h-12 mx-2 rounded-full"
-				/>
+					<img
+						src={apprenticeSummary?.avatar}
+						alt="profile"
+						class="object-cover w-12 h-12 mx-2 rounded-full"
+					/>
 				<div class="mx-2">
 					<h1 class="font-extrabold">{apprenticeSummary?.name}</h1>
 					<p class="font-space-mono text-primary-light">{apprenticeSummary?.title}</p>

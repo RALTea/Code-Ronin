@@ -44,7 +44,6 @@
 		hideEffect(() => {
 			if (!monaco || !editor) return;
 			monaco.editor.getModels().forEach((model) => {
-				console.debug('Disposing model', model.uri.toString());
 				try {
 					model.dispose();
 				} catch (e) {
@@ -78,7 +77,6 @@
 		console.debug('initEditor');
 
 		monaco.editor.getModels().forEach((model) => {
-			console.debug('Disposing model', model.uri.toString());
 			model.dispose();
 		});
 		editor?.dispose();
@@ -107,9 +105,7 @@
 
 	onDestroy(() => {
 		monaco?.editor.getModels().forEach((model) => {
-			console.debug('Disposing model', model.uri.toString());
 			model.dispose();
-			console.error('Error disposing model', e);
 		});
 		editor?.dispose();
 	});
