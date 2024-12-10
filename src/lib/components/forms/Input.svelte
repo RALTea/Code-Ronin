@@ -31,7 +31,6 @@
 	const lightThemeClasses = 'border-2 border-black';
 
 	function handleInput(event: Event) {
-		console.log('event', event);
 		oninput?.((event.target as HTMLInputElement).value);
 	}
 </script>

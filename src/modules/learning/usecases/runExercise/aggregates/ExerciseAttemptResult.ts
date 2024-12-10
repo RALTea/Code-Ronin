@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
-export type ExerciseAttemptResult = {
-	id: string;
-	message?: string;
-	success: boolean;
-};
+export const ExerciseAttemptResultStatusSchema = z.enum(['COMPILE_ERROR', 'TEST_CASES_FAILED', 'SUCCESS'])
+
+export type ExerciseAttemptResultStatus = z.infer<typeof ExerciseAttemptResultStatusSchema>;
 
 export const ExerciseAttemptResultSchema = z.object({
 	id: z.string(),
 	message: z.string().optional(),
-	success: z.boolean()
+	status: ExerciseAttemptResultStatusSchema,
 });
+
+export type ExerciseAttemptResult = z.infer<typeof ExerciseAttemptResultSchema>;

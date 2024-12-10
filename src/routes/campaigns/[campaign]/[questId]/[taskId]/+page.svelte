@@ -38,7 +38,6 @@
 			goto(`/campaigns/${$page.params.campaign}/${$page.params.questId}`);
 		});
 	});
-	$inspect('Current Task', TaskStore.currentTask);
 </script>
 
 {#if currentTask}

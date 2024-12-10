@@ -20,7 +20,6 @@
 		exp: 0
 	};
 	let errorMessage = $state('');
-	$inspect('User in Navbar', UserStore.user);
 	const fetchDataUsecase = $derived.by(() => {
 		UserStore.user;
 		return getApprenticeProfileSummary({
@@ -79,11 +78,11 @@
 	{#if apprenticeSummary}
 		<div class="w-4/5 h-full flex items-center">
 			<div class="flex">
-					<img
-						src={apprenticeSummary?.avatar}
-						alt="profile"
-						class="object-cover w-12 h-12 mx-2 rounded-full"
-					/>
+				<img
+					src={apprenticeSummary?.avatar}
+					alt="profile"
+					class="object-cover w-12 h-12 mx-2 rounded-full"
+				/>
 				<div class="mx-2">
 					<h1 class="font-extrabold">{apprenticeSummary?.name}</h1>
 					<p class="font-space-mono text-primary-light">{apprenticeSummary?.title}</p>

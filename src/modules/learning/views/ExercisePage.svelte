@@ -12,8 +12,8 @@
 	import InstructonSkeleton from '$learning/usecases/runExercise/views/InstructonSkeleton.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Card from '$lib/components/cards/Card.svelte';
-	import { SendNotificationUseCase } from '../../notifications/usecases/SendNotification/SendNotification';
 	import { NotificationStack } from '../../notifications/stores/NotificationStack.svelte';
+	import { SendNotificationUseCase } from '../../notifications/usecases/SendNotification/SendNotification';
 	import Input from '../usecases/runExercise/views/Input.svelte';
 	import Instructions from '../usecases/runExercise/views/Instructions.svelte';
 	import Output from '../usecases/runExercise/views/Output.svelte';
@@ -83,7 +83,8 @@
 			})
 			.finally(async () => {
 				runningCode = false;
-				if (result?.success) {
+				console.log('Code run complete', result);
+				if (result?.status === 'SUCCESS') {
 					const task = await fetchTask;
 					if (!task || !task.nextTasksIds || task.nextTasksIds.length !== 1) return;
 					nextItemUrl = `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task?.nextTasksIds?.at(0) ?? ''}`;

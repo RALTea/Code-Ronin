@@ -13,7 +13,7 @@ export const OutputParser = (output: string) => {
 		return `${actualOutputMessage}${expectedOutputMessage}`;
 	}
 	const messageTestSuccess = (numberOfPassedTests: number) => {
-		return `❯ ${numberOfPassedTests} tests passed\n\nExercise completed ✓`;
+		return `❯ ${numberOfPassedTests} tests passed`;
 	}
 
 
@@ -43,6 +43,11 @@ export const OutputParser = (output: string) => {
 		formatError: function () {
 			// Regular expressions to extract relevant information
 			// const testNameRegex = /StudentSolution:(\w+)/;
+			console.debug({result})
+			const firstFailedTest = result.split('⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯').at(0);
+			if (firstFailedTest) {
+				result = firstFailedTest;
+			}
 			const descriptionRegex = /> (.+)/;
 			const actualOutputRegex = /expected '(.+)' to be/;
 			const expectedOutputRegex = /to be '(.+)'/;

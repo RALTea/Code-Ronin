@@ -18,7 +18,7 @@ export const PrismaAttemptRepository = (prisma: PrismaClient): _PrismaAttemptRep
 						connect: { id: data.apprenticeId }
 					},
 					userSolution: data.apprenticeSolution,
-					isSuccess: data.success
+					isSuccess: data.status === 'SUCCESS'
 				}
 			});
 		},
@@ -36,7 +36,7 @@ export const PrismaAttemptRepository = (prisma: PrismaClient): _PrismaAttemptRep
 						connect: { id: data.apprenticeId }
 					},
 					userSolution: data.apprenticeSolution,
-					isSuccess: data.success
+					isSuccess: data.status === 'SUCCESS',
 				}
 			});
 		}

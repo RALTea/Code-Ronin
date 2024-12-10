@@ -1,7 +1,8 @@
 import { env } from '$env/dynamic/public';
 import type { Language } from '$learning/domain/Language';
-import { base64ToCode, base64ToUnicode, unicodeToBase64 } from '$lib/utils/b64.utils';
+import { base64ToUnicode, unicodeToBase64 } from '$lib/utils/b64.utils';
 import { z } from 'zod';
+import type { ExerciseAttemptResultStatus } from '../aggregates/ExerciseAttemptResult';
 import type { EvaluateSolution } from './IRunExerciseRepository';
 
 type JudgeSubmissionPayload = {
@@ -47,8 +48,13 @@ const mapLanguageToJudgeLanguageId = (language: Language): number => {
 
 type JudgeEvaluationRepository = {
 	evaluateSolution: EvaluateSolution;
-}
+};
 export const JudgeEvaluationRepository = (): JudgeEvaluationRepository => {
+	const getJudgeSuccess = (result: JudgeResult): ExerciseAttemptResultStatus => {
+		if (result.status.id === 3) return 'SUCCESS';
+		if (result.stderr?.match(/Transform failed/)) return 'COMPILE_ERROR';
+		return 'TEST_CASES_FAILED';
+	};
 	return {
 		evaluateSolution: async (solution: string, language: Language) => {
 			const url = `${env.PUBLIC_JUDGE_API}/submissions?wait=true&base64_encoded=true`;
@@ -64,13 +70,23 @@ export const JudgeEvaluationRepository = (): JudgeEvaluationRepository => {
 				body: JSON.stringify(payload)
 			});
 			const decoded: JudgeResult = await result.json();
+			decoded.stdout = base64ToUnicode(decoded.stdout ?? '');
+			decoded.stderr = base64ToUnicode(decoded.stderr ?? '');
+			decoded.message = base64ToUnicode(decoded.message ?? '');
+			console.log({
+				err: decoded.stderr ?? '',
+				out: decoded.stdout ?? '',
+				msg: decoded.message ?? '',
+				status: getJudgeSuccess(decoded),
+				decoded
+			});
 
-			const message = base64ToUnicode(decoded.stdout ?? '') + base64ToCode(decoded.message ?? '');
+			const message = decoded.stdout + decoded.message;
 
 			return {
 				id: decoded.token,
 				time: parseFloat(decoded.time),
-				success: decoded.status.id === 3,
+				status: getJudgeSuccess(decoded),
 				// message: base64ToUnicode(decoded.stdout ?? '') + base64ToUnicode(decoded.stderr ?? '')
 				message: message
 				// decoded.compile_output +
