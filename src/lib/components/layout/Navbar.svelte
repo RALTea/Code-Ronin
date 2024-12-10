@@ -6,6 +6,7 @@
 	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import type { AddCss } from '$lib/utils/svelte.utils';
+	import { SignOut } from '@auth/sveltekit/components';
 	import Progress from '../forms/Progress.svelte';
 	import IconPower from '../icons/IconPower.svelte';
 	import IconWrapper from '../icons/IconWrapper.svelte';
@@ -115,11 +116,15 @@
 
 		<div class="flex items-center justify-center h-full mr-2 ml-auto">
 			{@render divider()}
-			<button>
-				<IconWrapper size="8">
-					<IconPower />
-				</IconWrapper>
-			</button>
+			<SignOut className={'flex items-center [&_button]:h-fit'}>
+				<!-- <button slot="submitButton"> -->
+				<svelte:fragment slot="submitButton">
+					<IconWrapper size="8">
+						<IconPower />
+					</IconWrapper>
+				</svelte:fragment>
+				<!-- </button> -->
+			</SignOut>
 		</div>
 	{:else}
 		<NavbarSkeleton />

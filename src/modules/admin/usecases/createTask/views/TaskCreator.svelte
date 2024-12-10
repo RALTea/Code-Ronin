@@ -12,7 +12,6 @@
 	import { Eye, PencilLine } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import SvelteMarkdown from 'svelte-markdown';
-	import { get } from 'svelte/store';
 
 	type Props = {
 		taskList: TaskTreeItem[];

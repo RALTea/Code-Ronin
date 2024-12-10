@@ -1,36 +1,30 @@
-import type { Apprentice } from '$auth/entities/Apprentice';
-import { env } from '$env/dynamic/private';
+import { handle as AuthHandle } from '$lib/auth/auth';
 import { createContext } from '$lib/trpc/context';
 import { router } from '$lib/trpc/router';
-import { COOKEYS } from '$lib/utils/cookies.utils';
 import { type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
-import jwt from 'jsonwebtoken';
 import { createTRPCHandle } from 'trpc-sveltekit';
 
-export const handleCookies: Handle = ({ event, resolve }) => {
-	const jwtToken = event.cookies.get(COOKEYS.JWT_TOKEN);
+// export const handleCookies: Handle = async ({ event, resolve }) => {
+// 	const session = await event.locals.auth();
+// 	if (!session?.user) return resolve(event);
+// 	const user = await createCaller(await createContext(event)).auth.me();
 
-	try {
-		const payload = jwt.verify(jwtToken ?? '', env.JWT_SECRET ?? '') as unknown as Apprentice;
-		event.locals.user = payload;
-	} catch {
-		event.locals.user = null;
-	}
-
-	return resolve(event);
-};
-
-// export const debugRoute: Handle = ({ event, resolve }) => {
-// 	console.debug('Server hook: ', event.url.pathname);
+// 	const jwtToken = event.cookies.get(COOKEYS.JWT_TOKEN);
 // 	return resolve(event);
 // };
 
+export const debugRoute: Handle = ({ event, resolve }) => {
+	console.debug('Server hook: ', event.url.pathname);
+	return resolve(event);
+};
+
 // Sveltekit hook
 export const handle: Handle = sequence(
-	// debugRoute,
-	handleCookies,
+	debugRoute,
+	AuthHandle,
+	// handleCookies,
 	createTRPCHandle({
 		router,
 		createContext,
@@ -38,6 +32,9 @@ export const handle: Handle = sequence(
 			const httpCode = getHTTPStatusCodeFromError(trpcError);
 			const trpcCode = trpcError.code;
 			console.error(`[${httpCode} | ${trpcCode}] - TRPC - ${type}@${path}`);
+			// if (env.DEBUG === "1") {
+			// 	console.error(trpcError);
+			// }
 		}
 	})
 );

@@ -12,12 +12,12 @@ datasource db {
 
 model Apprentice {
   id          String   @id @default(uuid())
-  giteaUserId Int
+  giteaUserId Int?
   username    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
-  email          String
+  email          String @unique
   role           String @default("USER")
   title          String @default("Newbie")
   profilePicture String

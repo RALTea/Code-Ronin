@@ -1,13 +1,13 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
-import type { AuthTokenPayload } from '$auth/entities/JwtPayload';
+import type { User } from '$auth/entities/User';
 import type { UseCaseResponse } from '$lib/interfaces/UseCase';
 
 declare global {
 	namespace App {
 		interface Error<T> extends UseCaseResponse<T> {}
 		interface Locals {
-			user: AuthTokenPayload | null;
+			user: User | null;
 		}
 		// interface PageData {}
 		// interface PageState {}

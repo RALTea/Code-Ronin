@@ -1,7 +1,7 @@
+import { TestTypeSchema } from '$admin/domain/TestType';
+import { ValidationDataSchema } from '$admin/domain/ValidationData';
 import { z } from 'zod';
 import type { TaskTreeItem } from '../../../domain/TaskTreeItem';
-import { ValidationDataSchema } from '$admin/domain/ValidationData';
-import { TestTypeSchema } from '$admin/domain/TestType';
 
 export const CreateTaskDtoSchema = z.object({
 	id: z.string().uuid(),

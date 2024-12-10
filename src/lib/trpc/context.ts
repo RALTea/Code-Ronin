@@ -1,14 +1,17 @@
-import type { RequestEvent } from '@sveltejs/kit';
+import { GetSelfDataUseCase } from '$auth/usecases/GetSelfData/GetSelfData';
+import { PrismaGetSelfDataRepository } from '$auth/usecases/GetSelfData/repositories/PrismaGetSelfDataRepository';
 import prisma from '$lib/server/db';
-import { COOKEYS } from '$lib/utils/cookies.utils';
-import jwt from 'jsonwebtoken';
-import { env } from '$env/dynamic/private';
-import type { AuthTokenPayload } from '$auth/entities/JwtPayload';
+import type { RequestEvent } from '@sveltejs/kit';
 
 export async function createContext(event: RequestEvent) {
 	try {
-		const userToken = event.cookies.get(COOKEYS.JWT_TOKEN) ?? '';
-		const user = jwt.verify(userToken, env.JWT_SECRET ?? '') as AuthTokenPayload;
+		const session = await event.locals.auth();
+		const user = await GetSelfDataUseCase({
+			getSelfData: PrismaGetSelfDataRepository(prisma).getSelfData
+		}).execute({ userIdentifier: session?.user?.email ?? '-1' }).then((res) => {
+			if (res.isSuccess) return res.data;
+			return null;
+		}).catch(() => null);
 		return {
 			// 👈 now available in your context
 			event,
