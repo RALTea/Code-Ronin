@@ -35,14 +35,52 @@ describe('OutputParser', () => {
 		expect(testResults).toEqual(expectedResult);
 	});
 
-	it('Err: should extract assertions from the output', () => {
-		const output = OutputExamples.assert;
-		const assertions = OutputParser(output)._extractAssertions();
+	it('Should handle object equality assertions', () => {
+		const output = `FAIL script.test.ts > Test1 > First test
+AssertionError: expected 'abc' to be 'def' // Object.is equality
+Expected: "def"
+Received: "abc"
+❯ script.test.ts:10:35`
+		const failures = OutputParser(output)._extractFailures();
 
-		expect(assertions).toEqual([
+		expect(failures).toEqual([
 			{
-				expected: 'The Excalibur is a Sword that deals 100 damage',
-				received: 'The Excalibur is aSwordthat deals100 damage'
+				cause: 'First test',
+				expected: 'def',
+				received: 'abc'
+			}
+		]);
+	});
+
+	it('Should handle contains assertions', () => {
+		const output = `"⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  script.test.ts > BasicPotion > contains required starter code
+AssertionError: Solution should include starter code: expected '\nconst herbs = 6;\nconst requiredHer…' to contain 'const herbs = 3'
+
+- Expected
++ Received`
+		const failures = OutputParser(output)._extractFailures();
+
+		expect(failures).toEqual([
+			{
+				cause: 'contains required starter code',
+				expected: 'const herbs = 3',
+				received: '\nconst herbs = 6;\nconst requiredHer…'
+			}
+		]);
+	});
+
+	it('Should handle matches assertions (Regex)', () => {
+		const matchTest = `FAIL script.test.ts > BasicPotion > uses greater than or equal to operator
+AssertionError: expected '\nconst herbs = 6;\nconst requiredHer…' to match />=/`;
+		const failures = OutputParser(matchTest)._extractFailures();
+
+		expect(failures).toEqual([
+			{
+				cause: 'uses greater than or equal to operator',
+				expected: '>=',
+				received: '\nconst herbs = 6;\nconst requiredHer…'
 			}
 		]);
 	});
