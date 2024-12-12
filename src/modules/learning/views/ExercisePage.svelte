@@ -40,7 +40,10 @@
 	//
 	$effect(() => {
 		fetchTask.then((task) => {
-			if (!task || !task.lastInput) return;
+			if (!task || !task.lastInput) {
+				inputCode = `console.log('Hello world')`;
+				return;
+			};
 			inputCode = task.lastInput.code;
 		});
 	});
@@ -105,10 +108,10 @@
 				runningCode = false;
 				if (result?.status === 'SUCCESS') {
 					const task = await fetchTask;
+					bimVisible = true;
+					LastRun.update();
 					if (!task || !task.nextTasksIds || task.nextTasksIds.length !== 1) return;
 					nextItemUrl = `/campaigns/${$page.params.campaign}/${$page.params.questId}/${task?.nextTasksIds?.at(0) ?? ''}`;
-					LastRun.update();
-					bimVisible = true;
 				}
 			});
 	};
