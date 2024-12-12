@@ -7,7 +7,6 @@
 	import NotificationStack from '../modules/notifications/views/NotificationStack.svelte';
 
 	let { data, children } = $props();
-	$inspect("Current user", UserStore.user);
 
 	const closeNotification = (id: string) => {
 		const notif = NotificationStackStore.stack.find((n) => n.id === id);

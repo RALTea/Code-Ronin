@@ -7,6 +7,8 @@
 	import ProgressTreeItem from './ProgressTreeItem.svelte';
 	import { page } from '$app/stores';
 	import { PencilLine } from 'lucide-svelte';
+	import { UserStore } from '$auth/stores/UserStore.svelte';
+	import { trpc } from '$lib/clients/trpc';
 
 	type Props = {
 		fetchItems: Promise<TaskTreeItem[]>;
@@ -21,6 +23,7 @@
 	let navRef = $state<HTMLElement | undefined>(undefined);
 	let currentWidth = tweened(maxWidth, { easing: cubicOut });
 	let animating = $state(false);
+	let isAdmin = $state(false);
 
 	// Run each time the collapse state changes (i.e. when the toggle button is clicked)
 	// The role of this effect is to update the width of the nav and the animation state
@@ -32,7 +35,19 @@
 			animating = value !== maxWidth;
 		});
 	});
-	
+
+	$effect(() => {
+		UserStore.user;
+		trpc($page)
+			.auth.amIAdmin.query()
+			.then((res) => {
+				isAdmin = res?.role === 'ADMIN';
+			})
+			.catch(() => {
+				isAdmin = false;
+			});
+	});
+
 	const toggleCollapse = () => {
 		isCollapsed = !isCollapsed;
 	};
@@ -50,7 +65,7 @@
 			}); // Catch unauthorized error thrown from trpc when prerendering
 	});
 
-	// Pathes between Tasks states
+	// Paths between Tasks states
 	let treeElementsRefs: (HTMLLIElement | undefined)[] = $state([]);
 	let treeElementsCenters: number[] = $derived.by(() =>
 		treeElementsRefs.map((el) => {
@@ -112,15 +127,18 @@
 	{/if}
 
 	<!-- Toggle collapse button -->
-	 <a href="/admin/quests/{$page.params.questId}" class="mt-auto block p-5 pb-0 mr-auto [&_svg]:stroke-lightless">
-		<IconWrapper size="6">
-			<PencilLine size=6  />
-		</IconWrapper>
-	 </a>
+	{#if isAdmin}
+		<a
+			href="/admin/quests/{$page.params.questId}"
+			class="mt-auto block p-5 pb-0 mr-auto [&_svg]:stroke-lightless"
+		>
+			<IconWrapper size="6">
+				<PencilLine size="6" />
+			</IconWrapper>
+		</a>
+	{/if}
 	<button
-		class="p-4 mr-auto {isCollapsed
-			? 'rotate-180'
-			: 'rotate-0'} transition-transform duration-300
+		class="p-4 mr-auto {isCollapsed ? 'rotate-180' : 'rotate-0'} transition-transform duration-300
 		[&_svg]:stroke-lightless"
 		onclick={toggleCollapse}
 	>

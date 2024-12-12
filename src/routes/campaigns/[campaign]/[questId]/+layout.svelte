@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { UserStore } from '$auth/stores/UserStore.svelte';
 	import { env } from '$env/dynamic/public';
@@ -17,6 +18,8 @@
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
 
+	$inspect('UserStore',UserStore.user);
+
 	onMount(() => {
 		const unsubscribe = page.subscribe(({ params }) => {
 			const taskId = params.taskId;
@@ -32,16 +35,20 @@
 		const isDemo = $page.params.campaign === 'demo';
 		const res = await getProgressionUseCase({
 			getApprenticeAttemptsOnQuest: async () => {
-				if (!isDemo || UserStore.user)
+				if (!isDemo || UserStore.user) {
 					return trpc($page).learning.getProgression.getApprenticeAttemptsOnQuest.query({
 						questId
 					});
-				const demoAttempts = JSON.parse(
-					localStorage.getItem(env.PUBLIC_DEMO_CAMPAIGN_NAME) ?? '[]'
-				) as Attempt[];
-				console.debug('demoAttempts', demoAttempts);
-				// Do not care about the quest ID for dep.
-				return demoAttempts.map((it) => ({ ...it, questId: '-1' }));
+				}
+				if (browser) {
+					const demoAttempts = JSON.parse(
+						localStorage.getItem(env.PUBLIC_DEMO_CAMPAIGN_NAME) ?? '[]'
+					) as Attempt[];
+					console.debug('demoAttempts', demoAttempts);
+					// Do not care about the quest ID for dep.
+					return demoAttempts.map((it) => ({ ...it, questId: '-1' }));
+				}
+				return [];
 			},
 			getUnorderedTasks: () =>
 				isDemo
