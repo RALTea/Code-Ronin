@@ -2,7 +2,7 @@ import { env } from '$env/dynamic/private';
 import { handle as AuthHandle } from '$lib/auth/auth';
 import { createContext } from '$lib/trpc/context';
 import { router } from '$lib/trpc/router';
-import { type Handle } from '@sveltejs/kit';
+import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
 import { createTRPCHandle } from 'trpc-sveltekit';
@@ -16,6 +16,20 @@ import { createTRPCHandle } from 'trpc-sveltekit';
 // 	return resolve(event);
 // };
 
+
+
+export const handleNotifications: Handle = async ({ event, resolve }) => {
+	// const url = new URL(event.request.url);
+	const { url } = event;
+	if (!url.searchParams.has('notif')) return resolve(event);
+	const notif = url.searchParams.get('notif');
+	const notifType = url.searchParams.get('notifType');
+	if (!notif || !notifType) return resolve(event);
+	url.searchParams.delete('notif');
+	url.searchParams.delete('notifType');
+	return redirect(303, url.toString());
+}
+
 export const debugRoute: Handle = ({ event, resolve }) => {
 	console.debug('Server hook: ', event.url.pathname);
 	return resolve(event);
@@ -25,6 +39,7 @@ export const debugRoute: Handle = ({ event, resolve }) => {
 export const handle: Handle = sequence(
 	debugRoute,
 	AuthHandle,
+	handleNotifications,
 	// handleCookies,
 	createTRPCHandle({
 		router,

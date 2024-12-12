@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { UserStore } from '$auth/stores/UserStore.svelte';
 	import '../app.css';
 	import '../fonts.css';
-	import { UserStore } from '$auth/stores/UserStore.svelte';
 	import { NotificationStack as NotificationStackStore } from '../modules/notifications/stores/NotificationStack.svelte';
-	import NotificationStack from '../modules/notifications/views/NotificationStack.svelte';
 	import { CloseNotificationUseCase } from '../modules/notifications/usecases/CloseNotification/CloseNotification';
+	import NotificationStack from '../modules/notifications/views/NotificationStack.svelte';
 
 	let { data, children } = $props();
 	$inspect("Current user", UserStore.user);

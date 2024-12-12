@@ -1,11 +1,28 @@
 <script>
+	import { page } from '$app/stores';
+	import { UserStore } from '$auth/stores/UserStore.svelte';
 	import Progress from '$lib/components/forms/Progress.svelte';
-	import IconTerminal from '$lib/components/icons/lucide/IconTerminal.svelte';
-	import IconCode from '$lib/components/icons/lucide/IconCode.svelte';
+	import IconWrapper from '$lib/components/icons/IconWrapper.svelte';
 	import IconBookOpen from '$lib/components/icons/lucide/IconBookOpen.svelte';
 	import IconChevronRight from '$lib/components/icons/lucide/IconChevronRight.svelte';
-	import IconWrapper from '$lib/components/icons/IconWrapper.svelte';
-	import { UserStore } from '$auth/stores/UserStore.svelte';
+	import IconCode from '$lib/components/icons/lucide/IconCode.svelte';
+	import IconTerminal from '$lib/components/icons/lucide/IconTerminal.svelte';
+	import { AppNotificationService } from '$notifications/services/AppNotificationService';
+	import { ExtractNotificationsUseCase } from '$notifications/usecases/ExtractNotifications/ExtractNotificationsUseCase';
+	import { URLNotificationParser } from '$notifications/usecases/ExtractNotifications/services/URLNotificationParser';
+
+	$effect(() => {
+		const url = $page.url;
+		if (url.searchParams.size === 0) return
+		ExtractNotificationsUseCase()({ parser: URLNotificationParser.parse })
+			.execute({
+				rawData: $page.url
+			})
+			.then((ucResult) => {
+				if (!ucResult.isSuccess) return;
+				ucResult.data.notifications.forEach((notif) => AppNotificationService.send(notif));
+			});
+	});
 </script>
 
 <div class="min-h-screen bg-bg-dark text-zinc-100 font-mono">
