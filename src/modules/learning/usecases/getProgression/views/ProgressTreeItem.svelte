@@ -36,7 +36,7 @@
 		<div
 			class="absolute self-start blur-md rounded-full z-20 {task.isCompleted
 				? 'bg-primary-light'
-				: 'bg-light'} {task.isMiniboss ? 'h-7 w-7 mx-[.125rem]' : 'h-4 w-4 min-w-4 mx-2'}"
+				: 'bg-light'} {task.isMiniboss ? 'h-7 w-7 mx-[.125rem]' : 'h-4 w-4 min-w-4 m-2'}"
 		></div>
 		<div
 			class="rounded-full self-start z-10 shadow-black {task.isCompleted
