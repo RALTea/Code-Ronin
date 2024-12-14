@@ -37,4 +37,10 @@ describe('CodeBuilder:Unit', () => {
 		const builder = CodeBuilder(code).removeComments().build();
 		expect(builder).toBe(`const a = "hello;\n\nconst b = "world";`);
 	});
+
+	it('should remove only the comments that are not in the commentsToKeep array', () => {
+		const code = `const a = "hello;\n// shouldstay\nconst b = "world";\n// should be removed`;
+		const builder = CodeBuilder(code).removeComments(['// shouldstay']).build();
+		expect(builder).toBe(`const a = "hello;\n// shouldstay\nconst b = "world";`);
+	});
 });

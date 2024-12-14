@@ -7,6 +7,9 @@
 	import { getTaskDetails } from '$learning/usecases/getTaskDetails/getTaskDetails';
 	import ExercisePage from '$learning/views/ExercisePage.svelte';
 	import { trpc } from '$lib/clients/trpc';
+	import { SendNotificationUseCase } from '$notifications/usecases/SendNotification/SendNotification';
+	import {NotificationStack} from '$notifications/stores/NotificationStack.svelte'
+	import { UnauthorizedError } from '$auth/usecases/GetSelfData/errors/UnauthorizedError';
 
 	let currentTask: Promise<(TaskTreeItem & TaskDetails) | undefined> = $state(
 		(async () => undefined)()
@@ -20,6 +23,16 @@
 		currentTask = getTaskDetails({
 			getTaskDetails: async () => {
 				return trpc($page).learning.getTaskDetails.getTaskDetails.query({ taskId: taskToLoad.id });
+			},
+			getApprenticeId: async () => {
+				const user = await trpc($page).auth.me.query();
+				if (!user) {
+					SendNotificationUseCase({ addToStack: NotificationStack.addToStack }).execute({
+						dto: { message: 'User is disconnected, please login again', type: 'ERROR' }
+					});
+					throw new UnauthorizedError()
+				}
+				return user.id;
 			}
 		})
 			.execute({ taskId: currentTaskId })

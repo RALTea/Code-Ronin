@@ -10,16 +10,20 @@ import * as IGetTaskDetailsRepository from './repositories/IGetTaskDetailsReposi
 
 type Input = InputFactory<
 	{ taskId: string },
-	{ getTaskDetails: IGetTaskDetailsRepository.GetTaskDetails }
+	{
+		getTaskDetails: IGetTaskDetailsRepository.GetTaskDetails;
+		getApprenticeId: () => Promise<string>;
+	}
 >;
 type Output = OutputFactory<TaskDetails>;
 
 export const getTaskDetails: UseCase<Input, Output> = (deps) => {
-	const { getTaskDetails } = deps;
+	const { getTaskDetails, getApprenticeId } = deps;
 	return {
 		execute: async ({ taskId }) => {
 			try {
-				const taskDetails = await getTaskDetails(taskId);
+				const apprenticeId = await getApprenticeId()
+				const taskDetails = await getTaskDetails(taskId, apprenticeId);
 				return UseCaseResponseBuilder.success(200, taskDetails);
 			} catch (error) {
 				console.error(extractError(error));

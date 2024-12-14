@@ -15,7 +15,7 @@ export const PrismaProfileSummaryRepository = (prisma: PrismaClient): _PrismaPro
 			if (!apprentice) throw new Error('Apprentice not found');
 			return {
 				name: apprentice.username,
-				title: apprentice.role,
+				title: apprentice.title,
 				avatar: apprentice.profilePicture,
 				medals: []
 			};

@@ -77,8 +77,12 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 		if (taskType === 'stderr') {
 			builder.replace('// (@@@*@@@)', `const studentSolution = () => {\n${apprenticeSolution}\n}`);
 		}
+		const commentsToKeep = [
+			'// (@Student_code_start@)',
+			'// (@Student_code_end@)',
+		]
 		return builder
-			.removeComments()
+			.removeComments(commentsToKeep)
 			.build();
 	}
 
@@ -92,6 +96,7 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 
 			try {
 				const codeToBeEvaluated = _buildCodeToBeEvaluated(apprenticeSolution, testCases, taskDetails.answerType);
+				console.debug('Code to be evaluated:', codeToBeEvaluated);
 				const result: ExerciseAttemptResult = await evaluateSolution(codeToBeEvaluated, language);
 				
 				const attempt: ExerciseAttempt = {

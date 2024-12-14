@@ -8,8 +8,6 @@
 
 	let { data, children } = $props();
 
-	$inspect('UserStore', UserStore.user);
-
 	const closeNotification = (id: string) => {
 		const notif = NotificationStackStore.stack.find((n) => n.id === id);
 		if (!notif) return;
