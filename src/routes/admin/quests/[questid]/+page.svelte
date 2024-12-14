@@ -30,7 +30,7 @@
 	};
 
 	const closeTaskCreator = () => {
-		editingTask = undefined
+		editingTask = undefined;
 		taskCreatorOpened = false;
 	};
 
@@ -120,12 +120,16 @@
 	</IconWrapper>
 	<p>Add Task</p>
 </button>
-
+{#if taskCreatorOpened}
+	<div
+		class="bg-white/0 duration-1000 transition-all backdrop-blur-sm fixed top-0 left-0 w-screen h-screen z-10"
+	></div>
+{/if}
 {#if taskCreatorOpened}
 	<div
 		class="fixed top-0 right-0 w-1/2 h-screen bg-black/50 z-20 backdrop-blur-md p-8 overflow-auto"
 		transition:fly={{ x: 1000 }}
-		use:clickOutside
+		use:clickOutside={'mousedown'}
 		onclickOutside={closeTaskCreator}
 	>
 		<TaskCreator taskList={tasks.flat()} onconfirm={onConfirm} {editingTask} />

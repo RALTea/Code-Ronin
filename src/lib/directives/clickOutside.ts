@@ -6,7 +6,7 @@
 // }	
 
 // Defining the type for the directive's node parameter as HTMLElement
-export function clickOutside(node: HTMLElement): { destroy: () => void } {
+export function clickOutside(node: HTMLElement, type: 'mousedown' | 'click' = 'click'): { destroy: () => void } {
 	// The event listener callback now explicitly types the event parameter as MouseEvent
 	const handleClick = (event: MouseEvent): void => {
 		// Checking that event.target is an instance of Node to satisfy TypeScript checks
@@ -15,11 +15,11 @@ export function clickOutside(node: HTMLElement): { destroy: () => void } {
 		}
 	};
 
-	document.addEventListener('click', handleClick, true);
+	document.addEventListener(type, handleClick, true);
 
 	return {
 		destroy() {
-			document.removeEventListener('click', handleClick, true);
+			document.removeEventListener(type, handleClick, true);
 		},
 	};
 }
