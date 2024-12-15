@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { QuestData } from '../domain/QuestData';
 
 	type Props = {
@@ -14,9 +15,21 @@
 		centerY: number;
 	};
 
+	onMount(() => {
+		const action = () => {
+			cleanTree();
+			drawConnections();
+		}
+		window.addEventListener('resize', action);
+		return () => window.removeEventListener('resize', action);
+	})
 
 	// After first render, draw connections
 	$effect(() => {
+		return drawConnections();
+	});
+
+	const drawConnections = () => {
 		const svgId = 'task-connections';
 		let bubbleRefs: (Bubble | null)[] = [];
 		// Ensure all refs are collected
@@ -24,15 +37,17 @@
 			return;
 		}
 		bubbleRefs = [...document.querySelectorAll<HTMLDivElement>('.bubble')].map((el) => {
+			const container = document.querySelector('.CUSTOM-tree-root');
+			if (!container) return null;
+			const containerRect = container.getBoundingClientRect();
 			const rect = el.getBoundingClientRect();
 			return {
 				ref: el,
 				taskId: el.title,
-				centerX: rect.left + rect.width / 2,
-				centerY: rect.top + rect.height / 2
+				centerX: rect.left - containerRect.left + rect.width / 2,
+				centerY: rect.top - containerRect.top + rect.height / 2
 			};
 		});
-
 
 		// Create SVG to draw lines
 		const svgTree = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -45,6 +60,7 @@
 		svgTree.style.height = '100%';
 		svgTree.style.zIndex = '-10';
 
+		console.debug({ adminTasks: tasks, refs: bubbleRefs });
 		// Draw lines based on task relationships
 		tasks.forEach((taskLayer, layerIndex) => {
 			taskLayer.forEach((task, taskIndex) => {
@@ -74,31 +90,36 @@
 		});
 
 		// Add SVG to the document
-		document.body.appendChild(svgTree);
+		document.querySelector('.CUSTOM-tree-root')?.appendChild(svgTree);
 
 		// Cleanup function
-		return () => {
-			document.body.removeChild(svgTree);
-		};
-	});
+		return () => cleanTree(svgTree);
+	}
+
+	const cleanTree = (el?: SVGSVGElement) => {
+		if (el) return document.querySelector('.CUSTOM-tree-root')?.removeChild(el);
+		document.getElementById('task-connections')?.remove();
+	}
 </script>
 
-<ul class="flex flex-col gap-16">
-	{#each tasks as taskLayer}
-		<li>
-			<ul class="flex gap-4 justify-center">
-				{#each taskLayer as task}
-					<li class="block">
-						<button
-							class="h-6 w-6 rounded-full bg-light m-auto bubble"
-							title={task.id}
-							onclick="{() => ontaskselected(task.id)}"
-							aria-label={task.name}
-						></button>
-						<p class="w-36 text-center">{task.name}</p>
-					</li>
-				{/each}
-			</ul>
-		</li>
-	{/each}
-</ul>
+<div class="relative CUSTOM-tree-root">
+	<ul class="flex flex-col gap-16">
+		{#each tasks as taskLayer}
+			<li>
+				<ul class="flex gap-4 justify-center">
+					{#each taskLayer as task}
+						<li class="block">
+							<button
+								class="h-6 w-6 rounded-full bg-light m-auto bubble"
+								title={task.id}
+								onclick={() => ontaskselected(task.id)}
+								aria-label={task.name}
+							></button>
+							<p class="w-36 text-center">{task.name}</p>
+						</li>
+					{/each}
+				</ul>
+			</li>
+		{/each}
+	</ul>
+</div>
