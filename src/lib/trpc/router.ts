@@ -4,11 +4,12 @@ import RunExercisesRouter from '$learning/usecases/runExercise/routers/run-exerc
 import GetApprenticeProfileSummaryRouter from '$learning/usecases/getApprenticeProfileSummary/routers/getApprenticeProfileSummary';
 
 import { t } from '$lib/trpc/t';
-import { GetQuestDataTRPCRouter } from '../../modules/admin/usecases/getQuestData/routers/GetQuestDataTRPCRouter';
+import { GetQuestDataTRPCRouter } from '$admin/usecases/getQuestData/routers/GetQuestDataTRPCRouter';
 import { CreateTaskTRPCRouter } from '$admin/usecases/createTask/routers/CreateTaskTRPCRouter';
 import { GetTaskDataTRPCRouter } from '$admin/usecases/getTaskData/routers/GetTaskDataTRPCRouter';
 import { EditTaskTRPCRouter } from '$admin/usecases/editTask/routers/EditTaskTRPCRouter';
 import { AuthRouter } from '$auth/router/AuthRouter';
+import { GetQuestsPathRouter } from '$dashboard/usecases/GetQuestsPath/routers/TRPCGetQuestsPath';
 
 export const router = t.router({
 	auth: AuthRouter,
@@ -16,13 +17,16 @@ export const router = t.router({
 		getTaskDetails: GetTaskDetailsRouter,
 		runExercises: RunExercisesRouter,
 		getProgression: GetProgressionRouter,
-		getApprenticeProfileSummary: GetApprenticeProfileSummaryRouter,
+		getApprenticeProfileSummary: GetApprenticeProfileSummaryRouter
 	}),
 	admin: t.router({
 		getQuestData: GetQuestDataTRPCRouter,
 		createTask: CreateTaskTRPCRouter,
 		getTask: GetTaskDataTRPCRouter,
-		editTask: EditTaskTRPCRouter,
+		editTask: EditTaskTRPCRouter
+	}),
+	dashboard: t.router({
+		getQuestsPath: GetQuestsPathRouter
 	})
 });
 

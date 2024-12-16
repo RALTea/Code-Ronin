@@ -29,7 +29,9 @@ model Apprentice {
 
 model Campaign {
   id   String @id @default(uuid())
-  name String
+  name String @unique
+  slug String @unique @default(cuid())
+  isDemo Boolean @default(false)
 
   forceOpen Boolean?
   openAt    DateTime?

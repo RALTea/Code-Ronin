@@ -4,33 +4,51 @@ import {
 	type OutputFactory,
 	type UseCase
 } from '$lib/interfaces/UseCase';
-import type { QuestTree } from './aggregates/QuestTree';
+import type { Quest } from './aggregates/Quest';
+import type { QuestTree, QuestTreeItem } from './aggregates/QuestTree';
+import { QuestHasNoTasksError } from './errors/QuestHasNoTasksError';
 import * as IGetQuestsPathRepository from './repositories/IGetQuestsPathRepository';
 
 type Input = InputFactory<
 	{
 		campaignName: string;
+		userId: string;
 	},
 	{
 		listCampaignQuests: IGetQuestsPathRepository.ListQuestsFromCampaign;
+		listCompletedQuestsForCampaign: IGetQuestsPathRepository.ListCompletedQuestsForCampaign;
 	}
 >;
 
 type Output = OutputFactory<QuestTree>;
 
 export const GetQuestsPathUseCase: UseCase<Input, Output> = (deps) => {
-	const { listCampaignQuests } = deps;
+	const { listCampaignQuests, listCompletedQuestsForCampaign } = deps;
 	return {
 		execute: async (input) => {
-			const { campaignName } = input;
+			const { campaignName, userId } = input;
 			const quests = await listCampaignQuests(campaignName);
-			const result = _sortLayers([quests]);
-			return UseCaseResponseBuilder.success(200, result);
+			const completedQuests = await listCompletedQuestsForCampaign(campaignName, userId);
+			const questTreeItems: QuestTreeItem[] = quests.map((quest) => ({
+				...quest,
+				isCompleted: completedQuests.some((completedQuest) => completedQuest.id === quest.id)
+			}));
+			console.debug('GetQuestsPathUseCase', { questTreeItems, completedQuests });
+			try {
+				const sortedQuests = _sortLayers([questTreeItems]);
+				return UseCaseResponseBuilder.success(200, sortedQuests);
+			} catch (error) {
+				if (error instanceof QuestHasNoTasksError) {
+					return UseCaseResponseBuilder.error(400, new QuestHasNoTasksError(campaignName).message);
+				}
+				console.error('Error sorting quests', error);
+				return UseCaseResponseBuilder.error(500, 'Error sorting quests');
+			}
 		}
 	};
 };
 
-const _sortLayers = (quests: QuestTree): QuestTree => {
+const _sortLayers = <T extends Quest>(quests: T[][]): T[][] => {
 	// Flatten the input quests and create a map for quick lookups
 	const flatQuests = quests.flat();
 	const questMap = new Map(flatQuests.map((quest) => [quest.id, quest]));
@@ -47,7 +65,7 @@ const _sortLayers = (quests: QuestTree): QuestTree => {
 		recursionStack.add(questId);
 
 		const quest = questMap.get(questId);
-		const previousQuests = quest?.previousTaskIds || [];
+		const previousQuests = quest?.previousQuestIds || [];
 
 		for (const prevId of previousQuests) {
 			if (hasCycle(prevId)) return true;
@@ -65,15 +83,15 @@ const _sortLayers = (quests: QuestTree): QuestTree => {
 	}
 
 	// Find quests with no previous quests (first layer)
-	const firstLayer = flatQuests.filter((quest) => !quest.previousTaskIds?.length);
+	const firstLayer = flatQuests.filter((quest) => !quest.previousQuestIds?.length);
 
 	if (firstLayer.length === 0) {
-		throw new Error('No starting quests found (quests without prerequisites)');
+		throw new QuestHasNoTasksError()
 	}
 
 	// Track processed quests and create result array
 	const processedQuests = new Set(firstLayer.map((quest) => quest.id));
-	const layers: QuestTree = [firstLayer];
+	const layers: T[][] = [firstLayer];
 
 	while (processedQuests.size < flatQuests.length) {
 		const currentLayer = layers[layers.length - 1];
@@ -81,7 +99,7 @@ const _sortLayers = (quests: QuestTree): QuestTree => {
 
 		// Process each parent quest in the current layer
 		for (const parentTask of currentLayer) {
-			const nextTaskIds = parentTask.nextTaskIds || [];
+			const nextTaskIds = parentTask.nextQuestIds || [];
 
 			// Add quests in the order specified by nextTaskIds
 			for (const nextId of nextTaskIds) {
@@ -90,7 +108,7 @@ const _sortLayers = (quests: QuestTree): QuestTree => {
 
 				// Only add if all prerequisites are met
 				if (
-					quest.previousTaskIds?.every((prevId) => processedQuests.has(prevId)) &&
+					quest.previousQuestIds?.every((prevId) => processedQuests.has(prevId)) &&
 					!processedQuests.has(quest.id)
 				) {
 					nextLayerQuests.push(quest);

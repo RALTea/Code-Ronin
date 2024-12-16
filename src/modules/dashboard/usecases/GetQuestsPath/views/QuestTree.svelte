@@ -5,15 +5,13 @@
 
 	type Props = {
 		loadQuests: Promise<QuestTree>;
-		itemSize: number;
+		itemSize: string | number;
 	};
 	let { loadQuests, itemSize = 32 }: Props = $props();
 
 	const vm = new QuestTreeVM(loadQuests);
 
-
-
-  type Bubble = {
+	type Bubble = {
 		ref: HTMLDivElement;
 		taskId: string;
 		centerX: number;
@@ -24,10 +22,10 @@
 		const action = () => {
 			cleanTree();
 			drawConnections();
-		}
+		};
 		window.addEventListener('resize', action);
 		return () => window.removeEventListener('resize', action);
-	})
+	});
 
 	// After first render, draw connections
 	$effect(() => {
@@ -41,7 +39,6 @@
 		if (bubbleRefs.some((ref) => ref === null)) {
 			return;
 		}
-    console.debug('bubbles', document.querySelectorAll<HTMLDivElement>('.CUSTOM-bubble'))
 		bubbleRefs = [...document.querySelectorAll<HTMLDivElement>('.CUSTOM-bubble')].map((el) => {
 			const container = document.querySelector('.CUSTOM-tree-root');
 			if (!container) return null;
@@ -64,9 +61,8 @@
 		svgTree.style.left = '0';
 		svgTree.style.width = '100%';
 		svgTree.style.height = '100%';
-		// svgTree.style.zIndex = '-10';
+		svgTree.style.opacity = '0.5';
 
-		console.debug({ adminTasks: vm.quests, refs: bubbleRefs });
 		// Draw lines based on task relationships
 		(vm.quests ?? []).forEach((taskLayer, layerIndex) => {
 			taskLayer.forEach((task, taskIndex) => {
@@ -75,7 +71,7 @@
 				const currentBubble = bubbleRefs[currentBubbleIndex];
 
 				// Draw lines to next tasks
-				task.previousTaskIds?.forEach((nextTaskId) => {
+				task.previousQuestIds?.forEach((nextTaskId) => {
 					// Find the next bubble
 					const nextBubbleIndex = bubbleRefs.findIndex((b) => b?.taskId === nextTaskId);
 					const nextBubble = bubbleRefs[nextBubbleIndex];
@@ -100,12 +96,12 @@
 
 		// Cleanup function
 		return () => cleanTree(svgTree);
-	}
+	};
 
 	const cleanTree = (el?: SVGSVGElement) => {
 		if (el) return document.querySelector('.CUSTOM-tree-root')?.removeChild(el);
 		document.getElementById('task-connections')?.remove();
-	}
+	};
 </script>
 
 <div class="">
@@ -114,17 +110,21 @@
 	{/if}
 	<div
 		class="grid gap-8 relative CUSTOM-tree-root"
-		style="grid-template-columns: repeat({vm.nbOfColumns}, {itemSize /
-			4}rem); grid-template-rows: repeat({vm.nbOfRows}, {itemSize / 4}rem)"
+		style="grid-template-columns: repeat({vm.nbOfColumns}, {Number(itemSize) / 4}rem);
+     grid-template-rows: repeat({vm.nbOfRows}, {Number(itemSize) / 4}rem)"
 	>
 		<!-- Column -->
 		{#each vm.quests ?? [] as questGroup, colIdx}
 			{#each questGroup as quest, rowIdx}
+				{@const completed = quest.isCompleted}
 				<div
 					style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
 					class="p-4 flex flex-col items-center justify-center gap-4"
 				>
-					<div class="h-6 w-6 z-10 rounded-full bg-light mx-auto CUSTOM-bubble" title={quest.id}></div>
+					<div
+						class="h-6 w-6 z-10 rounded-full {completed ? 'bg-primary-light' : 'bg-light'} mx-auto CUSTOM-bubble"
+						title={quest.id}
+					></div>
 					<p class="text-center">
 						{quest.name}
 					</p>

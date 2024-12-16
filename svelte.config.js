@@ -16,7 +16,8 @@ const config = {
 			$admin: './src/modules/admin',
 			$auth: './src/modules/auth',
 			$learning: './src/modules/learning',
-			$notifications: './src/modules/notifications'
+			$notifications: './src/modules/notifications',
+			$dashboard: './src/modules/dashboard',
 		}
 	}
 };

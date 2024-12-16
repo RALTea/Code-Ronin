@@ -3,6 +3,7 @@ import * as IGetQuestsPathRepository from './IGetQuestsPathRepository';
 
 type _PrismaGetQuestsPathRepository = {
 	listQuestsFromCampaign: IGetQuestsPathRepository.ListQuestsFromCampaign;
+	listCompletedQuestsForCampaign: IGetQuestsPathRepository.ListCompletedQuestsForCampaign;
 };
 
 export const PrismaGetQuestsPathRepository = (
@@ -18,6 +19,28 @@ export const PrismaGetQuestsPathRepository = (
 				}
 			});
 			return quests;
+		},
+		listCompletedQuestsForCampaign: async (campaignName: string, userId: string) => {
+			console.debug('listCompletedQuestsForCampaign', { campaignName, userId });
+			const completedQuests = await prisma.quest.findMany({
+				where: {
+					campaign: {
+						name: campaignName
+					},
+					tasks: {
+						every: {
+							attempts: {
+								some: {
+									apprenticeId: userId,
+									isSuccess: true
+								}
+							}
+						}
+					}
+				}
+			});
+			console.debug('listCompletedQuestsForCampaign', { completedQuests });
+			return completedQuests;
 		}
 	};
 };
