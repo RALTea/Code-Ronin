@@ -23,7 +23,6 @@
 		avatar: '/default-pfp.png',
 		exp: 0
 	};
-	$inspect('(Navbar) UserStore', UserStore.user);
 	const fetchDataUsecase = $derived.by(() => {
 		UserStore.user;
 		return getApprenticeProfileSummary({
@@ -49,16 +48,10 @@
 	let apprenticeSummary: ApprenticeProfileSummary | undefined = $state(undefined);
 
 	const fetchApprenticeSummary = () => {
-		console.debug('fetchApprenticeSummary', apprenticeId);
 		if (apprenticeId === '-1') return (apprenticeSummary = defaultApprenticeSummary);
 		fetchDataUsecase
 			.execute({ apprenticeId: apprenticeId })
 			.then((result) => {
-				console.debug('fetchApprenticeSummary result', {
-					result,
-					apprenticeSummary,
-					equals: apprenticeSummary?.name !== defaultApprenticeSummary.name
-				});
 				if (apprenticeSummary && apprenticeSummary.name !== defaultApprenticeSummary.name) return;
 				if (result.isSuccess) return (apprenticeSummary = result.data);
 				return (apprenticeSummary = defaultApprenticeSummary);
@@ -82,7 +75,6 @@
 		UserStore.user;
 		fetchApprenticeSummary();
 	});
-	$inspect('Apprentice Summary', apprenticeSummary);
 </script>
 
 {#snippet divider()}

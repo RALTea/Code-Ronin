@@ -23,7 +23,6 @@ export const getApprenticeProfileSummary: UseCase<Input, Output> = (dependencies
 		execute: async (data) => {
 			const { apprenticeId } = data;
 			try {
-				console.debug('fetching apprentice profile summary');
 				const [infos, exp] = await Promise.all([
 					fetchApprenticeInfos(apprenticeId),
 					fetchApprenticeExp(apprenticeId)
