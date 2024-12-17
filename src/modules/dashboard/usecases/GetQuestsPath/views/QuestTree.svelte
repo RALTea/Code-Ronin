@@ -8,6 +8,7 @@
 		itemSize: string | number;
 	};
 	let { loadQuests, itemSize = 32 }: Props = $props();
+	$inspect('INSPECT loadQuests', loadQuests)
 
 	const vm = new QuestTreeVM(loadQuests);
 
