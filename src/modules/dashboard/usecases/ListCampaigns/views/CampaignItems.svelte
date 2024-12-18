@@ -2,6 +2,7 @@
 	import Card from '$lib/components/cards/Card.svelte';
 	import Progress from '$lib/components/forms/Progress.svelte';
 	import type { DashboardCampaignItem } from '../aggregates/DashboardCampaignItemSchema';
+	import { CampaignItemsVM } from './CampaignItemsVM.svelte';
 
 	type Props = {
 		fetchCampaigns: Promise<DashboardCampaignItem[]>;
@@ -9,17 +10,15 @@
 		selectedCampaignName: string;
 	};
 	let { fetchCampaigns, onItemSelected, selectedCampaignName }: Props = $props();
-	$inspect('INSPECT CampaignItems.selectedCampaignName', selectedCampaignName);
-	fetchCampaigns.then((campaigns) => {
-		console.log({ campaigns });
-	});
+
+	const vm = new CampaignItemsVM(fetchCampaigns);
 </script>
 
-{#await fetchCampaigns}
-	<p>Loading...</p>
-{:then campaigns}
+{#if !vm.firstLoadCompleted}
+	<p>Loading quests...</p>
+{:else}
 	<div class="flex gap-4">
-		{#each campaigns as campaign}
+		{#each vm.campaigns as campaign}
 			{@const isHighlighted = campaign.name === selectedCampaignName}
 			<button onclick={() => onItemSelected(campaign.name)}>
 				<Card
@@ -45,6 +44,4 @@
 			</button>
 		{/each}
 	</div>
-{:catch error}
-	<p>{error.message}</p>
-{/await}
+{/if}

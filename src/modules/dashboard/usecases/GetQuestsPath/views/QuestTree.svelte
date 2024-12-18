@@ -6,9 +6,15 @@
 	type Props = {
 		loadQuests: Promise<QuestTree>;
 		itemSize: string | number;
+		lastQuestsUpdate: string;
 	};
-	let { loadQuests, itemSize = 32 }: Props = $props();
-	$inspect('INSPECT loadQuests', loadQuests)
+	let { loadQuests, itemSize = 32, lastQuestsUpdate = '0' }: Props = $props();
+
+	// Promise reference do not trigger reactivity, so this is a workaround
+	$effect(() => {
+		lastQuestsUpdate;
+		vm.updateLoadQuests(loadQuests);
+	})
 
 	const vm = new QuestTreeVM(loadQuests);
 
@@ -114,23 +120,27 @@
 		style="grid-template-columns: repeat({vm.nbOfColumns}, {Number(itemSize) / 4}rem);
      grid-template-rows: repeat({vm.nbOfRows}, {Number(itemSize) / 4}rem)"
 	>
-		<!-- Column -->
-		{#each vm.quests ?? [] as questGroup, colIdx}
-			{#each questGroup as quest, rowIdx}
-				{@const completed = quest.isCompleted}
-				<div
-					style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
-					class="p-4 flex flex-col items-center justify-center gap-4"
-				>
+		{#key lastQuestsUpdate}
+			<!-- Column -->
+			{#each vm.quests ?? [] as questGroup, colIdx}
+				{#each questGroup as quest, rowIdx}
+					{@const completed = quest.isCompleted}
 					<div
-						class="h-6 w-6 z-10 rounded-full {completed ? 'bg-primary-light' : 'bg-light'} mx-auto CUSTOM-bubble"
-						title={quest.id}
-					></div>
-					<p class="text-center">
-						{quest.name}
-					</p>
-				</div>
+						style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
+						class="p-4 flex flex-col items-center justify-center gap-4"
+					>
+						<div
+							class="h-6 w-6 z-10 rounded-full {completed
+								? 'bg-primary-light'
+								: 'bg-light'} mx-auto CUSTOM-bubble"
+							title={quest.id}
+						></div>
+						<p class="text-center">
+							{quest.name}
+						</p>
+					</div>
+				{/each}
 			{/each}
-		{/each}
+		{/key}
 	</div>
 </div>

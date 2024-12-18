@@ -16,10 +16,26 @@ export class QuestTreeVM {
 		}, 0);
 	}
 
-	constructor(loadQuests: Promise<QuestTree>) {
+	updateLoadQuests(loadQuests: Promise<QuestTree>) {
 		loadQuests
 			.then((quests) => {
-				this.quests = quests;
+				this.quests ??= [];
+				this.quests.length = 0;
+				this.quests?.push(...quests);
+				this.setNbOfColumns(quests);
+				this.setNbOfRows(quests);
+			})
+			.finally(() => {
+				this.isLoading = false;
+			});
+	}
+
+	constructor(loadQuests: Promise<QuestTree>) {
+		console.debug('QuestTreeVM.constructor');
+		loadQuests
+			.then((quests) => {
+				this.quests ??= [];
+				this.quests?.push(...quests);
 				this.setNbOfColumns(quests);
 				this.setNbOfRows(quests);
 			})
