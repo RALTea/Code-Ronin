@@ -11,9 +11,8 @@ export type DemoContent = z.infer<typeof DemoContentSchema>;
 
 // Allow unauthorized access to the demo campaigns only, block access to other campaigns
 export const demoMiddleware = t.middleware(async (request) => {
-	const { path, input, ctx, next, meta, rawInput, type } = request;
-	// const { PUBLIC_DEMO_CAMPAIGN_NAME } = env;
-
+	const { path, ctx, next, rawInput } = request;
+	
 	// Check if the campaign name is the demo campaign
 	try {
 		const { campaignName } = DemoContentSchema.parse(rawInput);
@@ -21,14 +20,6 @@ export const demoMiddleware = t.middleware(async (request) => {
 			where: {
 				name: campaignName
 			}
-		});
-		console.debug('Validating TRPC query', {
-			path,
-			input,
-			meta,
-			rawInput,
-			type,
-			campaign
 		});
 		if (campaign?.isDemo === true) {
 			return next({ ctx });

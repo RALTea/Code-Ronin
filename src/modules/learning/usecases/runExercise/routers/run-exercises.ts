@@ -38,7 +38,6 @@ const router = t.router({
 				}
 
 				const fileContent = await response.text(); // Read the content as text
-				console.debug('Fetched the file content:', fileContent);
 				return fileContent;
 			} catch (error) {
 				console.error('Failed to fetch the file content:', error);

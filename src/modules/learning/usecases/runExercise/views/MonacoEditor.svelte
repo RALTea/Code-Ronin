@@ -74,7 +74,6 @@
 		if (!monaco || !theme || !editorContainer || !isObserving) {
 			return;
 		}
-		console.debug('initEditor');
 
 		monaco.editor.getModels().forEach((model) => {
 			model.dispose();

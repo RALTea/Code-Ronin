@@ -110,8 +110,6 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 				};
 
 				// Handle results
-				
-				console.debug('Run Exercise Result:', result);
 				if (result.status === 'SUCCESS') {
 					result.formattedOutput = OutputParser(result.output ?? '').formatSuccess()
 					await Promise.all(successHandlers.map((handler) => handler(attempt)));

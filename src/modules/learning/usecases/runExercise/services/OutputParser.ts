@@ -73,7 +73,6 @@ export const OutputParser = (output: string) => {
 			};
 			const failures = PATTERNS.ASSERTIONS.map(({ regex, order }) => {
 				const matches = Array.from(output.matchAll(regex));
-				console.debug({ regex, matches });
 				return matches.map((match) => ({
 					cause: (match[getPosition(order, 'cause')] || 'Unknown cause'),
 					expected: (match[getPosition(order, 'expected')] || ''),
@@ -88,7 +87,6 @@ export const OutputParser = (output: string) => {
 		formatErrors: function () {
 			const title = 'Exercise Failed ×\n\n';
 			output = output.match(PATTERNS.ERROR_SECTION)?.[0] ?? output;
-			console.debug({ formattingFrom: output });
 			const failures = this._extractFailures().map(
 				({ cause, expected, received }) =>
 					`  × ${cause}\n    - Expected: "${expected}"\n    + Received: "${received}"`

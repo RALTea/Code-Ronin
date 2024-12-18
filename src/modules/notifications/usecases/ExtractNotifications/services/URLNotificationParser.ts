@@ -10,7 +10,6 @@ export const URLNotificationParser: _URLNotificationParser = {
 		const url = typeof data === 'string' ? new URL(data) : data;
 		const notificationContent = url.searchParams.get('notif');
 		const notificationType = url.searchParams.get('notifType');
-		console.debug('URLNotificationParser', notificationContent, notificationType, url);
 		if (!notificationContent || !notificationType) return [];
 		
 		const notification: CreateNotificationDto = {

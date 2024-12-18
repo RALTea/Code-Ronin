@@ -54,7 +54,6 @@ export const getProgressionUseCase: UseCase<Input, Output> = (deps) => {
 	return {
 		execute: async (data) => {
 			const { apprenticeId, questId } = data;
-			console.debug('getProgressionUseCase', { apprenticeId, questId });
 			let unorderedTasks: Task[] = []
 			try {
 				unorderedTasks = await getUnorderedTasks(questId);

@@ -60,7 +60,6 @@
 		svgTree.style.height = '100%';
 		svgTree.style.zIndex = '-10';
 
-		console.debug({ adminTasks: tasks, refs: bubbleRefs });
 		// Draw lines based on task relationships
 		tasks.forEach((taskLayer, layerIndex) => {
 			taskLayer.forEach((task, taskIndex) => {

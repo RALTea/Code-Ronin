@@ -12,7 +12,6 @@ const router = t.router({
 			})
 		)
 		.query(async ({ input, ctx }) => {
-			console.debug('getApprenticeAttemptsOnQuest', input);
 			const progressionRepository = PrismaProgressionRepository(prisma);
 			const result = await progressionRepository.getApprenticeAttemptsOnQuest(
 				ctx.user?.id ?? '-1',

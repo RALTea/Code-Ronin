@@ -31,7 +31,6 @@
 
 	const fetchTree = async () => {
 		const questId = $page.params.questId;
-		console.debug('fetchTree', questId);
 		const isDemo = $page.params.campaign === 'demo';
 		const res = await getProgressionUseCase({
 			getApprenticeAttemptsOnQuest: async () => {
@@ -44,7 +43,6 @@
 					const demoAttempts = JSON.parse(
 						localStorage.getItem(env.PUBLIC_DEMO_CAMPAIGN_NAME) ?? '[]'
 					) as Attempt[];
-					console.debug('demoAttempts', demoAttempts);
 					// Do not care about the quest ID for dep.
 					return demoAttempts.map((it) => ({ ...it, questId: '-1' }));
 				}
@@ -58,7 +56,6 @@
 			questId,
 			apprenticeId: '-1' // provided by the server (authProcedure)
 		});
-		console.debug('Fetch tree result: ', res);
 		if (!res.isSuccess) return [];
 		// Do not reassign the array, otherwise the proxy will be lost
 		const taskItems = res.data.tasks;

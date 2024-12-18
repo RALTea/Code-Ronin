@@ -21,7 +21,6 @@ export const PrismaGetQuestsPathRepository = (
 			return quests;
 		},
 		listCompletedQuestsForCampaign: async (campaignName: string, userId: string) => {
-			console.debug('listCompletedQuestsForCampaign', { campaignName, userId });
 			const completedQuests = await prisma.quest.findMany({
 				where: {
 					campaign: {
@@ -39,7 +38,6 @@ export const PrismaGetQuestsPathRepository = (
 					}
 				}
 			});
-			console.debug('listCompletedQuestsForCampaign', { completedQuests });
 			return completedQuests;
 		}
 	};

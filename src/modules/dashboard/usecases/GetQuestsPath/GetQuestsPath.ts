@@ -33,7 +33,6 @@ export const GetQuestsPathUseCase: UseCase<Input, Output> = (deps) => {
 				...quest,
 				isCompleted: completedQuests.some((completedQuest) => completedQuest.id === quest.id)
 			}));
-			console.debug('GetQuestsPathUseCase', { questTreeItems, completedQuests });
 			try {
 				const sortedQuests = _sortLayers([questTreeItems]);
 				return UseCaseResponseBuilder.success(200, sortedQuests);
