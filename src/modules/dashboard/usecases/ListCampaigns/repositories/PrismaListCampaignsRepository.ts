@@ -16,7 +16,8 @@ export const PrismaListCampaignsRepository = (
 			const mapPrismaCampaignToCampaignInfos = (campaign: Campaign): CampaignInfos => {
 				return {
 					id: campaign.id,
-					name: campaign.name
+					name: campaign.name,
+					slug: campaign.slug,
 				};
 			};
 			if (!userId) {

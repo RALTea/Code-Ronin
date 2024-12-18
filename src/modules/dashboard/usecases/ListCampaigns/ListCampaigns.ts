@@ -22,6 +22,7 @@ export const ListCampaignsUseCase: UseCase<Input, Output> = (deps) => {
 			const result: DashboardCampaignItem[] = campaigns.map((c) => ({
 				id: c.id,
 				name: c.name,
+				slug: c.slug,
 				completion: completion.find((campaignCompletion) => campaignCompletion.campaignName === c.name)?.completion ?? 0
 			}));
 

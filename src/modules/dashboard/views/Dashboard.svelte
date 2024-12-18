@@ -7,23 +7,26 @@
 
 	const vm = new DashboardVM($page, $page.data.fetchCampaigns);
 	const navbarTailwindHeight = 20 + 4 * 2;
-	const navbarHeight = `${navbarTailwindHeight/4}rem`;
+	const navbarHeight = `${navbarTailwindHeight / 4}rem`;
 </script>
 
 <main class="flex flex-col gap-4 px-4" style="height: calc(100svh - {navbarHeight});">
 	<CampaignItems
 		fetchCampaigns={$page.data.fetchCampaigns}
 		onItemSelected={vm.onCampaignSelected}
-		selectedCampaignName={vm.selectedCampaign}
+		selectedCampaignName={vm.selectedCampaign?.name ?? ''}
 	/>
 	<section class="grid gap-4 grid-cols-[6fr_2fr] flex-1">
 		<div class="flex flex-col gap-4 pb-4">
-			<Card class="flex flex-col px-4 py-2 flex-[3] [&>div]:my-auto">
+			<Card class="flex flex-col px-4 py-2 flex-[3] [&>div]:h-full">
 				<h1 class="text-2xl font-black font-dm-sans">Quests</h1>
 				{#if vm.loadQuest}
-					<!-- {#key vm.selectedCampaign} -->
-						<QuestTree loadQuests={vm.loadQuest} lastQuestsUpdate={vm.lastQuestsUpdate} itemSize="32" />
-					<!-- {/key} -->
+					<QuestTree
+						campaignSlug={vm.selectedCampaign?.slug ?? ''}
+						loadQuests={vm.loadQuest}
+						lastQuestsUpdate={vm.lastQuestsUpdate}
+						itemSize="32"
+					/>
 				{/if}
 			</Card>
 			<Card class="px-4 py-2 flex-[2]">

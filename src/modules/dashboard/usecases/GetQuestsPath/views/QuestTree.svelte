@@ -7,8 +7,9 @@
 		loadQuests: Promise<QuestTree>;
 		itemSize: string | number;
 		lastQuestsUpdate: string;
+		campaignSlug: string;
 	};
-	let { loadQuests, itemSize = 32, lastQuestsUpdate = '0' }: Props = $props();
+	let { loadQuests, itemSize = 32, lastQuestsUpdate = '0', campaignSlug }: Props = $props();
 
 	// Promise reference do not trigger reactivity, so this is a workaround
 	$effect(() => {
@@ -111,12 +112,12 @@
 	};
 </script>
 
-<div class="">
+<div class="pt-4 pb-2">
 	{#if vm.isLoading}
 		<p>Loading...</p>
 	{/if}
 	<div
-		class="grid gap-8 relative CUSTOM-tree-root"
+		class="grid gap-8 relative CUSTOM-tree-root justify-center content-center rounded-md bg-bg-medium h-full"
 		style="grid-template-columns: repeat({vm.nbOfColumns}, {Number(itemSize) / 4}rem);
      grid-template-rows: repeat({vm.nbOfRows}, {Number(itemSize) / 4}rem)"
 	>
@@ -125,7 +126,8 @@
 			{#each vm.quests ?? [] as questGroup, colIdx}
 				{#each questGroup as quest, rowIdx}
 					{@const completed = quest.isCompleted}
-					<div
+					<a
+						href="/campaigns/{campaignSlug}/{quest.id}"
 						style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
 						class="p-4 flex flex-col items-center justify-center gap-4"
 					>
@@ -138,7 +140,7 @@
 						<p class="text-center">
 							{quest.name}
 						</p>
-					</div>
+					</a>
 				{/each}
 			{/each}
 		{/key}

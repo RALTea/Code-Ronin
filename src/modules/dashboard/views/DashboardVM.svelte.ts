@@ -1,5 +1,6 @@
 import type { QuestTree } from '$dashboard/usecases/GetQuestsPath/aggregates/QuestTree';
 import { GetQuestsPathUseCase } from '$dashboard/usecases/GetQuestsPath/GetQuestsPath';
+import type { CampaignInfos } from '$dashboard/usecases/ListCampaigns/aggregates/CampaignInfos';
 import type { DashboardCampaignItem } from '$dashboard/usecases/ListCampaigns/aggregates/DashboardCampaignItemSchema';
 import { trpc } from '$lib/clients/trpc';
 import { AppNotificationService } from '$notifications/services/AppNotificationService';
@@ -7,15 +8,15 @@ import type { TRPCClientInit } from 'trpc-sveltekit';
 
 export class DashboardVM {
 	private getQuestsPathUseCase;
-	selectedCampaign = $state('');
+	selectedCampaign: CampaignInfos | undefined = $state(undefined);
 	loadQuest: Promise<QuestTree> | undefined = $state(undefined);
 	lastQuestsUpdate: string = $state('');
 
-	onCampaignSelected = (campaignName: string) => {
-		this.selectedCampaign = campaignName;
+	onCampaignSelected = (campaign: CampaignInfos) => {
+		this.selectedCampaign = campaign;
 		this.loadQuest = this.getQuestsPathUseCase
 			.execute({
-				campaignName: this.selectedCampaign,
+				campaignName: this.selectedCampaign?.name,
 				userId: '-1'
 			})
 			.then((ucResult) => {
@@ -28,7 +29,7 @@ export class DashboardVM {
 
 	constructor(init: TRPCClientInit, fetchCampaigns: Promise<DashboardCampaignItem[]>) {
 		fetchCampaigns.then((campaigns) => {
-			if (campaigns.length > 0) this.onCampaignSelected(campaigns[0].name);
+			if (campaigns.length > 0) this.onCampaignSelected(campaigns[0]);
 		});
 		this.getQuestsPathUseCase = GetQuestsPathUseCase({
 			listCampaignQuests: (campaignName) =>

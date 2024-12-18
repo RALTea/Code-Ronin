@@ -1,12 +1,13 @@
 <script lang="ts">
 	import Card from '$lib/components/cards/Card.svelte';
 	import Progress from '$lib/components/forms/Progress.svelte';
+	import type { CampaignInfos } from '../aggregates/CampaignInfos';
 	import type { DashboardCampaignItem } from '../aggregates/DashboardCampaignItemSchema';
 	import { CampaignItemsVM } from './CampaignItemsVM.svelte';
 
 	type Props = {
 		fetchCampaigns: Promise<DashboardCampaignItem[]>;
-		onItemSelected: (campaignName: string) => void;
+		onItemSelected: (campaign: CampaignInfos) => void;
 		selectedCampaignName: string;
 	};
 	let { fetchCampaigns, onItemSelected, selectedCampaignName }: Props = $props();
@@ -20,7 +21,7 @@
 	<div class="flex gap-4">
 		{#each vm.campaigns as campaign}
 			{@const isHighlighted = campaign.name === selectedCampaignName}
-			<button onclick={() => onItemSelected(campaign.name)}>
+			<button onclick={() => onItemSelected(campaign)}>
 				<Card
 					class="basis-1/4 p-4 space-y-6 border-2 {isHighlighted
 						? 'border-primary-light'
