@@ -31,6 +31,7 @@ export class QuestTreeVM {
 	}
 
 	constructor(loadQuests: Promise<QuestTree>) {
+		console.debug('QuestTreeVM.constructor');
 		loadQuests
 			.then((quests) => {
 				this.quests ??= [];

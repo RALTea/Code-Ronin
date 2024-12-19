@@ -8,8 +8,9 @@ export const load: PageServerLoad = async (event) => {
 	const trpc = createCaller(await createContext(event));
 	const user = await trpc.auth.me();
 	const fetchCampaigns = ListCampaignsUseCase({
-		getCompletionByCampaign: (campaignNames) =>
-			trpc.dashboard.listCampaigns.getCompletionByCampaign({ campaignNames }),
+		getCompletionByCampaign: (campaignNames) => {
+			return trpc.dashboard.listCampaigns.getCompletionByCampaign({ campaignNames });
+		},
 		listCampaignsJoinedByUser: () => trpc.dashboard.listCampaigns.listCampaignsJoinedByUser()
 	})
 		.execute({

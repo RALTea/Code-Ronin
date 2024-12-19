@@ -18,6 +18,7 @@
 	})
 
 	const vm = new QuestTreeVM(loadQuests);
+	$inspect('INSPECT - QuestTree.vm.quests', vm.quests);
 
 	type Bubble = {
 		ref: HTMLDivElement;
