@@ -6,7 +6,7 @@
 	import type { TaskTreeItem } from '../aggregates/TaskTreeItem';
 	import ProgressTreeItem from './ProgressTreeItem.svelte';
 	import { page } from '$app/stores';
-	import { PencilLine } from 'lucide-svelte';
+	import { ArrowLeft, PencilLine } from 'lucide-svelte';
 	import { UserStore } from '$auth/stores/UserStore.svelte';
 	import { trpc } from '$lib/clients/trpc';
 
@@ -112,6 +112,15 @@
 	style:width={`${$currentWidth}rem`}
 	class="bg-bg-dark row-span-2 my-4 ml-4 rounded-lg shadow-[.0rem_.15rem_.2rem] shadow-lightless relative overflow-y-auto flex flex-col"
 >
+	<a
+		href="/dashboard"
+		class="flex gap-2 items-center text-zinc-300 mx-4 pl-2 {isCollapsed ? 'pr-2':'pr-4'} pt-4 border-b-2 border-transparent hover:border-zinc-300 w-fit"
+	>
+		<ArrowLeft size="16" />
+		{#if !isCollapsed}
+			Back
+		{/if}
+	</a>
 	{#if treeItems.length === 0}
 		{#await fetchItems}
 			<div class="opacity-50">
