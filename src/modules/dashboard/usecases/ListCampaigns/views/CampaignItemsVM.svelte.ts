@@ -1,4 +1,4 @@
-import type { DashboardCampaignItem } from '../aggregates/DashboardCampaignItemSchema';
+import type { DashboardCampaignItem } from '../aggregates/DashboardCampaignItem';
 
 export class CampaignItemsVM {
 	firstLoadCompleted: boolean = $state(false);

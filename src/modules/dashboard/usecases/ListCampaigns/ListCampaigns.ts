@@ -1,5 +1,5 @@
 import { UseCaseResponseBuilder, type InputFactory, type OutputFactory, type UseCase } from '$lib/interfaces/UseCase';
-import type { DashboardCampaignItem } from './aggregates/DashboardCampaignItemSchema';
+import type { DashboardCampaignItem } from './aggregates/DashboardCampaignItem';
 import * as IListCampaignsRepository from './repositories/IListCampaignsRepository';
 
 type Input = InputFactory<{

@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { QuestTree } from '../aggregates/QuestTree';
 	import { QuestTreeVM } from './QuestTreeVM.svelte';
+	import { QuestTreeItem } from '../aggregates/QuestTreeItem';
 
 	type Props = {
 		loadQuests: Promise<QuestTree>;
@@ -15,7 +16,7 @@
 	$effect(() => {
 		lastQuestsUpdate;
 		vm.updateLoadQuests(loadQuests);
-	})
+	});
 
 	const vm = new QuestTreeVM(loadQuests);
 	$inspect('INSPECT - QuestTree.vm.quests', vm.quests);
@@ -113,6 +114,15 @@
 	};
 </script>
 
+{#snippet Quest({ id, name, isCompleted, isLocked }: QuestTreeItem)}
+	{@const bubbleColor = isCompleted ? 'bg-primary-light' : isLocked ? 'bg-disabled' : 'bg-light'}
+	
+	<div class="h-6 w-6 z-10 rounded-full {bubbleColor} mx-auto CUSTOM-bubble" title={id}></div>
+	<p class="text-center flex-1 {isLocked ?  'text-disabled' : 'text-white'}">
+		{name}
+	</p>
+{/snippet}
+
 <div class="pt-4 pb-2">
 	{#if vm.isLoading}
 		<p>Loading...</p>
@@ -126,22 +136,20 @@
 			<!-- Column -->
 			{#each vm.quests ?? [] as questGroup, colIdx}
 				{#each questGroup as quest, rowIdx}
-					{@const completed = quest.isCompleted}
-					<a
-						href="/campaigns/{campaignSlug}/{quest.id}"
-						style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
-						class="p-4 flex flex-col items-center gap-4"
-					>
-						<div
-							class="h-6 w-6 z-10 rounded-full {completed
-								? 'bg-primary-light'
-								: 'bg-light'} mx-auto CUSTOM-bubble"
-							title={quest.id}
-						></div>
-						<p class="text-center flex-1">
-							{quest.name}
-						</p>
-					</a>
+					{@const locked = quest.isLocked}
+					{#if locked}
+						<div class="p-4 flex flex-col items-center gap-4">
+							{@render Quest(quest)}
+						</div>
+					{:else}
+						<a
+							href="/campaigns/{campaignSlug}/{quest.id}"
+							style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
+							class="p-4 flex flex-col items-center gap-4"
+						>
+							{@render Quest(quest)}
+						</a>
+					{/if}
 				{/each}
 			{/each}
 		{/key}

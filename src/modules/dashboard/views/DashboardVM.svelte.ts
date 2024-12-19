@@ -1,7 +1,7 @@
 import type { QuestTree } from '$dashboard/usecases/GetQuestsPath/aggregates/QuestTree';
 import { GetQuestsPathUseCase } from '$dashboard/usecases/GetQuestsPath/GetQuestsPath';
 import type { CampaignInfos } from '$dashboard/usecases/ListCampaigns/aggregates/CampaignInfos';
-import type { DashboardCampaignItem } from '$dashboard/usecases/ListCampaigns/aggregates/DashboardCampaignItemSchema';
+import type { DashboardCampaignItem } from '$dashboard/usecases/ListCampaigns/aggregates/DashboardCampaignItem';
 import { trpc } from '$lib/clients/trpc';
 import { AppNotificationService } from '$notifications/services/AppNotificationService';
 import type { TRPCClientInit } from 'trpc-sveltekit';

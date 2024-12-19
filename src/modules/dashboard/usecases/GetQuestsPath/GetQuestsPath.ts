@@ -5,7 +5,8 @@ import {
 	type UseCase
 } from '$lib/interfaces/UseCase';
 import type { Quest } from './aggregates/Quest';
-import type { QuestTree, QuestTreeItem } from './aggregates/QuestTree';
+import type { QuestTree } from './aggregates/QuestTree';
+import type { QuestTreeItem } from './aggregates/QuestTreeItem';
 import { QuestHasNoTasksError } from './errors/QuestHasNoTasksError';
 import * as IGetQuestsPathRepository from './repositories/IGetQuestsPathRepository';
 
@@ -31,6 +32,7 @@ export const GetQuestsPathUseCase: UseCase<Input, Output> = (deps) => {
 			const completedQuests = await listCompletedQuestsForCampaign(campaignName, userId);
 			const questTreeItems: QuestTreeItem[] = quests.map((quest) => ({
 				...quest,
+				isLocked: quest.previousQuestIds?.some((prevQuestId) => !completedQuests.some((completedQuest) => completedQuest.id === prevQuestId)) ?? false,
 				isCompleted: completedQuests.some((completedQuest) => completedQuest.id === quest.id) && quest.nbOfTasks > 0,
 			}));
 			try {

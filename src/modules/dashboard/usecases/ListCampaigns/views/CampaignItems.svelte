@@ -2,7 +2,7 @@
 	import Card from '$lib/components/cards/Card.svelte';
 	import Progress from '$lib/components/forms/Progress.svelte';
 	import type { CampaignInfos } from '../aggregates/CampaignInfos';
-	import type { DashboardCampaignItem } from '../aggregates/DashboardCampaignItemSchema';
+	import type { DashboardCampaignItem } from '../aggregates/DashboardCampaignItem';
 	import { CampaignItemsVM } from './CampaignItemsVM.svelte';
 
 	type Props = {

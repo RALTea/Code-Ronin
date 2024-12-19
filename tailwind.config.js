@@ -1,3 +1,4 @@
+const colors = require('tailwindcss/colors')
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'], // this line
@@ -32,7 +33,8 @@ export default {
 				// 'bg-light': '#ededed',
 				'primary-dark': '#DDA323',
 				'primary-medium': '#ebb844',
-				'primary-light': '#FDED97'
+				'primary-light': '#FDED97',
+				'disabled': colors.zinc['500'],
 			},
 			fontFamily: {
 				'space-mono': ['Space Mono', 'monospace'],
