@@ -29,16 +29,19 @@
 					/>
 				{/if}
 			</Card>
-			<Card class="px-4 py-2 flex-[2]">
+			<Card class="px-4 py-2 flex-[2] flex flex-col">
 				<h1 class="text-2xl font-black font-dm-sans">Last Achievements</h1>
+				<p class="font-space-mono flex-1 flex items-center justify-center">Coming soon !</p>
 			</Card>
 		</div>
 		<div class="pb-4 flex flex-col gap-4">
-			<Card class="px-4 py-2">
+			<Card class="px-4 py-2 flex flex-col">
 				<h1 class="text-2xl font-black font-dm-sans">Quick Actions</h1>
+				<p class="font-space-mono flex-1 flex items-center justify-center">Coming soon !</p>
 			</Card>
-			<Card class="px-4 py-2 flex-1">
+			<Card class="px-4 py-2 flex-1 flex flex-col">
 				<h1 class="text-2xl font-black font-dm-sans">Campaign Leaderboard</h1>
+				<p class="font-space-mono flex-1 flex items-center justify-center">Coming soon !</p>
 			</Card>
 		</div>
 	</section>
