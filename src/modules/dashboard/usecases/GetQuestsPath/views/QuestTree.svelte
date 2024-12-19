@@ -130,7 +130,7 @@
 					<a
 						href="/campaigns/{campaignSlug}/{quest.id}"
 						style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
-						class="p-4 flex flex-col items-center justify-center gap-4"
+						class="p-4 flex flex-col items-center gap-4"
 					>
 						<div
 							class="h-6 w-6 z-10 rounded-full {completed
@@ -138,7 +138,7 @@
 								: 'bg-light'} mx-auto CUSTOM-bubble"
 							title={quest.id}
 						></div>
-						<p class="text-center">
+						<p class="text-center flex-1">
 							{quest.name}
 						</p>
 					</a>

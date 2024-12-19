@@ -23,13 +23,17 @@ export const PrismaGetQuestsPathRepository = (
 					},
 					previousQuests: {
 						select: { id: true }
+					},
+					tasks: {
+						select: {id: true}
 					}
 				}
 			});
 			return quests.map((quest) => ({
 				...quest,
 				nextQuestIds: quest.nextQuests.map((nextQuest) => nextQuest.id),
-				previousQuestIds: quest.previousQuests.map((previousQuest) => previousQuest.id)
+				previousQuestIds: quest.previousQuests.map((previousQuest) => previousQuest.id),
+				nbOfTasks: quest.tasks.length
 			}));
 		},
 		listCompletedQuestsForCampaign: async (campaignName: string, userId: string) => {

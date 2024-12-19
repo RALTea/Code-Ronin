@@ -5,6 +5,7 @@ export const QuestSchema = z.object({
 	id: z.string().uuid(),
 	previousQuestIds: z.string().uuid().array().optional(),
 	nextQuestIds: z.string().uuid().array().optional(),
+	nbOfTasks: z.number(),
 })
 
 export type Quest = z.infer<typeof QuestSchema>;

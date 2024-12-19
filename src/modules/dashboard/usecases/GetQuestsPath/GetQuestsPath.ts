@@ -31,7 +31,7 @@ export const GetQuestsPathUseCase: UseCase<Input, Output> = (deps) => {
 			const completedQuests = await listCompletedQuestsForCampaign(campaignName, userId);
 			const questTreeItems: QuestTreeItem[] = quests.map((quest) => ({
 				...quest,
-				isCompleted: completedQuests.some((completedQuest) => completedQuest.id === quest.id),
+				isCompleted: completedQuests.some((completedQuest) => completedQuest.id === quest.id) && quest.nbOfTasks > 0,
 			}));
 			try {
 				const sortedQuests = _sortLayers([questTreeItems]);
