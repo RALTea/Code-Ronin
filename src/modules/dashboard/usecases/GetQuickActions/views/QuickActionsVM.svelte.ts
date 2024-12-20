@@ -22,6 +22,5 @@ export class QuickActionsVM {
 			});
 		});
 	}
-	constructor() {
-	}
+	constructor() {}
 }

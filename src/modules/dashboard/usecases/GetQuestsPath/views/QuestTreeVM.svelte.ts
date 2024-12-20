@@ -2,7 +2,7 @@ import type { QuestTree } from '../aggregates/QuestTree';
 
 export class QuestTreeVM {
 	isLoading: boolean = $state(true);
-	quests: QuestTree | undefined = $state(undefined);
+	quests: QuestTree = $state([]);
 	nbOfColumns: number = $state(0);
 	nbOfRows: number = $state(0);
 
@@ -19,9 +19,7 @@ export class QuestTreeVM {
 	updateLoadQuests(loadQuests: Promise<QuestTree>) {
 		loadQuests
 			.then((quests) => {
-				this.quests ??= [];
-				this.quests.length = 0;
-				this.quests?.push(...quests);
+				this.quests = [...quests];
 				this.setNbOfColumns(quests);
 				this.setNbOfRows(quests);
 			})
@@ -30,17 +28,7 @@ export class QuestTreeVM {
 			});
 	}
 
-	constructor(loadQuests: Promise<QuestTree>) {
+	constructor() {
 		console.debug('QuestTreeVM.constructor');
-		loadQuests
-			.then((quests) => {
-				this.quests ??= [];
-				this.quests?.push(...quests);
-				this.setNbOfColumns(quests);
-				this.setNbOfRows(quests);
-			})
-			.finally(() => {
-				this.isLoading = false;
-			});
 	}
 }

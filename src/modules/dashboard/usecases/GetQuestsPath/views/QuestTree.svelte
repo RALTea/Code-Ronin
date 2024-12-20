@@ -7,18 +7,15 @@
 	type Props = {
 		loadQuests: Promise<QuestTree>;
 		itemSize: string | number;
-		lastQuestsUpdate: string;
 		campaignSlug: string;
 	};
-	let { loadQuests, itemSize = 32, lastQuestsUpdate = '0', campaignSlug }: Props = $props();
+	let { loadQuests, itemSize = 32, campaignSlug }: Props = $props();
 
-	// Promise reference do not trigger reactivity, so this is a workaround
 	$effect(() => {
-		lastQuestsUpdate;
 		vm.updateLoadQuests(loadQuests);
 	});
 
-	const vm = new QuestTreeVM(loadQuests);
+	const vm = new QuestTreeVM();
 	$inspect('INSPECT - QuestTree.vm.quests', vm.quests);
 
 	type Bubble = {
@@ -116,9 +113,9 @@
 
 {#snippet Quest({ id, name, isCompleted, isLocked }: QuestTreeItem)}
 	{@const bubbleColor = isCompleted ? 'bg-primary-light' : isLocked ? 'bg-disabled' : 'bg-light'}
-	
+
 	<div class="h-6 w-6 z-10 rounded-full {bubbleColor} mx-auto CUSTOM-bubble" title={id}></div>
-	<p class="text-center flex-1 {isLocked ?  'text-disabled' : 'text-white'}">
+	<p class="text-center flex-1 {isLocked ? 'text-disabled' : 'text-white'}">
 		{name}
 	</p>
 {/snippet}
@@ -132,26 +129,24 @@
 		style="grid-template-columns: repeat({vm.nbOfColumns}, {Number(itemSize) / 4}rem);
      grid-template-rows: repeat({vm.nbOfRows}, {Number(itemSize) / 4}rem)"
 	>
-		{#key lastQuestsUpdate}
-			<!-- Column -->
-			{#each vm.quests ?? [] as questGroup, colIdx}
-				{#each questGroup as quest, rowIdx}
-					{@const locked = quest.isLocked}
-					{#if locked}
-						<div class="p-4 flex flex-col items-center gap-4">
-							{@render Quest(quest)}
-						</div>
-					{:else}
-						<a
-							href="/campaigns/{campaignSlug}/{quest.id}"
-							style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
-							class="p-4 flex flex-col items-center gap-4"
-						>
-							{@render Quest(quest)}
-						</a>
-					{/if}
-				{/each}
+		<!-- Column -->
+		{#each vm.quests ?? [] as questGroup, colIdx}
+			{#each questGroup as quest, rowIdx}
+				{@const locked = quest.isLocked}
+				{#if locked}
+					<div class="p-4 flex flex-col items-center gap-4">
+						{@render Quest(quest)}
+					</div>
+				{:else}
+					<a
+						href="/campaigns/{campaignSlug}/{quest.id}"
+						style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
+						class="p-4 flex flex-col items-center gap-4"
+					>
+						{@render Quest(quest)}
+					</a>
+				{/if}
 			{/each}
-		{/key}
+		{/each}
 	</div>
 </div>

@@ -25,7 +25,6 @@
 					<QuestTree
 						campaignSlug={vm.selectedCampaign?.slug ?? ''}
 						loadQuests={vm.loadQuests}
-						lastQuestsUpdate={vm.lastQuestsUpdate}
 						itemSize="32"
 					/>
 				{/if}
@@ -39,7 +38,7 @@
 			<Card class="px-4 py-2 flex flex-col">
 				<h1 class="text-2xl font-black font-dm-sans">Quick Actions</h1>
 				{#if vm.quickActionsTree}
-					<QuickActions fetchTree={vm.quickActionsTree} updateTimestamp={vm.lastQuestsUpdate} />
+					<QuickActions fetchTree={vm.quickActionsTree} />
 				{/if}
 				<p class="font-space-mono flex-1 flex items-center justify-center">Coming soon !</p>
 			</Card>

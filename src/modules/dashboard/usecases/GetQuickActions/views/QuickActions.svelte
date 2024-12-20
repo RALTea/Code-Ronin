@@ -5,19 +5,15 @@
 
 	type Props = {
 		fetchTree: Promise<QuestTree>;
-		updateTimestamp: string;
 	};
 
-	let { fetchTree, updateTimestamp }: Props = $props();
+	let { fetchTree }: Props = $props();
 
 	const vm = new QuickActionsVM();
 
 	$effect(() => {
 		vm.onTreeChanged(fetchTree);
 	});
-
 </script>
 
-{#key updateTimestamp}
-	<PrimaryButton>Continue {vm.quickActions?.nextItemLink}</PrimaryButton>
-{/key}
+<PrimaryButton>Continue {vm.quickActions?.nextItemLink}</PrimaryButton>

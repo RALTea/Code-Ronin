@@ -12,7 +12,6 @@ export class DashboardVM {
 	selectedCampaign: CampaignInfos | undefined = $state(undefined);
 	loadQuests: Promise<QuestTree> | undefined = $state(undefined);
 	quickActionsTree: Promise<QuickActionsQuestTree> | undefined = $state(undefined);
-	lastQuestsUpdate: string = $state('');
 
 	onCampaignSelected = (campaign: CampaignInfos) => {
 		this.selectedCampaign = campaign;
@@ -22,7 +21,6 @@ export class DashboardVM {
 				userId: '-1'
 			})
 			.then((ucResult) => {
-				this.lastQuestsUpdate = new Date().getTime().toString();
 				if (ucResult.isSuccess) {
 					return ucResult.data;
 				}
