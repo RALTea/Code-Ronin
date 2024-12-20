@@ -5,26 +5,39 @@ import type { DashboardCampaignItem } from '$dashboard/usecases/ListCampaigns/ag
 import { trpc } from '$lib/clients/trpc';
 import { AppNotificationService } from '$notifications/services/AppNotificationService';
 import type { TRPCClientInit } from 'trpc-sveltekit';
+import type { QuestTree as QuickActionsQuestTree } from '$dashboard/usecases/GetQuickActions/aggregates/QuestTree';
 
 export class DashboardVM {
 	private getQuestsPathUseCase;
 	selectedCampaign: CampaignInfos | undefined = $state(undefined);
-	loadQuest: Promise<QuestTree> | undefined = $state(undefined);
+	loadQuests: Promise<QuestTree> | undefined = $state(undefined);
+	quickActionsTree: Promise<QuickActionsQuestTree> | undefined = $state(undefined);
 	lastQuestsUpdate: string = $state('');
 
 	onCampaignSelected = (campaign: CampaignInfos) => {
 		this.selectedCampaign = campaign;
-		this.loadQuest = this.getQuestsPathUseCase
+		this.loadQuests = this.getQuestsPathUseCase
 			.execute({
 				campaignName: this.selectedCampaign?.name,
 				userId: '-1'
 			})
 			.then((ucResult) => {
 				this.lastQuestsUpdate = new Date().getTime().toString();
-				if (ucResult.isSuccess) return ucResult.data;
+				if (ucResult.isSuccess) {
+					return ucResult.data;
+				}
 				AppNotificationService.send({ message: ucResult.message, type: 'ERROR' });
 				return [];
 			});
+		this.quickActionsTree = this.loadQuests.then((tree) => {
+			return tree.map((questBloc) => [
+				...questBloc.map((quest) => ({
+					...quest,
+					nextQuestIds: quest.nextQuestIds || [],
+					previousQuestIds: quest.previousQuestIds || []
+				}))
+			]);
+		});
 	};
 
 	constructor(init: TRPCClientInit, fetchCampaigns: Promise<DashboardCampaignItem[]>) {
