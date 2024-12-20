@@ -19,7 +19,7 @@
 <Card class="p-4 pt-2 w-full row-span-1 h-full flex flex-col">
 	<div class="flex justify-between items-center mb-4 mt-2">
 		<h2 class="text-2xl font-bold font-space-mono">Output</h2>
-		<PrimaryButton class="py-2 px-4 flex" onclick={toggleMode}>
+		<PrimaryButton class="py-2 px-4 flex" type={{onclick: toggleMode, buttonType: 'button'}}>
 			<span>Mode:</span>
 			<span> {mode}</span>
 		</PrimaryButton>

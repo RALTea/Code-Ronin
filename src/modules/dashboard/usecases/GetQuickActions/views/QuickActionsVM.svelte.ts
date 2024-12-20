@@ -9,13 +9,15 @@ export class QuickActionsVM {
 	private getQuickActionsUsecase = GetQuickActionsUseCase({
 		getNextItemInTree: (tree) => NextTreeItemSelector(tree)
 	});
-	onTreeChanged(fetchTree: Promise<QuestTree>) {
+	onTreeChanged(fetchTree: Promise<QuestTree>, campaignSlug: string) {
 		fetchTree.then(async (tree) => {
 			console.debug('QuickActionsVM', tree);
 			const ucResult = await this.getQuickActionsUsecase.execute({
-				tree: tree
+				tree: tree,
+				campaignSlug: campaignSlug
 			});
 			if (ucResult.isSuccess) return (this.quickActions = ucResult.data);
+			if (ucResult.status === 404) return (this.quickActions = { nextItemLink: undefined });
 			AppNotificationService.send({
 				message: ucResult.message,
 				type: 'ERROR'
