@@ -38,7 +38,10 @@
 					.learning.getApprenticeProfileSummary.getApprenticeExp.query({
 						apprenticeId: UserStore.user?.id ?? '-1'
 					})
-					.catch(() => 0);
+					.catch((e) => {
+						console.debug(e);
+						return 0;
+					});
 			}
 		});
 	});

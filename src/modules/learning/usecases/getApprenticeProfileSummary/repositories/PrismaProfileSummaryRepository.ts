@@ -7,7 +7,9 @@ type _PrismaProfileSummaryRepository = {
 	fetchApprenticeExp: IProfileSummaryRepository.FetchApprenticeExp;
 };
 
-export const PrismaProfileSummaryRepository = (prisma: PrismaClient): _PrismaProfileSummaryRepository => {
+export const PrismaProfileSummaryRepository = (
+	prisma: PrismaClient
+): _PrismaProfileSummaryRepository => {
 	return {
 		fetchApprenticeInfos: async (id) => {
 			const apprentice = await prisma.apprentice.findUnique({
@@ -23,7 +25,15 @@ export const PrismaProfileSummaryRepository = (prisma: PrismaClient): _PrismaPro
 		},
 		fetchApprenticeExp: async (id) => {
 			const successfulAttempts = await prisma.attempt.findMany({
-				where: { apprenticeId: id, isSuccess: true },
+				where: {
+					apprenticeId: id,
+					isSuccess: true,
+					tasks: {
+						is: {
+							quest: {} // Ensure that the relationship exists
+						}
+					}
+				},
 				select: { tasks: { select: { exp: true } } },
 				distinct: ['taskId']
 			});
