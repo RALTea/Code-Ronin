@@ -3,6 +3,7 @@
 	import { ArrowRight } from 'lucide-svelte';
 	import type { QuestTree } from '../aggregates/QuestTree';
 	import { QuickActionsVM } from './QuickActionsVM.svelte';
+	import { page } from '$app/stores';
 
 	type Props = {
 		fetchTree: Promise<QuestTree>;
@@ -11,7 +12,7 @@
 
 	let { fetchTree, campaignSlug }: Props = $props();
 
-	const vm = new QuickActionsVM();
+	const vm = new QuickActionsVM($page);
 
 	$effect(() => {
 		vm.onTreeChanged(fetchTree, campaignSlug);

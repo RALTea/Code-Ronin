@@ -7,7 +7,7 @@ export const authMiddleware = t.middleware(async ({ ctx, next, path }) => {
 		console.debug('User not authenticated', path);
 		throw new TRPCError({ code: 'UNAUTHORIZED' });
 	}
-	return next({ ctx });
+	return next({ ctx: { ...ctx, user: ctx.user } });
 });
 
 export const authProcedure = t.procedure.use(authMiddleware);

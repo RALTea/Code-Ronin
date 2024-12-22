@@ -25,17 +25,17 @@
 	});
 </script>
 
-<div class="min-h-screen bg-bg-dark text-zinc-100 font-mono">
-	<div class="container mx-auto px-4 py-16 lg:w-4/5">
-		<div class="grid gap-16 lg:grid-cols-2 lg:gap-8 items-center">
+<div class="min-h-screen font-mono bg-bg-dark text-zinc-100">
+	<div class="container px-4 py-16 mx-auto lg:w-4/5">
+		<div class="grid gap-16 items-center lg:grid-cols-2 lg:gap-8">
 			<div class="space-y-8">
 				<div
-					class="inline-block rounded-lg bg-primary-light/10 px-3 py-1 text-sm text-primary-dark"
+					class="inline-block px-3 py-1 text-sm rounded-lg bg-primary-light/10 text-primary-dark"
 				>
-					Learn to code interactively
+					Learn to code like a pro
 				</div>
 				<h1
-					class="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary-dark to-primary-light"
+					class="text-4xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r sm:text-5xl xl:text-6xl/none from-primary-dark to-primary-light"
 				>
 					A new dev is born
 				</h1>
@@ -46,7 +46,7 @@
 				<div class="flex flex-col gap-4 sm:flex-row">
 					<a
 						href="/campaigns/demo/035187b2-4872-4a22-ab10-5129447ba326/132e689c-988d-4b62-a2aa-dee68f6167ad"
-						class="inline-flex items-center justify-center rounded-md bg-primary-dark px-6 py-3 text-sm font-medium text-black hover:bg-yellow-400"
+						class="inline-flex justify-center items-center px-6 py-3 text-sm font-medium text-black rounded-md bg-primary-dark hover:bg-yellow-400"
 					>
 						Try the app
 						<IconWrapper size="4" className="ml-2"><IconChevronRight /></IconWrapper>
@@ -54,7 +54,7 @@
 					{#if !UserStore.user}
 						<a
 							href="/login"
-							class="px-4 py-2 border border-bg-light rounded-md inline-flex items-center justify-center"
+							class="inline-flex justify-center items-center px-4 py-2 rounded-md border border-bg-light"
 						>
 							Create an account
 						</a>
@@ -62,14 +62,14 @@
 				</div>
 			</div>
 			<div class="relative">
-				<div class="rounded-lg border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur">
-					<div class="mb-4 flex items-center justify-between">
-						<div class="flex items-center gap-2">
-							<div class="h-3 w-3 rounded-full bg-red-500"></div>
-							<div class="h-3 w-3 rounded-full bg-yellow-500"></div>
-							<div class="h-3 w-3 rounded-full bg-green-500"></div>
+				<div class="p-6 rounded-lg border backdrop-blur border-zinc-800 bg-zinc-900/50">
+					<div class="flex justify-between items-center mb-4">
+						<div class="flex gap-2 items-center">
+							<div class="w-3 h-3 bg-red-500 rounded-full"></div>
+							<div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+							<div class="w-3 h-3 bg-green-500 rounded-full"></div>
 						</div>
-						<div class="flex items-center gap-4">
+						<div class="flex gap-4 items-center">
 							<div class="w-24 h-3">
 								<Progress
 									value={33}
@@ -86,24 +86,24 @@
 				</div>
 			</div>
 		</div>
-		<div class="mt-24 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			<div class="rounded-lg border border-bg-light bg-bg-medium p-6">
+		<div class="grid gap-8 mt-24 sm:grid-cols-2 lg:grid-cols-3">
+			<div class="p-6 rounded-lg border border-bg-light bg-bg-medium">
 				<IconWrapper size="12" className="text-primary-dark mb-4"><IconTerminal /></IconWrapper>
-				<h3 class="text-xl font-bold mb-2">Interactive Console</h3>
+				<h3 class="mb-2 text-xl font-bold">Interactive Console</h3>
 				<p class="text-zinc-400">
 					Write and execute real code directly in your browser with instant feedback.
 				</p>
 			</div>
-			<div class="rounded-lg border border-bg-light bg-bg-medium p-6">
+			<div class="p-6 rounded-lg border border-bg-light bg-bg-medium">
 				<IconWrapper size="12" className="text-primary-dark mb-4"><IconCode /></IconWrapper>
-				<h3 class="text-xl font-bold mb-2">Step-by-Step Learning</h3>
+				<h3 class="mb-2 text-xl font-bold">Step-by-Step Learning</h3>
 				<p class="text-zinc-400">
 					Progress through carefully crafted lessons that build your programming skills.
 				</p>
 			</div>
-			<div class="rounded-lg border border-bg-light bg-bg-medium p-6">
+			<div class="p-6 rounded-lg border border-bg-light bg-bg-medium">
 				<IconWrapper size="12" className="text-primary-dark mb-4"><IconBookOpen /></IconWrapper>
-				<h3 class="text-xl font-bold mb-2">Comprehensive Curriculum</h3>
+				<h3 class="mb-2 text-xl font-bold">Comprehensive Curriculum</h3>
 				<p class="text-zinc-400">
 					From basics to advanced concepts, our curriculum covers everything you need.
 				</p>
@@ -111,8 +111,8 @@
 		</div>
 		<div class="mt-24 text-center">
 			<a
-				href="/campaigns/demo/035187b2-4872-4a22-ab10-5129447ba326/1"
-				class="inline-flex items-center justify-center rounded-md bg-primary-dark px-6 py-3 text-sm font-medium text-black hover:bg-yellow-400"
+				href="/campaigns/demo/035187b2-4872-4a22-ab10-5129447ba326/132e689c-988d-4b62-a2aa-dee68f6167ad"
+				class="inline-flex justify-center items-center px-6 py-3 text-sm font-medium text-black rounded-md bg-primary-dark hover:bg-yellow-400"
 			>
 				Begin Your Coding Journey
 				<IconWrapper size="4" className="ml-2"><IconChevronRight /></IconWrapper>

@@ -11,6 +11,7 @@ import { EditTaskTRPCRouter } from '$admin/usecases/editTask/routers/EditTaskTRP
 import { AuthRouter } from '$auth/router/AuthRouter';
 import { GetQuestsPathRouter } from '$dashboard/usecases/GetQuestsPath/routers/TRPCGetQuestsPath';
 import { ListCampaignsRouter } from '$dashboard/usecases/ListCampaigns/routers/TRPCListCampaigns';
+import { QuickActionsRouter } from '$dashboard/usecases/GetQuickActions/routers/TRPCQuickActions';
 
 export const router = t.router({
 	auth: AuthRouter,
@@ -29,6 +30,7 @@ export const router = t.router({
 	dashboard: t.router({
 		getQuestsPath: GetQuestsPathRouter,
 		listCampaigns: ListCampaignsRouter,
+		quickActions: QuickActionsRouter,
 	})
 });
 

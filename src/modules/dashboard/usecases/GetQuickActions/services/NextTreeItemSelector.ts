@@ -1,8 +1,8 @@
-import type { QuestTree } from '../aggregates/QuestTree';
+import type { Tree } from '../../../aggregates/Tree';
 import * as IQuickActionsRepository from '../repositories/IQuickActionsRepository';
 
 export const NextTreeItemSelector: IQuickActionsRepository.GetNextItemInTree = (
-	tree: QuestTree
+	tree: Tree
 ) => {
 	for (let i = 0; i < tree.length; i++) {
 		for (let j = 0; j < tree[i].length; j++) {
