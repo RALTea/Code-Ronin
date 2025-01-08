@@ -16,6 +16,7 @@ export const GetQuestDataUseCase: UseCase<Input, Output> = (deps) => {
 	const _sortLayers = (tasks: QuestData['tasks']): QuestData['tasks'] => {
 		// Flatten the input tasks and create a map for quick lookups
 		const flatTasks = tasks.flat();
+		if (flatTasks.length === 0) return [];
 		const taskMap = new Map(flatTasks.map((task) => [task.id, task]));
 
 		// Detect cycles in the dependency graph
