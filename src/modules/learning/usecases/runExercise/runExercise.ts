@@ -69,6 +69,9 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 	};
 
 	const _buildCodeToBeEvaluated = (apprenticeSolution: string, testCases: string, taskType: AnswerType) => {
+		if (apprenticeSolution.includes('// (@@@*@@@)')) {
+			throw new Error('Apprentice solution contains illegal string. Remove it, smartass.');
+		}
 		const builder = CodeBuilder(testCases);
 		if (taskType === 'tests') builder.replaceAll('// (@@@*@@@)', apprenticeSolution);
 		if (taskType === 'stdout') {
