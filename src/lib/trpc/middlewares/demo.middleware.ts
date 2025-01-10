@@ -21,6 +21,7 @@ export const demoMiddleware = t.middleware(async (request) => {
 				name: campaignName
 			}
 		});
+		console.debug('Demo campaign', {campaignName, campaign, isDemo: campaign?.isDemo === true});
 		if (campaign?.isDemo === true) {
 			return next({ ctx });
 		}
