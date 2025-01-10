@@ -70,12 +70,12 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 
 	const _buildCodeToBeEvaluated = (apprenticeSolution: string, testCases: string, taskType: AnswerType) => {
 		const builder = CodeBuilder(testCases);
-		if (taskType === 'tests') builder.replace('// (@@@*@@@)', apprenticeSolution);
+		if (taskType === 'tests') builder.replaceAll('// (@@@*@@@)', apprenticeSolution);
 		if (taskType === 'stdout') {
-			builder.replace('// (@@@*@@@)', `const studentSolution = () => {\n${apprenticeSolution}\n}`);
+			builder.replaceAll('// (@@@*@@@)', `const studentSolution = () => {\n${apprenticeSolution}\n}`);
 		}
 		if (taskType === 'stderr') {
-			builder.replace('// (@@@*@@@)', `const studentSolution = () => {\n${apprenticeSolution}\n}`);
+			builder.replaceAll('// (@@@*@@@)', `const studentSolution = () => {\n${apprenticeSolution}\n}`);
 		}
 		const commentsToKeep = [
 			'// (@Student_code_start@)',

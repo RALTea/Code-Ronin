@@ -4,6 +4,10 @@ export const CodeBuilder = (start: string) => {
 		build: function () {
 			return result;
 		},
+		replaceAll: function (pattern: string, value: string) {
+			result = result.replace(new RegExp(pattern, 'g'), value);
+			return this;
+		},
 		replace: function (pattern: string, value: string) {
 			result = result.replace(pattern, value);
 			return this;
