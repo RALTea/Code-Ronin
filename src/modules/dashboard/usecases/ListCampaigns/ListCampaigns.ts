@@ -12,18 +12,20 @@ type Output = OutputFactory<DashboardCampaignItem[]>;
 
 export const ListCampaignsUseCase: UseCase<Input, Output> = (deps) => {
 	const { listCampaignsJoinedByUser, getCompletionByCampaign } = deps;
+
 	return {
 		execute: async (input) => {
 			const { userId } = input;
 			const campaigns = await listCampaignsJoinedByUser(userId);
-			const campaignNames = campaigns.map((c) => c.name);
-			const completion = await getCompletionByCampaign(campaignNames, userId ?? '');
+
+			const completion = await getCompletionByCampaign(campaigns, userId ?? '');
 
 			const result: DashboardCampaignItem[] = campaigns.map((c) => ({
 				id: c.id,
 				name: c.name,
 				slug: c.slug,
-				completion: completion.find((campaignCompletion) => campaignCompletion.campaignName === c.name)?.completion ?? 0
+				nbOfTasks: c.nbOfTasks,
+				completion: Math.round(completion.find((campaignCompletion) => campaignCompletion.campaignName === c.name)?.completion ?? 0)
 			}));
 
 			return UseCaseResponseBuilder.success(200, result);

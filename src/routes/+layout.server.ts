@@ -3,7 +3,7 @@ import type { LayoutServerLoad } from './$types';
 import { createCaller } from '$lib/trpc/router';
 import { createContext } from '$lib/trpc/context';
 
-const unauthenticatedPaths = ['/login', '/'];
+const unauthenticatedPaths = ['/login', '/', '/dashboard'];
 const unauthenticatedWildCards = ['/campaigns/demo'];
 
 const isProtected = (path: string) => {

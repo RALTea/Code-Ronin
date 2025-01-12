@@ -118,7 +118,7 @@
 	>
 		<ArrowLeft size="16" />
 		{#if !isCollapsed}
-			Back
+			Dashboard
 		{/if}
 	</a>
 	{#if treeItems.length === 0}

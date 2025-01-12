@@ -1,5 +1,9 @@
 import { publicProcedure, t } from '$lib/trpc/t';
 import { z } from 'zod';
+import { AttemptsByCampaignSchema } from '../aggregates/AttemptByCampaign';
+import { CampaignInfosSchema } from '../aggregates/CampaignInfos';
+import * as IListCampaignsRepository from '../repositories/IListCampaignsRepository';
+import { InMemoryListCampaignsRepository } from '../repositories/InMemoryListCampaignsRepository';
 import { PrismaListCampaignsRepository } from '../repositories/PrismaListCampaignsRepository';
 
 export const ListCampaignsRouter = t.router({
@@ -10,13 +14,22 @@ export const ListCampaignsRouter = t.router({
 	getCompletionByCampaign: publicProcedure
 		.input(
 			z.object({
-				campaignNames: z.array(z.string())
+				campaigns: CampaignInfosSchema.array(),
+				localAttempts: AttemptsByCampaignSchema.array().optional().default([])
 			})
 		)
-		.query(({ ctx, input }) => {
-			const { campaignNames } = input;
-			const repository = PrismaListCampaignsRepository(ctx.prisma);
-			if (!ctx.user) return [];
-			return repository.getCompletionByCampaign(campaignNames, ctx.user.id);
+		.query(async ({ ctx, input }) => {
+			const { campaigns, localAttempts } = input;
+
+			let repository: {
+				getCompletionByCampaign: IListCampaignsRepository.GetCompletionByCampaign;
+			} = PrismaListCampaignsRepository(ctx.prisma);
+
+			if (!ctx.user) {
+				repository = InMemoryListCampaignsRepository(localAttempts);
+			}
+			const result = await repository.getCompletionByCampaign(campaigns, ctx.user?.id);
+			console.debug('getCompletionByCampaign', result);
+			return result;
 		})
 });

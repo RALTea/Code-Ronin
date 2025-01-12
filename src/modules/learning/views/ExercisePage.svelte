@@ -50,7 +50,7 @@
 
 	const runCode = () => {
 		runningCode = true;
-		const isDemo = $page.params.campaign === env.PUBLIC_DEMO_CAMPAIGN_NAME;
+		const isDemo = $page.params.campaign === env.PUBLIC_DEMO_CAMPAIGN_SLUG;
 		const localStorageAttemptRepository = LocalStorageAttemptRepository();
 		const judgeRepository = JudgeEvaluationRepository();
 		const failHandlers = isDemo && !UserStore.user

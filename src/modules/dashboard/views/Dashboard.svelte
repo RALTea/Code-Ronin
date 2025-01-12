@@ -1,19 +1,21 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import QuestTree from '$dashboard/usecases/GetQuestsPath/views/QuestTree.svelte';
 	import QuickActions from '$dashboard/usecases/GetQuickActions/views/QuickActions.svelte';
 	import CampaignItems from '$dashboard/usecases/ListCampaigns/views/CampaignItems.svelte';
 	import Card from '$lib/components/cards/Card.svelte';
+	import { VERSION } from 'svelte/compiler';
 	import { DashboardVM } from './DashboardVM.svelte';
 
-	const vm = new DashboardVM($page, $page.data.fetchCampaigns);
+	const vm = new DashboardVM($page, $page.data.fetchCampaigns, $page.data.anonymousSession);
 	const navbarTailwindHeight = 20 + 4 * 2;
 	const navbarHeight = `${navbarTailwindHeight / 4}rem`;
 </script>
 
 <main class="flex flex-col gap-4 px-4" style="height: calc(100svh - {navbarHeight});">
 	<CampaignItems
-		fetchCampaigns={$page.data.fetchCampaigns}
+		fetchCampaigns={vm.fetchCampaigns}
 		onItemSelected={vm.onCampaignSelected}
 		selectedCampaignName={vm.selectedCampaign?.name ?? ''}
 	/>

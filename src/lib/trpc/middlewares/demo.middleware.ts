@@ -35,7 +35,7 @@ export const demoMiddleware = t.middleware(async (request) => {
 	if (user) {
 		return next({ ctx });
 	}
-	console.debug('User not authenticated', path);
+	console.debug('User not authenticated and can\'t access demo for ', path);
 	throw new TRPCError({ code: 'UNAUTHORIZED' });
 });
 

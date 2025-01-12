@@ -1,4 +1,4 @@
-import type { Campaign, PrismaClient } from '@prisma/client';
+import type { Campaign, PrismaClient, Quest, Task } from '@prisma/client';
 import * as IListCampaignsRepository from './IListCampaignsRepository';
 import type { CampaignInfos } from '../aggregates/CampaignInfos';
 import type { CampaignCompletion } from '../aggregates/CampaignCompletion';
@@ -13,31 +13,37 @@ export const PrismaListCampaignsRepository = (
 ): _PrismaListCampaignsRepository => {
 	return {
 		listCampaignsJoinedByUser: async (userId?: string) => {
-			const mapPrismaCampaignToCampaignInfos = (campaign: Campaign): CampaignInfos => {
+			const mapPrismaCampaignToCampaignInfos = (
+				campaign: Campaign & { quests: (Quest & { tasks: Task[] })[] }
+			): CampaignInfos => {
 				return {
 					id: campaign.id,
 					name: campaign.name,
 					slug: campaign.slug,
+					nbOfTasks: campaign.quests.reduce((sum, quest) => sum + quest.tasks.length, 0)
 				};
 			};
 			if (!userId) {
 				const campaigns = await prisma.campaign.findMany({
 					where: {
 						isDemo: true
-					}
+					},
+					include: { quests: { include: { tasks: true } } }
 				});
 				return campaigns.map(mapPrismaCampaignToCampaignInfos);
 			}
 
 			const campaigns = await prisma.campaign.findMany({
-				where: { apprentices: { some: { id: userId } } }
+				where: { apprentices: { some: { id: userId } } },
+				include: { quests: { include: { tasks: true } } }
 			});
 			return campaigns.map(mapPrismaCampaignToCampaignInfos);
 		},
 		getCompletionByCampaign: async (
-			campaignNames: string[],
-			userId: string
+			campaigns: CampaignInfos[],
+			userId?: string
 		): Promise<CampaignCompletion[]> => {
+			const campaignNames = campaigns.map((c) => c.name);
 			const completions = await prisma.campaign.findMany({
 				where: {
 					name: {
