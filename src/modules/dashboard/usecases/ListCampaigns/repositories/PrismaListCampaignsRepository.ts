@@ -34,7 +34,10 @@ export const PrismaListCampaignsRepository = (
 			}
 
 			const campaigns = await prisma.campaign.findMany({
-				where: { apprentices: { some: { id: userId } } },
+				where: { OR: [
+					{ apprentices: { some: { id: userId } } },
+					{ isDemo: true }
+				] },
 				include: { quests: { include: { tasks: true } } }
 			});
 			return campaigns.map(mapPrismaCampaignToCampaignInfos);

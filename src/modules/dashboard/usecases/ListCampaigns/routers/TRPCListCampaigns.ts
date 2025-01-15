@@ -20,11 +20,11 @@ export const ListCampaignsRouter = t.router({
 		)
 		.query(async ({ ctx, input }) => {
 			const { campaigns, localAttempts } = input;
-
 			let repository: {
 				getCompletionByCampaign: IListCampaignsRepository.GetCompletionByCampaign;
 			} = PrismaListCampaignsRepository(ctx.prisma);
 
+			// Todo: listing only joined campaigns, should include all demo campaigns
 			if (!ctx.user) {
 				repository = InMemoryListCampaignsRepository(localAttempts);
 			}
