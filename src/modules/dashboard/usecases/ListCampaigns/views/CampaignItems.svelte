@@ -21,7 +21,7 @@
 	<div class="flex gap-4">
 		{#each vm.campaigns as campaign}
 			{@const isHighlighted = campaign.name === selectedCampaignName}
-			<button onclick={() => onItemSelected(campaign)}>
+			<button onclick={() => onItemSelected(campaign)} class="md:basis-1/4 lg:basis-1/5">
 				<Card
 					class="basis-1/4 p-4 space-y-6 border-2 {isHighlighted
 						? 'border-primary-light'

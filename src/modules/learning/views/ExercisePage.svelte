@@ -30,14 +30,15 @@
 	type Props = { fetchTask: Promise<TaskDetails | undefined> };
 	let { fetchTask }: Props = $props();
 	let animating = $state(true);
-	let currentSelectedMode: 'Simplified' | 'Full' = $state('Simplified');
+	let currentSelectedMode: 'Simplified' | 'Full' | 'Debug' = $state('Simplified');
 	let shownOutput: string | undefined = $derived(
-		currentSelectedMode === 'Simplified' ? result?.formattedOutput : result?.output
+		currentSelectedMode === 'Simplified' ? result?.formattedOutput : currentSelectedMode === 'Debug' ? result?.debugOutput : result?.output
 	);
 
 	onMount(() => {
 		currentSelectedMode =
-			(localStorage.getItem('outputMode') as 'Simplified' | 'Full') || 'Simplified';
+			(localStorage.getItem('outputMode') as 'Simplified' | 'Full' | 'Debug') ||
+			'Simplified';
 	});
 
 	//

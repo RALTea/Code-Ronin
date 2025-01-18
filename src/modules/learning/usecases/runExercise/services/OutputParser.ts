@@ -94,6 +94,12 @@ export const OutputParser = (output: string) => {
 
 			return title + failures.join('\n\n');
 		},
+		formatDebug: function () {
+			const regex = /stdout \| script\.test\.ts\n([\s\S]*?)[✓❯] script\.test\.ts/;
+			const match = regex.exec(output);
+			const result = match ? match[1].trim() : '<no debug output>';
+			return result;
+		},
 		cleanUp() {
 			return this._extractTestResults();
 		}

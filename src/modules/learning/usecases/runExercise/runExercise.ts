@@ -103,6 +103,7 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 				const result: FormattedExerciseAttemptResult = {
 					...(await evaluateSolution(codeToBeEvaluated, language)),
 					formattedOutput: '',
+					debugOutput: '',
 				};
 				
 				const attempt: ExerciseAttempt = {
@@ -115,11 +116,13 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 				// Handle results
 				if (result.status === 'SUCCESS') {
 					result.formattedOutput = OutputParser(result.output ?? '').formatSuccess()
+					result.debugOutput = OutputParser(result.output ?? '').formatDebug()
 					await Promise.all(successHandlers.map((handler) => handler(attempt)));
 				}
 				
 				if (result.status !== 'SUCCESS') {
 					result.formattedOutput = OutputParser(result.output ?? '').formatErrors()
+					result.debugOutput = OutputParser(result.output ?? '').formatDebug()
 					await Promise.all(failHandlers.map((handler) => handler(attempt)));
 				}
 

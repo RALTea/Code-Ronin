@@ -2,7 +2,7 @@
 	import PrimaryButton from '$lib/components/buttons/PrimaryButton.svelte';
 	import Card from '$lib/components/cards/Card.svelte';
 
-	type Mode = 'Simplified' | 'Full';
+	type Mode = 'Simplified' | 'Full' | 'Debug';
 	type OutputProps = {
 		message?: string;
 		mode: Mode;
@@ -10,7 +10,18 @@
 	let { message, mode = $bindable() }: OutputProps = $props();
 
 	const toggleMode = () => {
-		const newMode = mode === 'Simplified' ? 'Full' : 'Simplified';
+		let newMode: Mode;
+		switch(mode) {
+			case 'Simplified':
+				newMode = 'Full';
+				break;
+			case 'Full':
+				newMode = 'Debug';
+				break;
+			case 'Debug':
+				newMode = 'Simplified';
+				break;
+		}
 		mode = newMode;
 		localStorage.setItem('outputMode', newMode);
 	};

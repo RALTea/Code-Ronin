@@ -14,6 +14,7 @@ export type ExerciseAttemptResult = z.infer<typeof ExerciseAttemptResultSchema>;
 
 export const FormattedExerciseAttemptResultSchema = ExerciseAttemptResultSchema.extend({
 	formattedOutput: z.string().optional().default(''),
+	debugOutput: z.string().optional().default(''),
 });
 
 export type FormattedExerciseAttemptResult = z.infer<typeof FormattedExerciseAttemptResultSchema>;
