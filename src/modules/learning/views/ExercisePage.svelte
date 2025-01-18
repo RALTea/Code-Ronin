@@ -31,10 +31,13 @@
 	let { fetchTask }: Props = $props();
 	let animating = $state(true);
 	let currentSelectedMode: 'Simplified' | 'Full' = $state('Simplified');
-	let shownOutput: string | undefined = $derived(currentSelectedMode === 'Simplified' ? result?.formattedOutput : result?.output);
+	let shownOutput: string | undefined = $derived(
+		currentSelectedMode === 'Simplified' ? result?.formattedOutput : result?.output
+	);
 
 	onMount(() => {
-		currentSelectedMode = localStorage.getItem('outputMode') as 'Simplified' | 'Full' || 'Simplified'
+		currentSelectedMode =
+			(localStorage.getItem('outputMode') as 'Simplified' | 'Full') || 'Simplified';
 	});
 
 	//
@@ -43,8 +46,19 @@
 			if (!task || !task.lastInput) {
 				inputCode = `console.log('Hello world')`;
 				return;
-			};
+			}
 			inputCode = task.lastInput.code;
+			const localChanges = JSON.parse(localStorage.getItem(task?.id) ?? '');
+			if (localChanges) return inputCode = localChanges;
+		});
+	});
+
+	// Save changes locally to avoid losing progression if visiting another exercise
+	$effect(() => {
+		inputCode;
+		fetchTask.then((task) => {
+			if (!task) return;
+			localStorage.setItem(task?.id, JSON.stringify(inputCode));
 		});
 	});
 
@@ -53,12 +67,14 @@
 		const isDemo = $page.params.campaign === env.PUBLIC_DEMO_CAMPAIGN_SLUG;
 		const localStorageAttemptRepository = LocalStorageAttemptRepository();
 		const judgeRepository = JudgeEvaluationRepository();
-		const failHandlers = isDemo && !UserStore.user
-			? [localStorageAttemptRepository.handleFail]
-			: [trpc($page).learning.runExercises.handleFail.mutate];
-		const successHandlers = isDemo && !UserStore.user
-			? [localStorageAttemptRepository.handleSuccess]
-			: [trpc($page).learning.runExercises.handleSuccess.mutate];
+		const failHandlers =
+			isDemo && !UserStore.user
+				? [localStorageAttemptRepository.handleFail]
+				: [trpc($page).learning.runExercises.handleFail.mutate];
+		const successHandlers =
+			isDemo && !UserStore.user
+				? [localStorageAttemptRepository.handleSuccess]
+				: [trpc($page).learning.runExercises.handleSuccess.mutate];
 		runExercise({
 			evaluateSolution: judgeRepository.evaluateSolution,
 			getApprenticeSolution: async () => {
@@ -149,6 +165,6 @@
 	</aside>
 	<main class="flex-1 space-y-4 max-h-full">
 		<Input bind:value={inputCode} {runCode} />
-		<Output message={runningCode ? 'Loading...' : shownOutput} bind:mode={currentSelectedMode}/>
+		<Output message={runningCode ? 'Loading...' : shownOutput} bind:mode={currentSelectedMode} />
 	</main>
 </div>
