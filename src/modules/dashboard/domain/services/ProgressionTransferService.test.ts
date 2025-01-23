@@ -11,7 +11,6 @@ describe('ProgressionTransferService', () => {
     vi.resetAllMocks();
     mockRepository.getDemoCampaignWithTasksAndAttempts.mockResolvedValue({
       quests: [{
-        id: 'demo-quest',
         tasks: [{
           id: 'demo-task',
           attempts: [{
@@ -27,7 +26,6 @@ describe('ProgressionTransferService', () => {
 
     mockRepository.getTargetCampaignWithTasks.mockResolvedValue({
       quests: [{
-        id: 'target-quest',
         tasks: [{
           id: 'target-task',
           attempts: [],
@@ -51,14 +49,10 @@ describe('ProgressionTransferService', () => {
   it('should transfer attempts when overwriteExisting is true', async () => {
     mockRepository.getTargetCampaignWithTasks.mockResolvedValue({
       quests: [{
-        id: 'target-quest',
         tasks: [{
           id: 'target-task',
           attempts: [{
-            id: 'existing-attempt',
-            userSolution: 'const y = 2',
-            isSuccess: false,
-            createdAt: new Date()
+            id: 'existing-attempt'
           }],
           duplicatesTask: null
         }]
@@ -79,14 +73,10 @@ describe('ProgressionTransferService', () => {
   it('should not transfer attempts when target task has attempts and overwriteExisting is false', async () => {
     mockRepository.getTargetCampaignWithTasks.mockResolvedValue({
       quests: [{
-        id: 'target-quest',
         tasks: [{
           id: 'target-task',
           attempts: [{
-            id: 'existing-attempt',
-            userSolution: 'const y = 2',
-            isSuccess: false,
-            createdAt: new Date()
+            id: 'existing-attempt'
           }],
           duplicatesTask: null
         }]
@@ -101,7 +91,6 @@ describe('ProgressionTransferService', () => {
   it('should not transfer attempts when no matching tasks found', async () => {
     mockRepository.getTargetCampaignWithTasks.mockResolvedValue({
       quests: [{
-        id: 'target-quest',
         tasks: [{
           id: 'other-task',
           attempts: [],
