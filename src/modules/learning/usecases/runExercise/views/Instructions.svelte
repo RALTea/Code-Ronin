@@ -26,7 +26,7 @@
 	in:fade={{ duration: 150, delay: 150 }}
 	class="course prose-li:marker:text-primary-light"
 >
-	<SvelteMarkdown source={instructions} renderers={{ code: CodeBlock, codespan: CodeInline }} />
+	<SvelteMarkdown source={instructions} renderers={{ code: CodeBlock as any, codespan: CodeInline as any }} />
 </div>
 
 <style lang="postcss">

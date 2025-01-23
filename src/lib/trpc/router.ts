@@ -12,6 +12,7 @@ import { AuthRouter } from '$auth/router/AuthRouter';
 import { GetQuestsPathRouter } from '$dashboard/usecases/GetQuestsPath/routers/TRPCGetQuestsPath';
 import { ListCampaignsRouter } from '$dashboard/usecases/ListCampaigns/routers/TRPCListCampaigns';
 import { QuickActionsRouter } from '$dashboard/usecases/GetQuickActions/routers/TRPCQuickActions';
+import { JoinNewCampaignRouter } from '$dashboard/usecases/JoinNewCampaign/routers/JoinNewCampaignRouter';
 
 export const router = t.router({
 	auth: AuthRouter,
@@ -31,6 +32,7 @@ export const router = t.router({
 		getQuestsPath: GetQuestsPathRouter,
 		listCampaigns: ListCampaignsRouter,
 		quickActions: QuickActionsRouter,
+		joinNewCampaign: JoinNewCampaignRouter,
 	})
 });
 

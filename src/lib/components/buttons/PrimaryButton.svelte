@@ -20,15 +20,15 @@
 		class: className,
 		children,
 		variant = 'primary',
-		type = {
+		type: options = {
 			onclick: () => {}
 		}
 	}: PrimaryButtonProps = $props();
 </script>
 
-{#if 'href' in type}
+{#if 'href' in options}
 	<a
-		href={type.href}
+		href={options.href}
 		class="font-space-mono rounded-md {variant === 'primary'
 			? 'bg-bg-dark text-primary-light border-2 border-primary-light'
 			: 'border border-zinc-800 hover:bg-zinc-900/50'} {className}"
@@ -37,8 +37,8 @@
 	</a>
 {:else}
 	<button
-		onclick={type.onclick}
-		type={type.buttonType}
+		onclick={options.onclick}
+		type={options.buttonType}
 		class="font-space-mono rounded-md {variant === 'primary'
 			? 'bg-bg-dark text-primary-light border-2 border-primary-light'
 			: 'border border-zinc-800 hover:bg-zinc-900/50'} {className}"

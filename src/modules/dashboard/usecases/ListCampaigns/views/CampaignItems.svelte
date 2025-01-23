@@ -1,9 +1,14 @@
 <script lang="ts">
 	import Card from '$lib/components/cards/Card.svelte';
 	import Progress from '$lib/components/forms/Progress.svelte';
+	import { AppNotificationService } from '$notifications/services/AppNotificationService';
+	import { PlusCircle } from 'lucide-svelte';
+	import JoinCampaignModal from '../../JoinNewCampaign/views/JoinCampaignModal.svelte';
+	import { goto } from '$app/navigation';
 	import type { CampaignInfos } from '../aggregates/CampaignInfos';
 	import type { DashboardCampaignItem } from '../aggregates/DashboardCampaignItem';
 	import { CampaignItemsVM } from './CampaignItemsVM.svelte';
+	import type { Campaign } from '$dashboard/usecases/JoinNewCampaign/aggregates/Campaign';
 
 	type Props = {
 		fetchCampaigns: Promise<DashboardCampaignItem[]>;
@@ -13,7 +18,20 @@
 	let { fetchCampaigns, onItemSelected, selectedCampaignName }: Props = $props();
 
 	const vm = new CampaignItemsVM(fetchCampaigns);
+
+	const notifyFail = (message: string) => {
+		AppNotificationService.send({ message, type: 'ERROR' });
+	};
+
+	const onSuccess = (data: { campaign: Campaign, redirectUrl: string }) => {
+		goto(data.redirectUrl);
+		vm.closeJoinCampaignModal();
+	};
 </script>
+
+{#if vm.joinCampaignModalOpen}
+	<JoinCampaignModal onFail={notifyFail} {onSuccess} onCancel={vm.closeJoinCampaignModal} />
+{/if}
 
 {#if !vm.firstLoadCompleted}
 	<p>Loading quests...</p>
@@ -44,5 +62,18 @@
 				</Card>
 			</button>
 		{/each}
+		<button
+			onclick={() => {
+				vm.openJoinCampaignModal();
+			}}
+			class="md:basis-1/4 lg:basis-1/5"
+		>
+			<Card class="basis-1/4 p-4 space-y-6 border-2 border-transparent h-full">
+				<div class="flex flex-col items-center justify-center h-full">
+					<PlusCircle class="h-12 w-12 text-zinc-200" />
+					<h2 class="font-dm-sans text-md font-thin text-zinc-200">Join Campaign</h2>
+				</div>
+			</Card>
+		</button>
 	</div>
 {/if}

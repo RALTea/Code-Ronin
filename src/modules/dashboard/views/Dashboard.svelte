@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import QuestTree from '$dashboard/usecases/GetQuestsPath/views/QuestTree.svelte';
 	import QuickActions from '$dashboard/usecases/GetQuickActions/views/QuickActions.svelte';
 	import CampaignItems from '$dashboard/usecases/ListCampaigns/views/CampaignItems.svelte';
 	import Card from '$lib/components/cards/Card.svelte';
-	import { VERSION } from 'svelte/compiler';
 	import { DashboardVM } from './DashboardVM.svelte';
 
 	const vm = new DashboardVM($page, $page.data.fetchCampaigns, $page.data.anonymousSession);
@@ -40,7 +38,10 @@
 			<Card class="px-4 py-2 flex flex-col gap-4">
 				<h1 class="text-2xl font-black font-dm-sans">Quick Actions</h1>
 				{#if vm.quickActionsTree}
-					<QuickActions fetchTree={vm.quickActionsTree} campaignSlug={vm.selectedCampaign?.slug ?? ''} />
+					<QuickActions
+						fetchTree={vm.quickActionsTree}
+						campaignSlug={vm.selectedCampaign?.slug ?? ''}
+					/>
 				{/if}
 			</Card>
 			<Card class="px-4 py-2 flex-1 flex flex-col">

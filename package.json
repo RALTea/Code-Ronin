@@ -2,11 +2,11 @@
 	"name": "coderonin",
 	"version": "0.0.1",
 	"private": true,
-"scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "start": "node build/index.js",
-    "preview": "vite preview",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"start": "node build/index.js",
+		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
 		"postinstall": "prisma generate",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -40,7 +40,8 @@
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.0.0",
 		"vite": "^5.0.3",
-		"vitest": "^2.0.0"
+		"vitest": "^2.0.0",
+		"vitest-mock-extended": "^2.0.2"
 	},
 	"type": "module",
 	"dependencies": {

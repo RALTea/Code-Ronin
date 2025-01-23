@@ -32,6 +32,7 @@ model Campaign {
   name String @unique
   slug String @unique @default(cuid())
   isDemo Boolean @default(false)
+  maxParticipants Int?
 
   forceOpen Boolean?
   openAt    DateTime?
@@ -42,6 +43,7 @@ model Campaign {
 
   apprentices Apprentice[]
   quests      Quest[]
+  accessKeys  AccessKey[]
 }
 
 model Quest {
@@ -76,6 +78,11 @@ model Task {
 
   nextTasks     Task[] @relation("Tasks")
   previousTasks Task[] @relation("Tasks")
+
+  // Task duplication relation
+  duplicatesTask   Task?   @relation("TaskDuplication", fields: [duplicatesTaskId], references: [id])
+  duplicatesTaskId String?
+  duplicatedBy     Task[]  @relation("TaskDuplication")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -124,4 +131,20 @@ model Snippet {
 
   validationId String
   validation   Validation @relation(fields: [validationId], references: [id])
+}
+
+model AccessKey {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  isActive  Boolean  @default(true)
+  expiresAt DateTime?
+  usedAt    DateTime?
+  maxUses   Int?
+  useCount  Int      @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  campaignId String
 }
