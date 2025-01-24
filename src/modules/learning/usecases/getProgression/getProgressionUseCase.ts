@@ -25,27 +25,38 @@ const sortTasks = (unorderedTasks: Task[]): Task[] => {
 		return acc;
 	}, {} as Record<string, Task>);
 
-	const firstTask = tasks.find((task) => task.previousTaskId === undefined);
+	// Create a set of all nextTaskIds
+	const nextTaskIds = new Set(
+		tasks
+			.map(task => task.nextTaskId)
+			.filter(nextTaskId => nextTaskId !== undefined)
+	);
+
+	// Find the first task - the one whose id is not in nextTaskIds
+	const firstTask = tasks.find(task => !nextTaskIds.has(task.id));
 	
 	if (!firstTask) {
 		throw new Error('No first task found');
 	}
 	sortedTasks.push(firstTask);
 	let hasNext = firstTask.nextTaskId !== undefined;
-	let previousTask = firstTask;
+	let currentTask = firstTask;
 	let iterations = 0;
 
 	while(hasNext) {
-		const nextTask = taskMap[previousTask.nextTaskId as string];
+		const nextTask = taskMap[currentTask.nextTaskId as string];
 		sortedTasks.push(nextTask);
-		previousTask = nextTask;
+		currentTask = nextTask;
 		hasNext = nextTask?.nextTaskId !== undefined;
+		console.debug({
+			currentTask: currentTask.name,
+			nextTask: nextTask.nextTaskId
+		})
 		iterations++;
 		if (iterations > unorderedTasks.length) {
 			throw new Error('Infinite loop detected');
 		}
 	}
-
 	return sortedTasks.filter((task) => task !== undefined);
 }
 
@@ -57,10 +68,12 @@ export const getProgressionUseCase: UseCase<Input, Output> = (deps) => {
 			let unorderedTasks: Task[] = []
 			try {
 				unorderedTasks = await getUnorderedTasks(questId);
+				console.debug({unorderedTasks})
 			} catch (error) {
 				console.error("getProgression.getUnorderedTasks Error", error);
 			}
 			const orderedTasks = sortTasks(unorderedTasks);
+			console.debug({orderedTasks})
 			let apprenticeAttempts: ApprenticeAttempt[] = [];
 			try {
 				apprenticeAttempts = await getApprenticeAttemptsOnQuest(apprenticeId, questId);
