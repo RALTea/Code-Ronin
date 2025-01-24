@@ -9,7 +9,7 @@ type _PrismaJoinNewCampaignRepository = {
   joinCampaign: IJoinNewCampaignRepository.JoinCampaign;
   transferProgressionFromDemo: (
     options: { overwriteExisting: boolean }
-  ) => (userId: string, campaignId: string) => Promise<void>;
+  ) => (userId: string, campaignId: string) => Promise<boolean>;
   getFirstQuestId: IJoinNewCampaignRepository.GetFirstQuestId;
 };
 
@@ -169,7 +169,7 @@ export const PrismaJoinNewCampaignRepository = (
 
     transferProgressionFromDemo: (options: { overwriteExisting: boolean }) => {
       return async (userId: string, campaignId: string) => {
-        await transferService.transferProgression(options, userId, campaignId);
+        return await transferService.transferProgression(options, userId, campaignId);
       };
     },
 

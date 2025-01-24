@@ -1,14 +1,16 @@
 import type { ProgressionTransferRepository } from '../repositories/ProgressionTransferRepository';
 
 export const progressionTransferService = (repository: ProgressionTransferRepository) => ({
-  async transferProgression(options: { overwriteExisting: boolean }, userId: string, campaignId: string): Promise<void> {
+  async transferProgression(options: { overwriteExisting: boolean }, userId: string, campaignId: string): Promise<boolean> {
+    let transferredAny = false;
+
     // Get demo campaign tasks and their attempts
     const demoCampaign = await repository.getDemoCampaignWithTasksAndAttempts(userId);
-    if (!demoCampaign) return;
+    if (!demoCampaign) return false;
 
     // Get target campaign tasks
     const targetCampaign = await repository.getTargetCampaignWithTasks(campaignId, userId);
-    if (!targetCampaign) return;
+    if (!targetCampaign) return false;
 
 		console.debug('ProgressionTransferService.transferProgression DemoCampaignQuests', demoCampaign.quests[0].tasks[0]);
 		console.debug('ProgressionTransferService.transferProgression TargetCampaignQuests', targetCampaign.quests[0].tasks[0]);
@@ -49,6 +51,7 @@ export const progressionTransferService = (repository: ProgressionTransferReposi
                 userId,
                 taskId: task.id
               });
+              transferredAny = true;
             } else if (task.attempts.length === 0) {
               await repository.createAttempt({
                 userSolution: latestDemoAttempt.userSolution,
@@ -56,10 +59,13 @@ export const progressionTransferService = (repository: ProgressionTransferReposi
                 userId,
                 taskId: task.id
               });
+              transferredAny = true;
             }
           }
         }
       }
     }
+
+    return transferredAny;
   }
 });

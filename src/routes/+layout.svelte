@@ -6,6 +6,9 @@
 	import { NotificationStack as NotificationStackStore } from '../modules/notifications/stores/NotificationStack.svelte';
 	import { CloseNotificationUseCase } from '../modules/notifications/usecases/CloseNotification/CloseNotification';
 	import NotificationStack from '../modules/notifications/views/NotificationStack.svelte';
+	import TransferSuccessModal from '$dashboard/usecases/JoinNewCampaign/views/TransferSuccessModal.svelte';
+	import { TransferModalStore } from '$dashboard/usecases/JoinNewCampaign/stores/TransferModalStore.svelte';
+	import { page } from '$app/stores';
 
 	let { data, children } = $props();
 
@@ -27,5 +30,8 @@
 </script>
 
 <NotificationStack notifications={NotificationStackStore.stack} {closeNotification} />
+
+<TransferSuccessModal />
+
 
 {@render children()}

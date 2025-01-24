@@ -9,6 +9,7 @@
 	import type { DashboardCampaignItem } from '../aggregates/DashboardCampaignItem';
 	import { CampaignItemsVM } from './CampaignItemsVM.svelte';
 	import type { Campaign } from '$dashboard/usecases/JoinNewCampaign/aggregates/Campaign';
+	import { TransferModalStore } from '$dashboard/usecases/JoinNewCampaign/stores/TransferModalStore.svelte';
 
 	type Props = {
 		fetchCampaigns: Promise<DashboardCampaignItem[]>;
@@ -23,14 +24,25 @@
 		AppNotificationService.send({ message, type: 'ERROR' });
 	};
 
-	const onSuccess = (data: { campaign: Campaign, redirectUrl: string }) => {
-		goto(data.redirectUrl);
+	const onSuccess = (data: {
+		campaign: Campaign;
+		redirectUrl: string;
+		transferStatus: { success: boolean; error?: string };
+	}) => {
 		vm.closeJoinCampaignModal();
+		console.debug({ data });
+		if (data.transferStatus?.success) {
+			const message = data.transferStatus.error
+				? `Transfer failed: ${data.transferStatus.error}`
+				: 'Progress has been transferred from a Demo campaign';
+			TransferModalStore.open(message);
+		}
+		goto(data.redirectUrl);
 	};
 </script>
 
 {#if vm.joinCampaignModalOpen}
-	<JoinCampaignModal onFail={notifyFail} {onSuccess} onCancel={vm.closeJoinCampaignModal} />
+	<JoinCampaignModal onFail={notifyFail} {onSuccess} onCancel={() => vm.closeJoinCampaignModal()} />
 {/if}
 
 {#if !vm.firstLoadCompleted}

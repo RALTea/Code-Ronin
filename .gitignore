@@ -8,6 +8,7 @@ node_modules
 
 .idea
 *.db
+*.db.bk
 *.db-journal
 
 # OS

@@ -25,6 +25,10 @@ type Input = InputFactory<
 type Output = OutputFactory<{
 	redirectUrl: string;
 	joinedCampaign: Campaign;
+	transferStatus: {
+		success: boolean;
+		error?: string;
+	};
 }>;
 
 export const JoinNewCampaignUseCase: UseCase<Input, Output> = (deps) => {
@@ -70,20 +74,31 @@ export const JoinNewCampaignUseCase: UseCase<Input, Output> = (deps) => {
 			await joinCampaign(userId, campaign.id);
 
 			// Transfer progression from demo campaign if available
-			await transferProgressionFromDemo(userId, campaign.id);
+			let transferResult: { success: boolean; error?: string };
+			try {
+				const transferred = await transferProgressionFromDemo(userId, campaign.id);
+				transferResult = { success: transferred };
+			} catch (error) {
+				transferResult = {
+					success: false,
+					error: error instanceof Error ? error.message : 'Failed to transfer progress'
+				};
+			}
 
 			const firstQuestId = await deps.getFirstQuestId(campaign.id);
 			if (!firstQuestId) {
 				return UseCaseResponseBuilder.success(200, {
 					joinedCampaign: campaign,
 					redirectUrl: defaultRedirectUrl,
+					transferStatus: transferResult
 				});
 			}
 
 			const redirectUrl = `/campaigns/${campaign.slug}/${firstQuestId}`;
 			return UseCaseResponseBuilder.success(200, {
 				joinedCampaign: campaign,
-				redirectUrl
+				redirectUrl,
+				transferStatus: transferResult
 			});
 		}
 	};

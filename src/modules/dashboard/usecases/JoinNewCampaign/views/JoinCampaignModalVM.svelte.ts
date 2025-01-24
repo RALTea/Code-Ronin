@@ -5,7 +5,7 @@ import { TRPCJoinNewCampaignRepository } from '../repositories/TRPCJoinNewCampai
 import type { Campaign } from '../aggregates/Campaign';
 
 type Callbacks = {
-	onSuccess?: (data: { campaign: Campaign, redirectUrl: string }) => void;
+	onSuccess?: (data: { campaign: Campaign, redirectUrl: string, transferStatus: { success: boolean; error?: string; } }) => void;
 	onFail?: (message: string) => void;
 	onCancel?: () => void;
 }
@@ -35,7 +35,8 @@ export class JoinCampaignModalVM {
 		if (ucResult.isSuccess) {
 			return this.#callbacks?.onSuccess?.({
 				campaign: ucResult.data.joinedCampaign,
-				redirectUrl: ucResult.data.redirectUrl
+				redirectUrl: ucResult.data.redirectUrl,
+				transferStatus: ucResult.data.transferStatus
 			});
 		};
 
