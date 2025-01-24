@@ -30,20 +30,23 @@
 		transferStatus: { success: boolean; error?: string };
 	}) => {
 		vm.closeJoinCampaignModal();
-		console.debug({ data });
 		if (data.transferStatus?.success) {
 			const message = data.transferStatus.error
 				? `Transfer failed: ${data.transferStatus.error}`
 				: 'Progress has been transferred from a Demo campaign';
 			TransferModalStore.open(message);
 		}
+		console.debug('redirect to ', data.redirectUrl)
 		goto(data.redirectUrl);
 	};
 </script>
 
-{#if vm.joinCampaignModalOpen}
-	<JoinCampaignModal onFail={notifyFail} {onSuccess} onCancel={() => vm.closeJoinCampaignModal()} />
-{/if}
+<JoinCampaignModal
+	isOpen={vm.joinCampaignModalOpen}
+	onFail={notifyFail}
+	{onSuccess}
+	onCancel={() => vm.closeJoinCampaignModal()}
+/>
 
 {#if !vm.firstLoadCompleted}
 	<p>Loading quests...</p>

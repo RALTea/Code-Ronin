@@ -86,6 +86,7 @@ export const JoinNewCampaignUseCase: UseCase<Input, Output> = (deps) => {
 			}
 
 			const firstQuestId = await deps.getFirstQuestId(campaign.id);
+			console.debug('JoinNewCampaignUseCase', { firstQuestId })
 			if (!firstQuestId) {
 				return UseCaseResponseBuilder.success(200, {
 					joinedCampaign: campaign,
