@@ -21,7 +21,6 @@ export const demoMiddleware = t.middleware(async (request) => {
 				OR: [{ name: campaignName }, { slug: campaignName }]
 			}
 		});
-		console.debug('Demo campaign', { campaignName, campaign, isDemo: campaign?.isDemo === true });
 		if (campaign?.isDemo === true) {
 			return next({ ctx });
 		}
@@ -35,7 +34,6 @@ export const demoMiddleware = t.middleware(async (request) => {
 	if (user) {
 		return next({ ctx });
 	}
-	console.debug('User not authenticated and can\'t access demo for ', path);
 	throw new TRPCError({ code: 'UNAUTHORIZED' });
 });
 

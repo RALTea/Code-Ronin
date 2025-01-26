@@ -48,10 +48,6 @@ const sortTasks = (unorderedTasks: Task[]): Task[] => {
 		sortedTasks.push(nextTask);
 		currentTask = nextTask;
 		hasNext = nextTask?.nextTaskId !== undefined;
-		console.debug({
-			currentTask: currentTask.name,
-			nextTask: nextTask.nextTaskId
-		})
 		iterations++;
 		if (iterations > unorderedTasks.length) {
 			throw new Error('Infinite loop detected');
@@ -68,12 +64,10 @@ export const getProgressionUseCase: UseCase<Input, Output> = (deps) => {
 			let unorderedTasks: Task[] = []
 			try {
 				unorderedTasks = await getUnorderedTasks(questId);
-				console.debug({unorderedTasks})
 			} catch (error) {
 				console.error("getProgression.getUnorderedTasks Error", error);
 			}
 			const orderedTasks = sortTasks(unorderedTasks);
-			console.debug({orderedTasks})
 			let apprenticeAttempts: ApprenticeAttempt[] = [];
 			try {
 				apprenticeAttempts = await getApprenticeAttemptsOnQuest(apprenticeId, questId);

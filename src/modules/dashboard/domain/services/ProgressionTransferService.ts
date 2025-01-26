@@ -12,9 +12,6 @@ export const progressionTransferService = (repository: ProgressionTransferReposi
     const targetCampaign = await repository.getTargetCampaignWithTasks(campaignId, userId);
     if (!targetCampaign) return false;
 
-		console.debug('ProgressionTransferService.transferProgression DemoCampaignQuests', demoCampaign.quests[0].tasks[0]);
-		console.debug('ProgressionTransferService.transferProgression TargetCampaignQuests', targetCampaign.quests[0].tasks[0]);
-
     // Transfer progression
     for (const demoQuest of demoCampaign.quests) {
       for (const demoTask of demoQuest.tasks) {
@@ -23,13 +20,6 @@ export const progressionTransferService = (repository: ProgressionTransferReposi
         const duplicatingTasks = targetCampaign.quests
           .flatMap((q) => q.tasks)
           .filter((t) => t.id === demoTask.duplicatesTask?.id);
-
-        console.debug('ProgressionTransferService.transferProgression duplicatingTasks', {
-          demoTaskId: demoTask.id,
-          duplicatingTasks: duplicatingTasks.map(t => t.id),
-          demoAttempts: demoTask.attempts.length,
-          targetAttempts: duplicatingTasks[0]?.attempts.length
-        });
 
         if (duplicatingTasks.length === 0) {
           continue;

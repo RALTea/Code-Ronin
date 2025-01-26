@@ -17,7 +17,6 @@ export class QuickActionsVM {
 	});
 	onTreeChanged(fetchTree: Promise<QuestTree>, campaignSlug: string) {
 		fetchTree.then(async (tree) => {
-			console.debug('QuickActionsVM', tree);
 			const ucResult = await this.getQuickActionsUsecase.execute({
 				tree: tree,
 				campaignSlug: campaignSlug,

@@ -18,6 +18,7 @@ type Input = InputFactory<
 		joinCampaign: IJoinNewCampaignRepository.JoinCampaign;
 		transferProgressionFromDemo: IJoinNewCampaignRepository.TransferProgressionFromDemo;
 		getFirstQuestId: IJoinNewCampaignRepository.GetFirstQuestId;
+		getAccessKeyDetails: IJoinNewCampaignRepository.GetAccessKeyDetails;
 		defaultRedirectUrl: string;
 	}
 >;
@@ -37,6 +38,7 @@ export const JoinNewCampaignUseCase: UseCase<Input, Output> = (deps) => {
 		hasUserJoinedCampaign,
 		joinCampaign,
 		transferProgressionFromDemo,
+		getAccessKeyDetails,
 		defaultRedirectUrl
 	} = deps;
 
@@ -71,7 +73,16 @@ export const JoinNewCampaignUseCase: UseCase<Input, Output> = (deps) => {
 				return UseCaseResponseBuilder.error(400, 'User has already joined this campaign');
 			}
 
-			await joinCampaign(userId, campaign.id);
+			// Validate access key usage
+			const accessKeyDetails = await getAccessKeyDetails(accessKey);
+			if (!accessKeyDetails) {
+				return UseCaseResponseBuilder.error(404, 'Invalid access key');
+			}
+			if (accessKeyDetails.maxUses && accessKeyDetails.useCount >= accessKeyDetails.maxUses) {
+				return UseCaseResponseBuilder.error(400, 'Access key has reached its usage limit');
+			}
+
+			await joinCampaign(userId, campaign.id, accessKey);
 
 			// Transfer progression from demo campaign if available
 			let transferResult: { success: boolean; error?: string };
@@ -86,7 +97,6 @@ export const JoinNewCampaignUseCase: UseCase<Input, Output> = (deps) => {
 			}
 
 			const firstQuestId = await deps.getFirstQuestId(campaign.id);
-			console.debug('JoinNewCampaignUseCase', { firstQuestId })
 			if (!firstQuestId) {
 				return UseCaseResponseBuilder.success(200, {
 					joinedCampaign: campaign,

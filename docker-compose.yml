@@ -1,11 +1,25 @@
 services:
-  raltech:
+  coderonin:
     image: rotour/coderonin
     build:
       context: .
       dockerfile: Dockerfile
-    platform: linux/amd64
-    # platform: linux/arm64
-
+    # platform: linux/amd64
+    platform: linux/arm64
     ports:
       - "5174:3000"
+
+  coderonin-db:
+    image: postgres:16.2
+    environment:
+      POSTGRES_USER: coderonin
+      POSTGRES_PASSWORD: coderonin
+      POSTGRES_DB: coderonin
+    ports:
+      - "5433:5432"
+    volumes:
+      - coderonin-db-data:/var/lib/postgresql/data
+
+volumes:
+  coderonin-db-data:
+    driver: local

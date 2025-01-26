@@ -11,6 +11,7 @@ type _PrismaJoinNewCampaignRepository = {
     options: { overwriteExisting: boolean }
   ) => (userId: string, campaignId: string) => Promise<boolean>;
   getFirstQuestId: IJoinNewCampaignRepository.GetFirstQuestId;
+  getAccessKeyDetails: IJoinNewCampaignRepository.GetAccessKeyDetails;
 };
 
 const createPrismaProgressionTransferRepository = (prisma: PrismaClient): ProgressionTransferRepository => ({
@@ -156,15 +157,26 @@ export const PrismaJoinNewCampaignRepository = (
       return count > 0;
     },
 
-    joinCampaign: async (userId: string, campaignId: string) => {
-      await prisma.campaign.update({
-        where: { id: campaignId },
-        data: {
-          apprentices: {
-            connect: { id: userId }
+    joinCampaign: async (userId: string, campaignId: string, accessKey: string) => {
+      await prisma.$transaction([
+        prisma.campaign.update({
+          where: { id: campaignId },
+          data: {
+            apprentices: {
+              connect: { id: userId }
+            }
           }
-        }
-      });
+        }),
+        prisma.accessKey.update({
+          where: { key: accessKey },
+          data: {
+            useCount: {
+              increment: 1
+            },
+            usedAt: new Date()
+          }
+        })
+      ]);
     },
 
     transferProgressionFromDemo: (options: { overwriteExisting: boolean }) => {
@@ -187,6 +199,18 @@ export const PrismaJoinNewCampaignRepository = (
       });
       
       return firstQuest?.id ?? null;
+    },
+
+    getAccessKeyDetails: async (accessKey: string) => {
+      const key = await prisma.accessKey.findUnique({
+        where: { key: accessKey },
+        select: { maxUses: true, useCount: true }
+      });
+
+      return key ? {
+        maxUses: key.maxUses,
+        useCount: key.useCount
+      } : null;
     }
   };
 };

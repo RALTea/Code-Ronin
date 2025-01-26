@@ -36,7 +36,6 @@
 				: 'Progress has been transferred from a Demo campaign';
 			TransferModalStore.open(message);
 		}
-		console.debug('redirect to ', data.redirectUrl)
 		goto(data.redirectUrl);
 	};
 </script>

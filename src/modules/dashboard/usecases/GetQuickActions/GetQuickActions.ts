@@ -30,7 +30,6 @@ export const GetQuickActionsUseCase: UseCase<Input, Output> = (deps) => {
 	return {
 		execute: async ({ tree, campaignSlug, userId }) => {
 			const nextQuest: TreeItem | undefined = getNextItemInTree(mapQuestTree(tree));
-			console.debug('GetQuickActionsUseCase', { nextQuest });
 
 			if (!nextQuest) {
 				return UseCaseResponseBuilder.error(404, 'No more items to complete');

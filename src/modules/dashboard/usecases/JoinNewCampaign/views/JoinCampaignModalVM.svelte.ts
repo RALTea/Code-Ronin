@@ -24,6 +24,7 @@ export class JoinCampaignModalVM {
 			hasUserJoinedCampaign: this.#trpcRepository.hasUserJoinedCampaign,
 			joinCampaign: this.#trpcRepository.joinCampaign,
 			transferProgressionFromDemo: this.#trpcRepository.transferProgressionFromDemo,
+			getAccessKeyDetails: this.#trpcRepository.getAccessKeyDetails,
 			defaultRedirectUrl: '/dashboard'
 		});
 		this.#callbacks = callbacks;

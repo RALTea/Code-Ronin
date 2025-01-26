@@ -29,6 +29,6 @@ export class QuestTreeVM {
 	}
 
 	constructor() {
-		console.debug('QuestTreeVM.constructor');
+
 	}
 }

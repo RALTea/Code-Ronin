@@ -7,6 +7,7 @@ type _TRPCJoinNewCampaignRepository = {
 	hasUserJoinedCampaign: IJoinNewCampaignRepository.HasUserJoinedCampaign;
 	joinCampaign: IJoinNewCampaignRepository.JoinCampaign;
 	transferProgressionFromDemo: IJoinNewCampaignRepository.TransferProgressionFromDemo;
+	getAccessKeyDetails: IJoinNewCampaignRepository.GetAccessKeyDetails;
 	getFirstQuestId: IJoinNewCampaignRepository.GetFirstQuestId;
 };
 
@@ -18,11 +19,14 @@ export const TRPCJoinNewCampaignRepository = (init?: TRPCClientInit): _TRPCJoinN
 		hasUserJoinedCampaign: (userId: string, campaignId: string) => {
 			return trpc(init).dashboard.joinNewCampaign.hasUserJoinedCampaign.query({ userId, campaignId });
 		},
-		joinCampaign: (userId: string, campaignId: string) => {
-			return trpc(init).dashboard.joinNewCampaign.joinCampaign.mutate({ userId, campaignId });
+		joinCampaign: (userId: string, campaignId: string, accessKey: string) => {
+			return trpc(init).dashboard.joinNewCampaign.joinCampaign.mutate({ userId, campaignId, accessKey });
 		},
 		transferProgressionFromDemo: (userId: string, campaignId: string) => {
 			return trpc(init).dashboard.joinNewCampaign.transferProgressionFromDemo.mutate({ userId, campaignId });
+		},
+		getAccessKeyDetails: (accessKey: string) => {
+			return trpc(init).dashboard.joinNewCampaign.getAccessKeyDetails.query({ accessKey });
 		},
 		getFirstQuestId: (campaignId: string) => {
 			return trpc(init).dashboard.joinNewCampaign.getFirstQuestId.query({ campaignId });

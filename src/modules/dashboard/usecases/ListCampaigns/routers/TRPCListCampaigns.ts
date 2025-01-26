@@ -29,7 +29,6 @@ export const ListCampaignsRouter = t.router({
 				repository = InMemoryListCampaignsRepository(localAttempts);
 			}
 			const result = await repository.getCompletionByCampaign(campaigns, ctx.user?.id);
-			console.debug('getCompletionByCampaign', result);
 			return result;
 		})
 });
