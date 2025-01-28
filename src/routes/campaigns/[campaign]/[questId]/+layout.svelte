@@ -12,15 +12,15 @@
 	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
-	import { User } from 'lucide-svelte';
 	import { onMount, type Snippet } from 'svelte';
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
 
-	$inspect('UserStore',UserStore.user);
+	$inspect('UserStore', UserStore.user);
 
 	onMount(() => {
+		console.debug('Window width:', window.innerWidth);
 		const unsubscribe = page.subscribe(({ params }) => {
 			const taskId = params.taskId;
 			const taskToLoad = TaskStore.allTasks?.find((task) => task?.id === taskId);

@@ -11,8 +11,11 @@
 	import { page } from '$app/stores';
 
 	let { data, children } = $props();
+	let isWindowTooSmall: boolean = $state(false);
+
 
 	onMount(() => {
+		isWindowTooSmall = window.innerWidth < 768;
 		console.debug('Version: 0.0.1');
 	})
 
@@ -33,5 +36,12 @@
 
 <TransferSuccessModal />
 
+{#if isWindowTooSmall}
+	<div class="fixed top-0 left-0 h-screen w-screen z-50">
+		<p class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-zinc-400 w-4/5 text-center">This application is only available on desktop for now. Sorry!</p>
+	</div>
+{:else}
 
 {@render children()}
+
+{/if}
