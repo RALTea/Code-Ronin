@@ -4,9 +4,10 @@ import { SignInUserUseCase } from '$auth/usecases/SignInUser/SignInUser';
 import prisma from '$lib/server/db';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import GitHub from '@auth/sveltekit/providers/github';
+import Discord from '@auth/sveltekit/providers/discord';
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
-	providers: [GitHub],
+	providers: [GitHub, Discord],
 	trustHost: true,
 	callbacks: {
     // return true if successful, false otherwise

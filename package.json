@@ -33,7 +33,7 @@
 		"postcss": "^8.4.47",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
-		"prisma": "^5.20.0",
+		"prisma": "6.2.1",
 		"svelte": "^5.0.0-next.1",
 		"svelte-check": "^4.0.0",
 		"sveltekit-superforms": "^2.19.1",
@@ -47,7 +47,7 @@
 	"type": "module",
 	"dependencies": {
 		"@auth/sveltekit": "^1.7.4",
-		"@prisma/client": "^5.20.0",
+		"@prisma/client": "6.2.1",
 		"@tailwindcss/typography": "^0.5.15",
 		"@trpc/client": "^10.45.2",
 		"@trpc/server": "^10.45.2",
