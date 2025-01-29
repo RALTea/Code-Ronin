@@ -1,16 +1,13 @@
 <script lang="ts">
-	import Card from '$lib/components/cards/Card.svelte';
-	import Progress from '$lib/components/forms/Progress.svelte';
+	import { goto } from '$app/navigation';
+	import type { Campaign } from '$dashboard/usecases/JoinNewCampaign/aggregates/Campaign';
+	import { TransferModalStore } from '$dashboard/usecases/JoinNewCampaign/stores/TransferModalStore.svelte';
 	import { AppNotificationService } from '$notifications/services/AppNotificationService';
 	import { PlusCircle } from 'lucide-svelte';
 	import JoinCampaignModal from '../../JoinNewCampaign/views/JoinCampaignModal.svelte';
-	import { goto } from '$app/navigation';
 	import type { CampaignInfos } from '../aggregates/CampaignInfos';
 	import type { DashboardCampaignItem } from '../aggregates/DashboardCampaignItem';
 	import { CampaignItemsVM } from './CampaignItemsVM.svelte';
-	import type { Campaign } from '$dashboard/usecases/JoinNewCampaign/aggregates/Campaign';
-	import { TransferModalStore } from '$dashboard/usecases/JoinNewCampaign/stores/TransferModalStore.svelte';
-	import Dropdown from '$lib/components/forms/Dropdown.svelte';
 
 	type Props = {
 		fetchCampaigns: Promise<DashboardCampaignItem[]>;

@@ -7,14 +7,14 @@
 	import { NotificationStack as NotificationStackStore } from '../modules/notifications/stores/NotificationStack.svelte';
 	import { CloseNotificationUseCase } from '../modules/notifications/usecases/CloseNotification/CloseNotification';
 	import NotificationStack from '../modules/notifications/views/NotificationStack.svelte';
-	import { PUBLIC_HIDE_MOBILE } from '$env/static/public';
+	import { env } from '$env/dynamic/public';
 	import { isOnMobile } from '$lib/utils/svelte.utils';
 
 	let { data, children } = $props();
 	let isWindowTooSmall: boolean = $state(false);
 
 	onMount(() => {
-		isWindowTooSmall = isOnMobile() && PUBLIC_HIDE_MOBILE !== 'true';
+		isWindowTooSmall = isOnMobile() && env.PUBLIC_HIDE_MOBILE !== 'true';
 		console.debug('Version: 0.0.1');
 	});
 
