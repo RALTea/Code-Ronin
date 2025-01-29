@@ -21,12 +21,13 @@
     if (!card) {
       throw new Error("Card not found");
     }
+    console.debug('Monaco setSize to', card.clientHeight)
     cardHeight = card.clientHeight;
   }
 </script>
 
 <svelte:window on:resize={setSize} />
-<Card class="p-4 pt-2 w-full row-span-1 h-full flex flex-col">
+<Card class="p-4 pt-2 w-full md:row-span-1 h-[80vh] md:h-full flex flex-col">
   <header class="flex justify-between mb-4 mt-2 items-center">
     <h2 class="text-2xl font-bold font-space-mono h-fit">Editor</h2>
     <PrimaryButton class="px-8 py-2" type={{onclick: runCode, buttonType: 'button'}}>Run code</PrimaryButton>

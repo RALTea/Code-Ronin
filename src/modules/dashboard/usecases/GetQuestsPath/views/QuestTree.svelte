@@ -1,4 +1,4 @@
-<script lang="ts">
+	<script lang="ts">
 	import { onMount } from 'svelte';
 	import type { QuestTree } from '../aggregates/QuestTree';
 	import { QuestTreeVM } from './QuestTreeVM.svelte';
@@ -120,12 +120,12 @@
 	</p>
 {/snippet}
 
-<div class="pt-4 pb-2">
+<div class="pb-2">
 	{#if vm.isLoading}
 		<p>Loading...</p>
 	{/if}
 	<div
-		class="grid gap-8 relative CUSTOM-tree-root justify-center content-center rounded-md bg-bg-medium h-full"
+		class="grid p-4 gap-4 md:gap-8 relative CUSTOM-tree-root md:justify-center content-start md:content-center rounded-md bg-bg-medium h-full overflow-auto"
 		style="grid-template-columns: repeat({vm.nbOfColumns}, {Number(itemSize) / 4}rem);
      grid-template-rows: repeat({vm.nbOfRows}, {Number(itemSize) / 4}rem)"
 	>
@@ -134,14 +134,17 @@
 			{#each questGroup as quest, rowIdx}
 				{@const locked = quest.isLocked}
 				{#if locked}
-					<div class="p-4 flex flex-col items-center gap-4">
+					<div
+						style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
+						class="p-2 md:p-4 flex flex-col items-center gap-2 md:gap-4"
+					>
 						{@render Quest(quest)}
 					</div>
 				{:else}
 					<a
 						href="/campaigns/{campaignSlug}/{quest.id}"
 						style="grid-column: {colIdx + 1}; grid-row: {rowIdx + 1}"
-						class="p-4 flex flex-col items-center gap-4"
+						class="p-2 md:p-4 flex flex-col items-center gap-2 md:gap-4"
 					>
 						{@render Quest(quest)}
 					</a>

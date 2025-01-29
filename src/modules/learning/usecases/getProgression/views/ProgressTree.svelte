@@ -1,14 +1,14 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { UserStore } from '$auth/stores/UserStore.svelte';
+	import { trpc } from '$lib/clients/trpc';
 	import IconChevronsLeft from '$lib/components/icons/IconChevronsLeft.svelte';
 	import IconWrapper from '$lib/components/icons/IconWrapper.svelte';
+	import { ArrowLeft, PencilLine } from 'lucide-svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
 	import type { TaskTreeItem } from '../aggregates/TaskTreeItem';
 	import ProgressTreeItem from './ProgressTreeItem.svelte';
-	import { page } from '$app/stores';
-	import { ArrowLeft, PencilLine } from 'lucide-svelte';
-	import { UserStore } from '$auth/stores/UserStore.svelte';
-	import { trpc } from '$lib/clients/trpc';
 
 	type Props = {
 		fetchItems: Promise<TaskTreeItem[]>;

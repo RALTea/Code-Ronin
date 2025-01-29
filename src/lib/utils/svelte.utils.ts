@@ -1,3 +1,4 @@
+import { browser } from '$app/environment';
 import type { UseCaseResponse } from '$lib/interfaces/UseCase';
 import { error, json } from '@sveltejs/kit';
 
@@ -18,3 +19,5 @@ export const ApiResponse = {
 export const hideEffect = (fn: () => unknown) => {
 	setTimeout(fn, 0);
 }
+
+export const isOnMobile = () => browser ? window.innerWidth < 768 : false;

@@ -4,29 +4,36 @@
 	import { UserStore } from '$auth/stores/UserStore.svelte';
 	import { env } from '$env/dynamic/public';
 	import type { Attempt } from '$learning/domain/Attempt';
-	import type { ApprenticeAttempt } from '$learning/usecases/getProgression/aggregates/ApprenticeAttempt';
 	import type { TaskTreeItem } from '$learning/usecases/getProgression/aggregates/TaskTreeItem';
 	import { getProgressionUseCase } from '$learning/usecases/getProgression/getProgressionUseCase';
 	import { TaskStore } from '$learning/usecases/getProgression/stores/currentTask.svelte';
+	import ProgressDropdown from '$learning/usecases/getProgression/views/ProgressDropdown.svelte';
 	import ProgressTree from '$learning/usecases/getProgression/views/ProgressTree.svelte';
 	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
 	import { trpc } from '$lib/clients/trpc';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
+	import { isOnMobile } from '$lib/utils/svelte.utils';
+	import { ArrowLeft } from 'lucide-svelte';
 	import { onMount, type Snippet } from 'svelte';
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
-
-	$inspect('UserStore', UserStore.user);
+	let displayMobileMenu = $state(isOnMobile());
 
 	onMount(() => {
-		console.debug('Window width:', window.innerWidth);
+		const onResize = () => {
+			displayMobileMenu = isOnMobile();
+		};
+		window.addEventListener('resize', onResize);
 		const unsubscribe = page.subscribe(({ params }) => {
 			const taskId = params.taskId;
 			const taskToLoad = TaskStore.allTasks?.find((task) => task?.id === taskId);
 			TaskStore.currentTask = taskToLoad;
 		});
-		return unsubscribe;
+		return () => {
+			unsubscribe();
+			window.removeEventListener('resize', onResize);
+		};
 	});
 
 	const fetchTree = async () => {
@@ -73,8 +80,18 @@
 	});
 </script>
 
-<div class="h-screen max-h-screen grid grid-rows-[auto_1fr] grid-cols-[auto_1fr]">
-	<ProgressTree fetchItems={fetchTaskTreeItems} />
+<div class="h-screen max-h-screen md:grid-rows-[auto_1fr] flex-col md:grid md:grid-cols-[auto_1fr]">
+	{#if !displayMobileMenu}
+		<ProgressTree fetchItems={fetchTaskTreeItems} />
+	{/if}
 	<Navbar class="row-auto" />
+	{#if displayMobileMenu}
+		<div class="flex items-center px-4 gap-4">
+			<a href='/dashboard' class="h-10 aspect-square flex items-center justify-center bg-bg-dark rounded-md">
+				<ArrowLeft size="24" />
+			</a>
+			<ProgressDropdown fetchItems={fetchTaskTreeItems} />
+		</div>
+	{/if}
 	{@render children()}
 </div>

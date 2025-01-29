@@ -81,7 +81,7 @@
 </script>
 
 {#snippet divider()}
-	<div class="h-full py-2 mx-6">
+	<div class="h-full py-2 mx-6 hidden md:block">
 		<div class="w-[.125rem] h-full bg-primary-light rounded-full"></div>
 	</div>
 {/snippet}
@@ -97,13 +97,13 @@
 					alt="profile"
 					class="object-cover w-12 h-12 mx-2 rounded-full"
 				/>
-				<div class="mx-2">
+				<div class="mx-2 hidden md:block">
 					<h1 class="font-extrabold">{apprenticeSummary?.name}</h1>
 					<p class="font-space-mono text-primary-light">{apprenticeSummary?.title}</p>
 				</div>
 			</div>
 			{@render divider()}
-			<div class="flex gap-4">
+			<div class="gap-4 hidden md:flex">
 				{#each medalsIndex as medal}
 					{@const src = apprenticeSummary?.medals?.at(medal) ?? emptyMedal}
 					<div class="shine">

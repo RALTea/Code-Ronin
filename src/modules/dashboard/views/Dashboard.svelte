@@ -17,7 +17,7 @@
 		onItemSelected={vm.onCampaignSelected}
 		selectedCampaignName={vm.selectedCampaign?.name ?? ''}
 	/>
-	<section class="grid gap-4 grid-cols-[6fr_2fr] flex-1">
+	<section class="grid md:gap-4 grid-cols-1 md:grid-cols-[6fr_2fr] flex-1">
 		<div class="flex flex-col gap-4 pb-4">
 			<Card class="flex flex-col px-4 py-2 flex-[3] [&>div]:h-full">
 				<h1 class="text-2xl font-black font-dm-sans">Quests</h1>
