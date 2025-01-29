@@ -14,7 +14,7 @@
 	let isWindowTooSmall: boolean = $state(false);
 
 	onMount(() => {
-		isWindowTooSmall = isOnMobile() && env.PUBLIC_HIDE_MOBILE !== 'true';
+		isWindowTooSmall = isOnMobile() && env.PUBLIC_HIDE_MOBILE === 'true';
 		console.debug('Version: 0.0.1');
 	});
 
