@@ -43,9 +43,13 @@
 
 	//
 	$effect(() => {
+		const defaultCode = `console.log('Hello world')`;
+		const isDemo = $page.params.campaign === env.PUBLIC_DEMO_CAMPAIGN_SLUG;
 		fetchTask.then((task) => {
+			console.debug("updating input code", task)
+			if (isDemo && !UserStore.user && inputCode) return;
 			if (!task || !task.lastInput) {
-				inputCode = `console.log('Hello world')`;
+				inputCode = defaultCode;
 				return;
 			}
 			inputCode = task.lastInput.code;
