@@ -10,7 +10,7 @@ services:
     volumes:
       - ./judge0.conf:/judge0.conf:ro
       - ./active.rb:/api/db/languages/active.rb:ro
-      - ./Code-Ronin/infra/judge-custom/base64_service.rb:/api/app/services/base64_service.rb:ro
+      - ./judge-custom/base64_service.rb:/api/app/services/base64_service.rb:ro
     ports:
       - '2358:2358'
     privileged: true
@@ -19,7 +19,8 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.judge.rule=Host(`judge.raltech.school`)'
-      - 'traefik.http.routers.judge.entrypoints=websecure'
+      # - 'traefik.http.routers.judge.entrypoints=websecure'
+      - 'traefik.http.routers.judge.entrypoints=https'
       - 'traefik.http.routers.judge.tls=true'
       - 'traefik.http.routers.judge.tls.certresolver=letsencrypt'
       - 'traefik.http.services.judge.loadbalancer.server.port=2358'
@@ -27,7 +28,8 @@ services:
       - 'traefik.http.middlewares.judge-stripprefix.stripprefix.prefixes=/judge0'
       - 'traefik.http.routers.judge.middlewares=judge-stripprefix'
     networks:
-      - traefik-net
+      # - traefik-net
+      # - coolify
       - default
 
   workers:
@@ -35,6 +37,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    platform: linux/arm64
     command: ['./scripts/workers']
     volumes:
       - ./judge0.conf:/judge0.conf:ro
@@ -55,7 +58,7 @@ services:
     networks:
       - default
 
-  redis:
+  judge0-redis-1:
     image: redis:7.2.4
     command: ['bash', '-c', 'docker-entrypoint.sh --appendonly no --requirepass "$$REDIS_PASSWORD"']
     env_file: judge0.conf
@@ -68,6 +71,10 @@ volumes:
   data:
 
 networks:
-  traefik-net:
-    external: true
+  # coolify:
+  #   external: true
+  #   name: coolify
+  #   attachable: true
+  # traefik-net:
+  #   external: true
   default:

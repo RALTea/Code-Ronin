@@ -33,3 +33,7 @@ COPY ./scripts/tsconfig.json /usr/local/bin/ts-5.6.3/typescript/tsconfig.json
 COPY ./judge-custom/base64_service.rb /api/app/services/base64_service.rb
 
 COPY ./scripts/example.ts /api/example.ts
+
+COPY ./active.rb /api/db/languages/active.rb
+COPY ./judge-custom/base64_service.rb /api/app/services/base64_service.rb
+
