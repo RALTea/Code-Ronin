@@ -66,6 +66,11 @@
 	const runCode = () => {
 		runningCode = true;
 		const isDemo = $page.params.campaign === env.PUBLIC_DEMO_CAMPAIGN_SLUG;
+		console.debug("runCode", {
+			isDemo,
+			env: env.PUBLIC_DEMO_CAMPAIGN_SLUG,
+			currentPage: $page.params.campaign
+		})
 		const localStorageAttemptRepository = LocalStorageAttemptRepository();
 		const judgeRepository = JudgeEvaluationRepository();
 		const failHandlers =

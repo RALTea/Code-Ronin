@@ -25,7 +25,8 @@ export const demoMiddleware = t.middleware(async (request) => {
 			campaign,
 			path,
 			next,
-			rawInput
+			rawInput,
+			shouldAllow: campaign?.isDemo === true
 		})
 		if (campaign?.isDemo === true) {
 			return next({ ctx });

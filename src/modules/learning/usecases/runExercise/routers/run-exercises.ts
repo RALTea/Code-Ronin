@@ -7,6 +7,7 @@ import { ExerciseAttemptSchema } from '../aggregates/ExerciseAttempt';
 import { TestCasesNotFoundError } from '../errors/TestCasesNotFoundError';
 import { PrismaAttemptRepository } from '../repositories/PrismaAttemptRepository';
 import { PrismaTaskRepository } from '../repositories/PrismaTaskRepository';
+import { TRPCError } from '@trpc/server';
 
 const router = t.router({
 	getTestFileFromGithub: allowDemoAuthProcedure
@@ -47,25 +48,34 @@ const router = t.router({
 
 	/**
 	 * Using AuthProcedure since demos should not insert data into the database,
-	 * and only store the data in the cache 
-	 * */ 
-	handleSuccess: authProcedure.input(ExerciseAttemptSchema).mutation(async ({ input, ctx }) => {
+	 * and only store the data in the cache
+	 * */
+	handleSuccess: t.procedure.input(ExerciseAttemptSchema).mutation(async ({ input, ctx }) => {
+		if (!ctx.user) {
+			return;
+		}
 		const attemptRepository = PrismaAttemptRepository(ctx.prisma);
 		await attemptRepository.handleSuccess(input);
 	}),
 
 	/**
 	 * Using AuthProcedure since demos should not insert data into the database,
-	 * and only store the data in the cache 
-	 * */ 
-	handleFail: authProcedure.input(ExerciseAttemptSchema.optional()).mutation(async ({ input, ctx }) => {
-		const attemptRepository = PrismaAttemptRepository(ctx.prisma);
-		await attemptRepository.handleFail(input);
-	}),
-	getTaskDetails: allowDemoAuthProcedure.input(z.object({ taskId: z.string() }).merge(DemoContentSchema)).query(async ({ input, ctx }) => {
-		const taskRepository = PrismaTaskRepository(ctx.prisma);
-		return taskRepository.getTaskDetails(input.taskId);
-	})
+	 * and only store the data in the cache
+	 * */
+	handleFail: t.procedure
+		.input(ExerciseAttemptSchema.optional())
+		.mutation(async ({ input, ctx }) => {
+			if (!ctx.user) return;
+			if (!input) return;
+			const attemptRepository = PrismaAttemptRepository(ctx.prisma);
+			await attemptRepository.handleFail(input);
+		}),
+	getTaskDetails: allowDemoAuthProcedure
+		.input(z.object({ taskId: z.string() }).merge(DemoContentSchema))
+		.query(async ({ input, ctx }) => {
+			const taskRepository = PrismaTaskRepository(ctx.prisma);
+			return taskRepository.getTaskDetails(input.taskId);
+		})
 });
 
 export default router;
