@@ -43,18 +43,32 @@
 
 	//
 	$effect(() => {
-		const defaultCode = `console.log('Hello world')`;
-		const isDemo = $page.params.campaign === env.PUBLIC_DEMO_CAMPAIGN_SLUG;
 		fetchTask.then((task) => {
-			console.debug("updating input code", task)
-			if (isDemo && !UserStore.user && inputCode) return;
-			if (!task || !task.lastInput) {
+			const defaultCode = `console.log('Hello world')`;
+			if (!task) {
 				inputCode = defaultCode;
 				return;
 			}
-			inputCode = task.lastInput.code;
-			const localChanges = JSON.parse(localStorage.getItem(task?.id) ?? '');
-			if (localChanges) return inputCode = localChanges;
+
+			const localChangesRaw = localStorage.getItem(task.id);
+			if (localChangesRaw) {
+				try {
+					const localChanges = JSON.parse(localChangesRaw);
+					if (typeof localChanges === 'string') {
+						inputCode = localChanges;
+						return;
+					}
+				} catch (e) {
+					// Malformed JSON, ignore and proceed.
+				}
+			}
+
+			if (task.lastInput) {
+				inputCode = task.lastInput.code;
+				return;
+			}
+
+			inputCode = defaultCode;
 		});
 	});
 
