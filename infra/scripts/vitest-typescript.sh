@@ -11,4 +11,4 @@ nvm use 20.10.0 > /dev/null
 export PATH="/usr/local/bin/ts-5.6.3/typescript/node_modules/.bin:$PATH"
 
 # Run the TypeScript file
-/usr/local/bin/ts-5.6.3/typescript/node_modules/.bin/vitest run
+/usr/local/bin/ts-5.6.3/typescript/node_modules/.bin/vitest run --reporter=json
