@@ -1,7 +1,7 @@
 import GetProgressionRouter from '$learning/usecases/getProgression/routers/getProgression';
 import GetTaskDetailsRouter from '$learning/usecases/getTaskDetails/routers/getTaskDetailsRouter';
 import RunExercisesRouter from '$learning/usecases/runExercise/routers/run-exercises';
-import GetApprenticeProfileSummaryRouter from '$learning/usecases/getApprenticeProfileSummary/routers/getApprenticeProfileSummary';
+import GetApprenticeProfileSummaryRouter from '$learning/adapters/GetApprenticeProfileSummary.adapter';
 
 import { t } from '$lib/trpc/t';
 import { GetQuestDataTRPCRouter } from '$admin/usecases/getQuestData/routers/GetQuestDataTRPCRouter';
@@ -32,7 +32,7 @@ export const router = t.router({
 		getQuestsPath: GetQuestsPathRouter,
 		listCampaigns: ListCampaignsRouter,
 		quickActions: QuickActionsRouter,
-		joinNewCampaign: JoinNewCampaignRouter,
+		joinNewCampaign: JoinNewCampaignRouter
 	})
 });
 

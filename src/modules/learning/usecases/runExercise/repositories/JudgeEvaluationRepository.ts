@@ -27,6 +27,35 @@ const JudgeResultSchema = z.object({
 });
 type JudgeResult = z.infer<typeof JudgeResultSchema>;
 
+const VitestAssertionResultSchema = z.object({
+	ancestorTitles: z.array(z.string()),
+	status: z.string(),
+	title: z.string(),
+	duration: z.number().optional(),
+	failureMessages: z.array(z.string())
+});
+
+const VitestTestResultSchema = z.object({
+	assertionResults: z.array(VitestAssertionResultSchema),
+	startTime: z.number(),
+	endTime: z.number(),
+	status: z.string(), // 'passed' | 'failed'
+	message: z.string(),
+	name: z.string()
+});
+
+const VitestOutputSchema = z.object({
+	success: z.boolean(),
+	numTotalTestSuites: z.number(),
+	numPassedTestSuites: z.number(),
+	numFailedTestSuites: z.number(),
+	numTotalTests: z.number(),
+	numPassedTests: z.number(),
+	numFailedTests: z.number(),
+	startTime: z.number(),
+	testResults: z.array(VitestTestResultSchema)
+});
+
 const mapLanguageToJudgeLanguageId = (language: Language): number => {
 	switch (language) {
 		case 'bash':
@@ -55,6 +84,48 @@ export const JudgeEvaluationRepository = (): JudgeEvaluationRepository => {
 		if (result.stderr?.match(/Transform failed/)) return 'COMPILE_ERROR';
 		return 'TEST_CASES_FAILED';
 	};
+
+	const buildFullOutput = (
+		vitestResult: z.infer<typeof VitestOutputSchema>,
+		decoded: JudgeResult
+	): string => {
+		const suiteOutputs = vitestResult.testResults
+			.map((suite) => {
+				const suiteName = suite.name.split('/').pop() ?? suite.name;
+				const suiteDuration = suite.endTime - suite.startTime;
+				const failedTestsInSuite = suite.assertionResults.filter(
+					(a) => a.status === 'failed'
+				).length;
+				const header = `❯ ${suiteName} (${suite.assertionResults.length} tests | ${failedTestsInSuite} failed) ${Math.round(suiteDuration)}ms`;
+
+				const testLines = suite.assertionResults
+					.map((assertion) => {
+						const statusIcon = assertion.status === 'passed' ? '✓' : '×';
+						const duration = Math.round(assertion.duration ?? 0);
+						const title = [...assertion.ancestorTitles, assertion.title].join(' > ');
+						let line = `   ${statusIcon} ${title} ${duration}ms`;
+						if (assertion.status === 'failed') {
+							const failureMessage = assertion.failureMessages[0]?.split('\n')[0] ?? '';
+							line += `\n     → ${failureMessage}`;
+						}
+						return line;
+					})
+					.join('\n');
+
+				return `${header}\n${testLines}`;
+			})
+			.join('\n\n');
+
+		const footer = [
+			``,
+			` Test Files  ${vitestResult.numFailedTestSuites} failed (${vitestResult.numTotalTestSuites})`,
+			`      Tests  ${vitestResult.numFailedTests} failed | ${vitestResult.numPassedTests} passed (${vitestResult.numTotalTests})`,
+			`   Start at  ${new Date(vitestResult.startTime).toLocaleTimeString('en-US', { hour12: false })}`,
+			`   Duration  ${Math.round(parseFloat(decoded.time) * 1000)}ms`
+		].join('\n');
+
+		return `${suiteOutputs}${footer}`;
+	};
 	return {
 		evaluateSolution: async (solution: string, language: Language) => {
 			const url = `${env.PUBLIC_JUDGE_API}/submissions?wait=true&base64_encoded=true`;
@@ -73,26 +144,55 @@ export const JudgeEvaluationRepository = (): JudgeEvaluationRepository => {
 			decoded.stdout = base64ToUnicode(decoded.stdout ?? '');
 			decoded.stderr = base64ToUnicode(decoded.stderr ?? '');
 			decoded.message = base64ToUnicode(decoded.message ?? '');
-			console.log({
-				err: decoded.stderr ?? '',
-				out: decoded.stdout ?? '',
-				msg: decoded.message ?? '',
-				status: getJudgeSuccess(decoded),
-				decoded
-			});
 
-			// const message = decoded.stdout + decoded.message;
+			if (language === 'typescript5-vitest') {
+				try {
+					// The output from vitest might have some extra characters at the end.
+					const cleanStdout = decoded.stdout?.substring(0, decoded.stdout.lastIndexOf('}') + 1);
+					if (cleanStdout) {
+						const vitestResult = VitestOutputSchema.parse(JSON.parse(cleanStdout));
+
+						const status: ExerciseAttemptResultStatus = vitestResult.success
+							? 'SUCCESS'
+							: 'TEST_CASES_FAILED';
+
+						const simplifiedOutput = vitestResult.testResults
+							.flatMap((res) =>
+								res.assertionResults.map((assertion) => {
+									let output = `[${assertion.status.toUpperCase()}] ${assertion.title}`;
+									if (assertion.status === 'failed') {
+										const errorMessages = assertion.failureMessages
+											.map((fm) => fm.split('\n')[0])
+											.join('\n  - ');
+										output += `\n  - ${errorMessages}`;
+									}
+									return output;
+								})
+							)
+							.join('\n\n');
+
+						const fullOutput = buildFullOutput(vitestResult, decoded);
+
+						return {
+							id: decoded.token,
+							time: parseFloat(decoded.time),
+							status,
+							output: simplifiedOutput,
+							fullOutput: fullOutput
+						};
+					}
+				} catch (error) {
+					// Fallback to default behavior if parsing fails
+				}
+			}
+
 			const output = `${decoded.stderr}\n${decoded.stdout}`;
-			console.log({output})
 			return {
 				id: decoded.token,
 				time: parseFloat(decoded.time),
 				status: getJudgeSuccess(decoded),
 				output: output,
-				// message: base64ToUnicode(decoded.stdout ?? '') + base64ToUnicode(decoded.stderr ?? '')
-				// decoded.compile_output +
-				// decoded.message +
-				// 'Your code returned no output'
+				simplifiedOutput: output
 			};
 		}
 	};

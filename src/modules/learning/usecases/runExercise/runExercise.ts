@@ -68,26 +68,31 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 		}
 	};
 
-	const _buildCodeToBeEvaluated = (apprenticeSolution: string, testCases: string, taskType: AnswerType) => {
+	const _buildCodeToBeEvaluated = (
+		apprenticeSolution: string,
+		testCases: string,
+		taskType: AnswerType
+	) => {
 		if (apprenticeSolution.includes('// (@@@*@@@)')) {
 			throw new Error('Apprentice solution contains illegal string. Remove it, smartass.');
 		}
 		const builder = CodeBuilder(testCases);
 		if (taskType === 'tests') builder.replaceAll('// (@@@*@@@)', apprenticeSolution);
 		if (taskType === 'stdout') {
-			builder.replaceAll('// (@@@*@@@)', `const studentSolution = () => {\n${apprenticeSolution}\n}`);
+			builder.replaceAll(
+				'// (@@@*@@@)',
+				`const studentSolution = () => {\n${apprenticeSolution}\n}`
+			);
 		}
 		if (taskType === 'stderr') {
-			builder.replaceAll('// (@@@*@@@)', `const studentSolution = () => {\n${apprenticeSolution}\n}`);
+			builder.replaceAll(
+				'// (@@@*@@@)',
+				`const studentSolution = () => {\n${apprenticeSolution}\n}`
+			);
 		}
-		const commentsToKeep = [
-			'// (@Student_code_start@)',
-			'// (@Student_code_end@)',
-		]
-		return builder
-			.removeComments(commentsToKeep)
-			.build();
-	}
+		const commentsToKeep = ['// (@Student_code_start@)', '// (@Student_code_end@)'];
+		return builder.removeComments(commentsToKeep).build();
+	};
 
 	return {
 		execute: async (data) => {
@@ -98,14 +103,34 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 			const taskDetails = await _getTaskDetails(taskId);
 
 			try {
-				const codeToBeEvaluated = _buildCodeToBeEvaluated(apprenticeSolution, testCases, taskDetails.answerType);
-				console.debug('Code to be evaluated:', codeToBeEvaluated);
+				const codeToBeEvaluated = _buildCodeToBeEvaluated(
+					apprenticeSolution,
+					testCases,
+					taskDetails.answerType
+				);
+				const rawResult = await evaluateSolution(codeToBeEvaluated, language);
+
 				const result: FormattedExerciseAttemptResult = {
-					...(await evaluateSolution(codeToBeEvaluated, language)),
+					...rawResult,
 					formattedOutput: '',
-					debugOutput: '',
+					debugOutput: ''
 				};
-				
+
+				if (language === 'typescript5-vitest') {
+					result.formattedOutput = result.output; // output from evaluateSolution is simplified
+					result.debugOutput = result.fullOutput ?? ''; // fullOutput from evaluateSolution
+					result.output = result.fullOutput ?? ''; // output for the final result is fullOutput
+				} else {
+					const parser = OutputParser(result.output ?? '');
+					if (result.status === 'SUCCESS') {
+						result.formattedOutput = parser.formatSuccess();
+					} else {
+						result.formattedOutput = parser.formatErrors();
+					}
+					result.debugOutput = parser.formatDebug();
+					result.output = parser.cleanUp();
+				}
+
 				const attempt: ExerciseAttempt = {
 					apprenticeId,
 					taskId,
@@ -113,20 +138,11 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 					...result
 				};
 
-				// Handle results
 				if (result.status === 'SUCCESS') {
-					result.formattedOutput = OutputParser(result.output ?? '').formatSuccess()
-					result.debugOutput = OutputParser(result.output ?? '').formatDebug()
 					await Promise.all(successHandlers.map((handler) => handler(attempt)));
-				}
-				
-				if (result.status !== 'SUCCESS') {
-					result.formattedOutput = OutputParser(result.output ?? '').formatErrors()
-					result.debugOutput = OutputParser(result.output ?? '').formatDebug()
+				} else {
 					await Promise.all(failHandlers.map((handler) => handler(attempt)));
 				}
-
-				result.output = OutputParser(result.output ?? '').cleanUp();
 
 				// Usecase completed; result might either be a success or a failure
 				return UseCaseResponseBuilder.success(200, result);

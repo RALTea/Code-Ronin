@@ -18,6 +18,7 @@ const config = {
 			$learning: './src/modules/learning',
 			$notifications: './src/modules/notifications',
 			$dashboard: './src/modules/dashboard',
+			$ddd: './src/lib/ddd-common'
 		}
 	}
 };

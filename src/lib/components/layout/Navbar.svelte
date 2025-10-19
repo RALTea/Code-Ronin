@@ -1,83 +1,18 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { UserStore } from '$auth/stores/UserStore.svelte';
-	import type { ApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary/aggregates/ApprenticeProfileSummary';
-	import { getApprenticeProfileSummary } from '$learning/usecases/getApprenticeProfileSummary/getApprenticeProfileSummary';
-	import { LastRun } from '$learning/usecases/runExercise/stores/LastRun.svelte';
-	import { trpc } from '$lib/clients/trpc';
 	import type { AddCss } from '$lib/utils/svelte.utils';
 	import { SignOut } from '@auth/sveltekit/components';
 	import Progress from '../forms/Progress.svelte';
 	import IconPower from '../icons/IconPower.svelte';
 	import IconWrapper from '../icons/IconWrapper.svelte';
 	import NavbarSkeleton from './NavbarSkeleton.svelte';
-	import { SendNotificationUseCase } from '$notifications/usecases/SendNotification/SendNotification';
-	import { NotificationStack } from '$notifications/stores/NotificationStack.svelte';
+	import { NavbarVM } from './NavbarVM.svelte';
+	import { page } from '$app/stores';
 
 	type Props = AddCss;
-	const medalsIndex = [0, 1, 2];
-	const emptyMedal = '/medals/Item=default.png';
-	const defaultApprenticeSummary: ApprenticeProfileSummary = {
-		name: 'Anonymous',
-		title: 'Developer',
-		avatar: '/default-pfp.png',
-		exp: 0
-	};
-	const fetchDataUsecase = $derived.by(() => {
-		UserStore.user;
-		return getApprenticeProfileSummary({
-			fetchApprenticeInfos: async () => {
-				return trpc($page)
-					.learning.getApprenticeProfileSummary.getApprenticeInfos.query({
-						apprenticeId: UserStore.user?.id ?? '-1'
-					})
-					.catch(() => defaultApprenticeSummary);
-			},
-			fetchApprenticeExp: async () => {
-				return trpc($page)
-					.learning.getApprenticeProfileSummary.getApprenticeExp.query({
-						apprenticeId: UserStore.user?.id ?? '-1'
-					})
-					.catch((e) => {
-						console.debug(e);
-						return 0;
-					});
-			}
-		});
-	});
 	const { class: className }: Props = $props();
-	let apprenticeId = $derived(UserStore.user?.id ?? '-1');
 
-	let apprenticeSummary: ApprenticeProfileSummary | undefined = $state(undefined);
-
-	const fetchApprenticeSummary = () => {
-		if (apprenticeId === '-1') return (apprenticeSummary = defaultApprenticeSummary);
-		fetchDataUsecase
-			.execute({ apprenticeId: apprenticeId })
-			.then((result) => {
-				if (apprenticeSummary && apprenticeSummary.name !== defaultApprenticeSummary.name) return;
-				if (result.isSuccess) return (apprenticeSummary = result.data);
-				return (apprenticeSummary = defaultApprenticeSummary);
-			})
-			.catch((err) => {
-				console.error(err);
-				SendNotificationUseCase({
-					addToStack: NotificationStack.addToStack
-				}).execute({
-					dto: {
-						message: 'Failed to fetch apprentice summary',
-						type: 'ERROR'
-					}
-				});
-				return (apprenticeSummary = defaultApprenticeSummary);
-			});
-	};
-
-	$effect(() => {
-		LastRun.time;
-		UserStore.user;
-		fetchApprenticeSummary();
-	});
+	const vm = new NavbarVM($page);
 </script>
 
 {#snippet divider()}
@@ -89,7 +24,9 @@
 <nav
 	class="h-20 bg-bg-dark rounded-lg m-4 shadow-[.0rem_.15rem_.2rem] shadow-lightless flex items-center px-4 py-2 {className}"
 >
-	{#if apprenticeSummary}
+	{#await vm.apprenticeSummary}
+		<NavbarSkeleton />
+	{:then apprenticeSummary}
 		<div class="w-4/5 h-full flex items-center">
 			<div class="flex">
 				<img
@@ -104,8 +41,8 @@
 			</div>
 			{@render divider()}
 			<div class="gap-4 hidden md:flex">
-				{#each medalsIndex as medal}
-					{@const src = apprenticeSummary?.medals?.at(medal) ?? emptyMedal}
+				{#each vm.medalsIndex as medal}
+					{@const src = apprenticeSummary?.medals?.at(medal) ?? vm.emptyMedal}
 					<div class="shine">
 						<img {src} alt="medal" class="w-10 h-10 relative" />
 					</div>
@@ -147,7 +84,5 @@
 				</a>
 			{/if}
 		</div>
-	{:else}
-		<NavbarSkeleton />
-	{/if}
+	{/await}
 </nav>
