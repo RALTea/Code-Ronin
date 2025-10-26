@@ -7,7 +7,7 @@ x-logging: &default-logging
 services:
   server:
     container_name: judge_server
-    image: rotour/judge0-workers:1.13.1
+    image: rotour/judge0-workers:${GIT_SHORT_SHA:-latest}
     build:
       context: .
       dockerfile: Dockerfile
@@ -24,7 +24,7 @@ services:
 
   workers:
     container_name: judge_workers
-    image: rotour/judge0-workers:1.13.1
+    image: rotour/judge0-workers:${GIT_SHORT_SHA:-latest}
     build:
       context: .
       dockerfile: Dockerfile

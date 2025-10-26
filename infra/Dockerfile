@@ -1,4 +1,4 @@
-FROM judge0/judge0:1.13.1 as base
+FROM judge0/judge0:1.13.1 AS base
 WORKDIR /usr/local/bin/ts-5.6.3
 WORKDIR /usr/local/.nvm
 WORKDIR /api
@@ -23,6 +23,8 @@ RUN mkdir -p /usr/local/bin/ts-5.6.3/typescript && \
   cd /usr/local/bin/ts-5.6.3/typescript && \
   npm init -y && \
   npm install typescript@5.6.3 tsx vitest
+
+COPY ./scripts/* /usr/local/bin/ts-5.6.3/typescript/.
 
 # Set up the new language
 COPY ./scripts/*.sh /usr/local/bin/.
