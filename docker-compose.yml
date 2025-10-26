@@ -1,6 +1,6 @@
 services:
   coderonin:
-    image: rotour/coderonin
+    image: rotour/coderonin:${GIT_SHORT_SHA:-latest}
     build:
       context: .
       dockerfile: Dockerfile

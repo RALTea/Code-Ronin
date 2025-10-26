@@ -118,7 +118,7 @@ export const runExercise: UseCase<Input, Output> = (deps) => {
 
 				if (language === 'typescript5-vitest') {
 					result.formattedOutput = result.output; // output from evaluateSolution is simplified
-					result.debugOutput = result.fullOutput ?? ''; // fullOutput from evaluateSolution
+					result.debugOutput = rawResult.debugOutput ?? result.fullOutput ?? ''; // use new debugOutput
 					result.output = result.fullOutput ?? ''; // output for the final result is fullOutput
 				} else {
 					const parser = OutputParser(result.output ?? '');

@@ -15,7 +15,9 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"test:unit:single": "vitest run"
+		"test:unit:single": "vitest run",
+		"docker:build:coderonin": "GIT_SHORT_SHA=$(git rev-parse --short HEAD) docker compose build",
+		"docker:build:judge": "cd infra && GIT_SHORT_SHA=$(git rev-parse --short HEAD) docker compose build"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",

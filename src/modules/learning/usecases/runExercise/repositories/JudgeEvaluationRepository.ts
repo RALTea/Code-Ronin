@@ -53,7 +53,15 @@ const VitestOutputSchema = z.object({
 	numPassedTests: z.number(),
 	numFailedTests: z.number(),
 	startTime: z.number(),
-	testResults: z.array(VitestTestResultSchema)
+	testResults: z.array(VitestTestResultSchema),
+	globalLogs: z
+		.array(
+			z.object({
+				type: z.string(),
+				message: z.string()
+			})
+		)
+		.optional()
 });
 
 const mapLanguageToJudgeLanguageId = (language: Language): number => {
@@ -173,12 +181,22 @@ export const JudgeEvaluationRepository = (): JudgeEvaluationRepository => {
 
 						const fullOutput = buildFullOutput(vitestResult, decoded);
 
+						let debugOutput = '';
+						if (vitestResult.globalLogs && vitestResult.globalLogs.length > 0) {
+							debugOutput += '--- Debug Logs ---';
+							for (const log of vitestResult.globalLogs) {
+								debugOutput += `\n[${log.type}]: ${log.message.trim()}`;
+							}
+						}
+						debugOutput += `\n\n${fullOutput}`;
+
 						return {
 							id: decoded.token,
 							time: parseFloat(decoded.time),
 							status,
 							output: simplifiedOutput,
-							fullOutput: fullOutput
+							fullOutput: fullOutput,
+							debugOutput: debugOutput
 						};
 					}
 				} catch (error) {

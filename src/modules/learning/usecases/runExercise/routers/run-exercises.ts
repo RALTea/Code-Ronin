@@ -1,5 +1,4 @@
 import { env } from '$env/dynamic/private';
-import { authProcedure } from '$lib/trpc/middlewares/auth.middleware';
 import { allowDemoAuthProcedure, DemoContentSchema } from '$lib/trpc/middlewares/demo.middleware';
 import { t } from '$lib/trpc/t';
 import { z } from 'zod';
@@ -7,7 +6,6 @@ import { ExerciseAttemptSchema } from '../aggregates/ExerciseAttempt';
 import { TestCasesNotFoundError } from '../errors/TestCasesNotFoundError';
 import { PrismaAttemptRepository } from '../repositories/PrismaAttemptRepository';
 import { PrismaTaskRepository } from '../repositories/PrismaTaskRepository';
-import { TRPCError } from '@trpc/server';
 
 const router = t.router({
 	getTestFileFromGithub: allowDemoAuthProcedure
